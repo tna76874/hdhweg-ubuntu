@@ -1,0 +1,23 @@
+---
+- name: Update apt
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    upgrade: safe
+
+- name: Ensure basic packages
+  apt:
+    name:
+      - byobu
+      - zsh
+      - curl
+      - wget
+      - dnsutils
+      - git
+      - sudo
+      - htop
+      - vim
+      - nano
+    state: present
+
+- import_tasks: firewall.yml

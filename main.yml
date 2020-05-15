@@ -1,0 +1,10 @@
+---
+- name: Basic Setup
+  hosts: localhost
+  become: yes
+  tags:
+    - base
+  roles:
+    - base
+
+
