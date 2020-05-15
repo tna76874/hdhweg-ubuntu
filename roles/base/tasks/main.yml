@@ -21,7 +21,6 @@
       - libreoffice
       - vlc
       - libxvidcore4
-      - libfaac0
       - vlc-plugin-fluidsynth
       - vlc-plugin-jack
       - libdvdnav4
