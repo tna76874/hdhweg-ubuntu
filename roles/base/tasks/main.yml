@@ -42,7 +42,7 @@
       - ocrmypdf
       - tesseract-ocr
       - tesseract-ocr-deu
-      - netgen
+      - libfaac0
       - rclone
       - restic
       - clamav
