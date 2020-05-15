@@ -5,7 +5,7 @@
     cache_valid_time: 3600
     upgrade: safe
 
-- name: Ensure basic packages
+- name: Ensure packages
   apt:
     name:
       - byobu
@@ -18,6 +18,52 @@
       - htop
       - vim
       - nano
+      - libreoffice
+      - vlc
+      - libxvidcore4
+      - libfaac0
+      - vlc-plugin-fluidsynth
+      - vlc-plugin-jack
+      - libdvdnav4
+      - libdvdread4
+      - gstreamer1.0-plugins-bad
+      - gstreamer1.0-plugins-ugly
+      - ubuntu-restricted-extras
+      - audacious
+      - audacious-plugins
+      - xournalpp
+      - poppler-utils
+      - chromium-browser
+      - chromium-browser
+      - chromium-codecs-ffmpeg-extra
+      - gimp
+      - inkscape
+      - texstudio
+      - gscan2pdf
+      - ocrmypdf
+      - tesseract-ocr
+      - tesseract-ocr-deu
+      - netgen
+      - rclone
+      - restic
+      - clamav
+      - clamav-freshclam
+      - clamtk
+      - gcc
+      - wipe
+      - unzip
+      - p7zip
+      - p7zip-full
+      - p7zip-rar
+      - htop
+      - screen
+      - ncdu
+      - dos2unix
+      - speedtest-cli
+      - imagemagick
+      - texlive-full
+      - texlive-extra-utils
+      - texlive-latex-recommended
     state: present
 
 - import_tasks: firewall.yml
