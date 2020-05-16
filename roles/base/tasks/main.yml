@@ -76,4 +76,9 @@
       - teamviewer
     state: present
 
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+
 - import_tasks: firewall.yml
