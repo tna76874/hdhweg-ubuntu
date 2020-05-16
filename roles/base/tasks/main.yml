@@ -81,4 +81,9 @@
     name: "*"
     state: latest
 
+- name: Install mumble from snap
+  snap:
+    name:
+      - mumble
+
 - import_tasks: firewall.yml
