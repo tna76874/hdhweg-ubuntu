@@ -86,4 +86,10 @@
     name:
       - mumble
 
+- name: disable TeamViewer daemon
+  systemd:
+    name: teamviewer
+    enabled: no
+
+
 - import_tasks: firewall.yml
