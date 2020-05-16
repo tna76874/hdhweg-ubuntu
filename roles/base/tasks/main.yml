@@ -88,8 +88,16 @@
 
 - name: disable TeamViewer daemon
   systemd:
-    name: teamviewer
+    name: teamviewerd.service
     enabled: no
+    state: stopped
 
+- name: running ansible playbook at reboot to make sure settings are as they should be
+  cron:
+    name: "running ansible playbook at reboot"
+    special_time: reboot
+    job: "(sleep 120; cd /root/hdhweg-ubuntu; ansible-playbook main.yml > /dev/null 2>&1)&"
+    user: root
+    state: present
 
 - import_tasks: firewall.yml
