@@ -1,10 +1,11 @@
 ---
 - name: Add teamviewer key
   apt_key:
-    url: https://ftp-master.debian.org/keys/archive-key-6.0.asc
+    url: https://download.teamviewer.com/download/linux/signature/TeamViewer2017.asc
     state: present
 
-- apt_repository:
+- name: Add teamviewer repository
+  apt_repository:
     repo: deb http://linux.teamviewer.com/deb stable main
     state: present
 
