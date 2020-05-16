@@ -1,4 +1,13 @@
 ---
+- name: Add teamviewer key
+  apt_key:
+    url: https://ftp-master.debian.org/keys/archive-key-6.0.asc
+    state: present
+
+- apt_repository:
+    repo: deb http://linux.teamviewer.com/deb stable main
+    state: present
+
 - name: Update apt
   apt:
     update_cache: yes
@@ -63,6 +72,7 @@
       - texlive-full
       - texlive-extra-utils
       - texlive-latex-recommended
+      - teamviewer
     state: present
 
 - import_tasks: firewall.yml
