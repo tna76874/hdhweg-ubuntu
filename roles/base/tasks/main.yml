@@ -9,6 +9,10 @@
     repo: deb http://linux.teamviewer.com/deb stable main
     state: present
 
+- name: Ensure darktable ppa
+  apt_repository:
+    repo: ppa:pmjdebruijn/darktable-release
+
 - name: Update apt
   apt:
     update_cache: yes
