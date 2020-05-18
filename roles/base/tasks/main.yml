@@ -81,12 +81,9 @@
       - gnuplot
       - gnuplot-x11
       - gnuplot-doc
-    state: present
-
-- name: Upgrade all packages to the latest version
-  apt:
-    name: "*"
+      - darktable
     state: latest
+    install_recommends: yes
 
 - name: Install mumble from snap
   snap:
