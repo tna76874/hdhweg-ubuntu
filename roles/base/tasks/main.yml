@@ -74,6 +74,9 @@
       - texlive-extra-utils
       - texlive-latex-recommended
       - teamviewer
+      - gnuplot
+      - gnuplot-x11
+      - gnuplot-doc
     state: present
 
 - name: Upgrade all packages to the latest version
