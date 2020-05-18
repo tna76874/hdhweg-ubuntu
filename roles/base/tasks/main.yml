@@ -85,6 +85,19 @@
     state: latest
     install_recommends: yes
 
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+
+- name: Update all packages to the latest version
+  apt:
+    upgrade: dist
+
+- name: Remove dependencies that are no longer required
+  apt:
+    autoremove: yes
+
 - name: Install mumble from snap
   snap:
     name:
