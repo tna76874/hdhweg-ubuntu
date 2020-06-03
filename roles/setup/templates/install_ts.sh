@@ -23,10 +23,12 @@ wget -O teamspeak/logo.png --content-disposition https://daskeet.com/img/teamspe
 if [ $INSTALLDIR = "/srv" ]
 then
     LINKDIR="/usr/share/applications/"
+    sudo rm -rf ${INSTALLDIR}/teamspeak
     sudo mv teamspeak ${INSTALLDIR}
     sudo chmod -R 777 /srv/teamspeak
 else
     LINKDIR=${HOME}/.local/share/applications
+    sudo rm -rf ${INSTALLDIR}/teamspeak
     mv teamspeak ${INSTALLDIR}
 fi
 
