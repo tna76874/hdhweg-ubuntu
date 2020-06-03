@@ -1,8 +1,10 @@
-# hdhweg-ubuntu
+# ubuntu homeschooling configuration
 
 ### Aim
 
-Sometimes there are PCs/Notebooks available but without an up-to-date operating system. The aim of this notebook is to find the balance between data protection and a “somehow” managed device running a free-of-charge open-source system.  With this playbook an Ubuntu system can be configured to the basic needs of homeschooling. 
+Sometimes there are PCs/Notebooks available but without an up-to-date operating system. The aim of this notebook is to find the balance between data protection and a “somehow managed" device running a free-of-charge open-source system.  With this playbook an Ubuntu system can be configured to the basic needs of homeschooling.
+
+This repository is the counterpart to the [homeschooling server stack](https://github.com/tna76874/hdhweg-homeschooling-stack), that allows to easily set up a server with different collaborative open-source tools.
 
 ### Usb-installation-stick
 
