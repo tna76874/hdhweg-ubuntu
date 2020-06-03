@@ -11,7 +11,7 @@
     line: alias update="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml"
     owner: "{{ item }}"
     group: "{{ item }}"
-  with_items: "{{ sudo_users }}"
+  with_items: "{{ sudo_users.stdout_lines }}"
 
 - name: Ensure update alias in bashrc of existing users
   lineinfile:
@@ -20,7 +20,7 @@
     line: alias bigupdate="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/custom.yml"
     owner: "{{ item }}"
     group: "{{ item }}"
-  with_items: "{{ sudo_users }}"
+  with_items: "{{ sudo_users.stdout_lines }}"
 
 - name: Ensure teamviewer daemon enable alias in bashrc of new created users
   lineinfile:
@@ -29,4 +29,4 @@
     line: alias twstart="sudo killall /opt/teamviewer/tv_bin/TeamViewer; sudo teamviewer daemon enable"
     owner: "{{ item }}"
     group: "{{ item }}"
-  with_items: "{{ sudo_users }}"
+  with_items: "{{ sudo_users.stdout_lines }}"
