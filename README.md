@@ -18,23 +18,18 @@ If you have prepared your installation-stick, you [install](https://ubuntu.com/t
 
 ### Installation
 
-When everything is done, you log into your Ubuntu account and open a terminal (shortcut Ctrl+Alt+T). Download the setup-skript with and install [basic packages](roles/base/tasks/main.yml).
+When everything is done, you log into your Ubuntu account and open a terminal (shortcut Ctrl+Alt+T). Copy the whole content of the box beneath, paste it into the console and press enter. This will download the setup-skript and install all [basic packages](roles/base/tasks/main.yml) including firewall configurations. For this setup you must enter again your password in the console - dont be confused that there is not shown anything when typing.
 
 ```bash
-$ wget -O setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh && sudo ./setup.sh
+wget -O setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh && sudo ./setup.sh
 ```
 
 ### Installing additional software
 
 With a second config file, you can install [additional software](roles/custom/tasks/main.yml).
 
-
 ```bash
-$ sudo su
-$ cd /root
-$ git clone git@github.com:tna76874/hdhweg-ubuntu.git
-$ cd hdhweg-ubuntu
-$ sudo ansible-playbook custom.yml
+sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/custom.yml
 ```
 
 ### Update your system
@@ -42,7 +37,7 @@ $ sudo ansible-playbook custom.yml
 With this setup a cronjob will be installed that runs the `mail.yml` playbook 15 minutes after every startup. With this, all packages gets updated (no dist-upgrades). If you want to get the latest changes of this git-repository, you have to update the git-repository manually and run the notebook again.
 
 ```bash
-$ sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/main.yml
+sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/main.yml
 ```
 
 ### Preparing a custom installation image
@@ -50,9 +45,9 @@ $ sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubu
 If you have multiple devices to set up with this configuration, it might be handy to prepare a custom preconfigured Ubuntu image. If you use a ubuntu operating system, one way to do this is to use Cubic.
 
 ```bash
-$ sudo apt-add-repository ppa:cubic-wizard/classic
-$ sudo apt update
-$ sudo apt install cubic
+sudo apt-add-repository ppa:cubic-wizard/classic
+sudo apt update
+sudo apt install cubic
 ```
 
 Once loaded the original Ubuntu image into Cubic, you will be logged into a root console. Proceed with the installation process of the ansible playbook and further customize the image to your needs. When finnished, you create a boot-installation-stick with your custom image.
