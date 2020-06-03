@@ -1,10 +1,9 @@
 ---
-- name: Maintenance script
+- name: Initial setup and update routine
   hosts: localhost
   become: yes
   tags:
-    - base
+    - setup
   roles:
     - base
-
-
+    - setup

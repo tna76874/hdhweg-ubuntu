@@ -37,7 +37,7 @@ sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubunt
 With this setup a cronjob will be installed that runs the `mail.yml` playbook 15 minutes after every startup. With this, all packages gets updated (no dist-upgrades). If you want to get the latest changes of this git-repository, you have to update the git-repository manually and run the notebook again.
 
 ```bash
-sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/main.yml
+sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml
 ```
 
 ### Preparing a custom installation image
