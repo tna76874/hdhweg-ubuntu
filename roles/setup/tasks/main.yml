@@ -2,3 +2,5 @@
 - import_tasks: masterpdfeditor.yml
 
 - import_tasks: teamspeak.yml
+
+- import_tasks: alias.yml
