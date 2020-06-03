@@ -3,9 +3,8 @@
 REPODIR="/root/hdhweg-ubuntu"
 
 sudo apt update
-sudo apt install software-properties-common python-software-properties -y
-sudo add-apt-repository universe
-sudo apt-add-repository multiverse
+sudo apt install software-properties-common -y
+sudo apt-add-repository --yes --update ppa:ansible/ansible
 sudo apt update
 sudo apt install git ansible -y
 
