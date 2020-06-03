@@ -11,4 +11,4 @@ sudo apt install git ansible -y
 git clone https://github.com/tna76874/hdhweg-ubuntu.git ${REPODIR}
 cd ${REPODIR}
 
-sudo ansible-playbook setup.yml
+sudo ansible-playbook ${1-setup.yml}

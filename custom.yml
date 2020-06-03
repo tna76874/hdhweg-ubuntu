@@ -5,6 +5,8 @@
   tags:
     - custom
   roles:
+    - base
+    - setup
     - custom
 
 
