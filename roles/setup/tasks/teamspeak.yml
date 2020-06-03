@@ -3,4 +3,4 @@
   template:
     src: install_ts.sh
     dest: "/srv/install_ts.sh"
-    mode: 0777
+    mode: 0755

@@ -3,7 +3,7 @@
   template:
     src: install_masterpdf.sh
     dest: "/srv/install_masterpdf.sh"
-    mode: 0777
+    mode: 0755
 
 - name: Run masterpdf editor install script
   shell: /srv/install_masterpdf.sh

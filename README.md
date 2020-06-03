@@ -40,6 +40,12 @@ If you want, you can also install TeamSpeak. Because you have to accept the term
 /srv/install_ts.sh
 ```
 
+If you want to prepare a Ubuntu image you can also install TeamSpeak into /srv.
+
+```bash
+/srv/install_ts.sh /srv
+```
+
 ## Update your system
 
 With this setup a cronjob will be installed that runs the `mail.yml` playbook 15 minutes after every startup. With this, all packages gets updated. If you want to get the latest changes of this git-repository, you have to update the git-repository manually and run the notebook again.

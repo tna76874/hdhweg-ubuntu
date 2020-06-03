@@ -1,10 +1,11 @@
 #!/bin/bash
-INSTALLDIR=${HOME}
+INSTALLDIR=${1-${HOME}}
+
 # getting latest teamspeak version
 VERSION=$(curl -s -L https://www.teamspeak.com/de/downloads/ |  grep TeamSpeak3-Client-linux_amd64- | awk '/TeamSpeak3-Client-linux_amd64-/,/.run/' | awk -v FS="(TeamSpeak3-Client-linux_amd64-|.run)" '{print $2}' | head -n 1)
 
 # download the client
-cd ~/Downloads
+cd /tmp
 wget -O teamspeak.run --content-disposition https://files.teamspeak-services.com/releases/client/${VERSION}/TeamSpeak3-Client-linux_amd64-${VERSION}.run
 
 #BY UNCOMMENT THE NEXT LINE YOU ACCEPT THE TEAMSPEAK TERMS AND CONDITIONS!
@@ -19,6 +20,14 @@ mv TeamSpeak3-Client-linux_amd64 ${INSTALLDIR}/teamspeak
 # download a teamspeak logo
 cd ${INSTALLDIR}/teamspeak
 wget -O logo.png --content-disposition https://daskeet.com/img/teamspeaklogo.png
+
+if [ $INSTALLDIR = "/srv" ]
+then
+    LINKDIR="/usr/share/applications/"
+    sudo chmod -R 777 /srv/teamspeak
+else
+    LINKDIR=${HOME}/.local/share/applications
+fi
 
 # creating menu entry
 echo -e "
@@ -36,4 +45,4 @@ Categories=Network;\n\
 StartupWMClass=TeamSpeak 3\n\
 StartupNotify=true\n\
 " \
-> ${HOME}/.local/share/applications/teamspeak3-client.desktop
+> ${LINKDIR}/teamspeak3-client.desktop
