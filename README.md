@@ -60,3 +60,14 @@ sudo apt install cubic
 
 Once loaded the original Ubuntu image into Cubic, you will be logged into a root console. Proceed with the installation process of the ansible playbook and further customize the image to your needs. When finnished, you create a boot-installation-stick with your custom image.
 
+## Miscellaneous
+
+#### TeamViewer
+
+By default TeamViewer gets installed. Every time the playbook runs (e.g. 15 min after startup) it will be ensured, that the TeamViewer daemon ist **disabled**! So if you start TeamViewer there will reported "a problem with your internet connection". Actually it is just the switched-off daemon.
+
+If TeamViewer is needed, you have to enable the daemon manually by typing in the terminal:
+
+```bash
+sudo teamviewer daemon enable
+```
