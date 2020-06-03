@@ -24,9 +24,8 @@ When everything is done, you log into your Ubuntu account and open a terminal (s
 $ sudo su
 $ cd /root
 $ sudo apt update
-$ sudo apt install software-properties-common python-software-properties -y
-$ sudo add-apt-repository universe
-$ sudo apt-add-repository multiverse
+$ sudo apt install software-properties-common  -y
+$ sudo apt-add-repository --yes --update ppa:ansible/ansible
 $ sudo apt update
 $ sudo apt install git ansible -y
 ```
@@ -36,7 +35,7 @@ Now you can clone the ansible-playbook and configure your system.
 ```bash
 $ sudo su
 $ cd /root
-$ git clone git@github.com:tna76874/hdhweg-ubuntu.git
+$ git clone https://github.com/tna76874/hdhweg-ubuntu.git
 $ cd hdhweg-ubuntu
 $ sudo ansible-playbook main.yml
 ```
