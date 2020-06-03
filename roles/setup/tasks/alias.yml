@@ -2,17 +2,17 @@
 - name: Ensure update alias in bashrc of root
   lineinfile:
     path: /root/.bashrc
-    regexp: '^update='
-    line: update="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml"
+    regexp: '^alias update='
+    line: alias update="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml"
 
 - name: Ensure update alias in bashrc of new created users
   lineinfile:
     path: /etc/skel/.bashrc
-    regexp: '^update='
-    line: update="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml"
+    regexp: '^alias update='
+    line: alias update="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml"
 
 - name: Ensure teamviewer daemon enable alias in bashrc of new created users
   lineinfile:
     path: /etc/skel/.bashrc
-    regexp: '^twstart='
-    line: twstart="sudo killall /opt/teamviewer/tv_bin/TeamViewer; sudo teamviewer daemon enable"
+    regexp: '^alias twstart='
+    line: alias twstart="sudo killall /opt/teamviewer/tv_bin/TeamViewer; sudo teamviewer daemon enable"
