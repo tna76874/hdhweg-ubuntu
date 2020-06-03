@@ -9,7 +9,7 @@ sudo apt-add-repository multiverse
 sudo apt update
 sudo apt install git ansible -y
 
-git clone git@github.com:tna76874/hdhweg-ubuntu.git ${REPODIR}
+git clone https://github.com/tna76874/hdhweg-ubuntu.git ${REPODIR}
 cd ${REPODIR}
 
 sudo ansible-playbook main.yml
