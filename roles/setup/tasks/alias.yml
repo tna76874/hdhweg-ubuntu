@@ -11,6 +11,12 @@
     regexp: '^alias update='
     line: alias update="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml"
 
+- name: Ensure update alias in bashrc of new created users
+  lineinfile:
+    path: /etc/skel/.bashrc
+    regexp: '^alias bigupdate='
+    line: alias bigupdate="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/custom.yml"
+
 - name: Ensure teamviewer daemon enable alias in bashrc of new created users
   lineinfile:
     path: /etc/skel/.bashrc
