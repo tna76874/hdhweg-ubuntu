@@ -69,5 +69,5 @@ By default TeamViewer gets installed. Every time the playbook runs (e.g. 15 min 
 If TeamViewer is needed, you have to enable the daemon manually by typing in the terminal:
 
 ```bash
-sudo teamviewer daemon enable
+sudo killall /opt/teamviewer/tv_bin/TeamViewer; sudo teamviewer daemon enable
 ```
