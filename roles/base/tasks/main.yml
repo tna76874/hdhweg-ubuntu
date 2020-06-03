@@ -17,6 +17,10 @@
   apt_repository:
     repo: ppa:unit193/encryption
 
+- name: Ensure xournal ppa
+  apt_repository:
+    repo: ppa:andreasbutti/xournalpp-master
+
 - name: Update apt
   apt:
     update_cache: yes
