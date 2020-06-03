@@ -22,7 +22,7 @@
     group: "{{ item }}"
   with_items: "{{ sudo_users.stdout_lines }}"
 
-- name: Ensure teamviewer daemon enable alias in bashrc of new created users
+- name: Ensure teamviewer daemon enable alias in bashrc of existing users
   lineinfile:
     path: "/home/{{ item }}/.bashrc"
     regexp: '^alias twstart='
