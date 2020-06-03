@@ -1,0 +1,45 @@
+---
+- name: Ensure darktable ppa
+  apt_repository:
+    repo: ppa:pmjdebruijn/darktable-release
+
+- name: Ensure freecad ppa
+  apt_repository:
+    repo: ppa:freecad-maintainers/freecad-stable
+
+- name: Update apt
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    upgrade: safe
+
+- name: Ensure packages
+  apt:
+    name:
+      - texstudio
+      - texlive-full
+      - texlive-extra-utils
+      - texlive-latex-recommended
+      - darktable
+      - kdenlive
+      - libmp3lame-dev
+      - libfaac-dev
+      - libfaad-dev
+      - libxvidcore4
+      - swh-plugins
+      - freecad
+    state: latest
+    install_recommends: yes
+
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+
+- name: Update all dist packages to the latest version
+  apt:
+    upgrade: dist
+
+- name: Remove dependencies that are no longer required
+  apt:
+    autoremove: yes

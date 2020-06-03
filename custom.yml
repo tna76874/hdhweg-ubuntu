@@ -1,0 +1,10 @@
+---
+- name: Custom Setup
+  hosts: localhost
+  become: yes
+  tags:
+    - custom
+  roles:
+    - custom
+
+
