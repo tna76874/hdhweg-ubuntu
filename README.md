@@ -1,12 +1,12 @@
 # ubuntu homeschooling configuration
 
-### Aim
+## Aim
 
 Sometimes there are PCs/Notebooks available but without an up-to-date operating system. The aim of this notebook is to find the balance between data protection and a “somehow managed" device running a free-of-charge open-source system.  With this playbook an Ubuntu system can be configured to the basic needs of homeschooling.
 
 This repository is the counterpart to the [homeschooling server stack](https://github.com/tna76874/hdhweg-homeschooling-stack), that allows to easily set up a server with different collaborative open-source tools.
 
-### Usb-installation-stick
+## Usb-installation-stick
 
 First download a fresh [Ubuntu image](http://releases.ubuntu.com/18.04.4/ubuntu-18.04.4-desktop-amd64.iso). Then you proceed to create a bootable usb-installation-stick:
 
@@ -16,7 +16,7 @@ First download a fresh [Ubuntu image](http://releases.ubuntu.com/18.04.4/ubuntu-
 
 If you have prepared your installation-stick, you [install](https://ubuntu.com/tutorials/tutorial-install-ubuntu-desktop#4-boot-from-usb-flash-drive) Ubuntu on the PC/Notebook.
 
-### Installation
+## Installation
 
 When everything is done, you log into your Ubuntu account and open a terminal (shortcut Ctrl+Alt+T). Copy the whole content of the box beneath, paste it into the console and press enter. This will download the setup-skript and install all [basic packages](roles/base/tasks/main.yml) including firewall configurations. For this setup you must enter again your password in the console - dont be confused that there is not shown anything when typing.
 
@@ -32,7 +32,15 @@ when you want to install [additional software packages](roles/custom/tasks/main.
 wget -O setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh && sudo bash setup.sh custom.yml && rm setup.sh
 ```
 
-### Update your system
+#### Extra: TeamSpeak
+
+If you want, you can also install TeamSpeak. Because you have to accept the terms and conditions this will not be automatically set up. Type in a terminal after the setup playbook completed:
+
+```bash
+/srv/install_ts.sh
+```
+
+## Update your system
 
 With this setup a cronjob will be installed that runs the `mail.yml` playbook 15 minutes after every startup. With this, all packages gets updated. If you want to get the latest changes of this git-repository, you have to update the git-repository manually and run the notebook again.
 
@@ -40,7 +48,7 @@ With this setup a cronjob will be installed that runs the `mail.yml` playbook 15
 sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml
 ```
 
-### Preparing a custom installation image
+## Preparing a custom installation image
 
 If you have multiple devices to set up with this configuration, it might be handy to prepare a custom preconfigured Ubuntu image. If you use a ubuntu operating system, one way to do this is to use Cubic.
 
