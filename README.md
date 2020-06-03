@@ -24,7 +24,7 @@ When everything is done, you log into your Ubuntu account and open a terminal (s
 $ sudo su
 $ cd /root
 $ sudo apt update
-$ sudo apt install software-properties-common python-software-properties
+$ sudo apt install software-properties-common python-software-properties -y
 $ sudo add-apt-repository universe
 $ sudo apt-add-repository multiverse
 $ sudo apt update
