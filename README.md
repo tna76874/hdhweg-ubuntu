@@ -18,26 +18,10 @@ If you have prepared your installation-stick, you [install](https://ubuntu.com/t
 
 ### Installation
 
-When everything is done, you log into your Ubuntu account and open a terminal (shortcut Ctrl+Alt+T). Log in as root user and install [basic packages](roles/base/tasks/main.yml).
+When everything is done, you log into your Ubuntu account and open a terminal (shortcut Ctrl+Alt+T). Download the setup-skript with and install [basic packages](roles/base/tasks/main.yml).
 
 ```bash
-$ sudo su
-$ cd /root
-$ sudo apt update
-$ sudo apt install software-properties-common  -y
-$ sudo apt-add-repository --yes --update ppa:ansible/ansible
-$ sudo apt update
-$ sudo apt install git ansible -y
-```
-
-Now you can clone the ansible-playbook and configure your system.
-
-```bash
-$ sudo su
-$ cd /root
-$ git clone https://github.com/tna76874/hdhweg-ubuntu.git
-$ cd hdhweg-ubuntu
-$ sudo ansible-playbook main.yml
+$ wget -O setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh && sudo ./setup.sh
 ```
 
 ### Installing additional software
