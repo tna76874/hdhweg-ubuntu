@@ -15,18 +15,19 @@ wget -O teamspeak.run --content-disposition https://files.teamspeak-services.com
 rm -rf TeamSpeak3-Client-linux_amd64
 chmod +x teamspeak.run && ./teamspeak.run
 rm teamspeak.run
-mv TeamSpeak3-Client-linux_amd64 ${INSTALLDIR}/teamspeak
+mv TeamSpeak3-Client-linux_amd64 teamspeak
 
 # download a teamspeak logo
-cd ${INSTALLDIR}/teamspeak
-wget -O logo.png --content-disposition https://daskeet.com/img/teamspeaklogo.png
+wget -O teamspeak/logo.png --content-disposition https://daskeet.com/img/teamspeaklogo.png
 
 if [ $INSTALLDIR = "/srv" ]
 then
     LINKDIR="/usr/share/applications/"
+    sudo mv teamspeak ${INSTALLDIR}
     sudo chmod -R 777 /srv/teamspeak
 else
     LINKDIR=${HOME}/.local/share/applications
+    mv teamspeak ${INSTALLDIR}
 fi
 
 # creating menu entry
