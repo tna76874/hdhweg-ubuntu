@@ -43,7 +43,7 @@ If you want, you can also install TeamSpeak. Because you have to accept the term
 If you want to prepare a Ubuntu image you can also install TeamSpeak into /srv.
 
 ```bash
-/srv/install_ts.sh /srv
+sudo /srv/install_ts.sh /srv
 ```
 
 ## Update your system
