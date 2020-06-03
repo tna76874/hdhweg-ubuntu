@@ -7,3 +7,4 @@
   roles:
     - base
     - setup
+    - security
