@@ -1,24 +1,32 @@
 ---
-- name: Ensure update alias in bashrc of root
+- name: Determine existing users
+  shell: 'grep sudo /etc/group | cut -d: -f4 | sed "s/,/\n/"'
+  changed_when: false 
+  register: sudo_users
+
+- name: Ensure update alias in bashrc of existing users
   lineinfile:
-    path: /root/.bashrc
+    path: "/home/{{ item }}/.bashrc"
     regexp: '^alias update='
     line: alias update="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+  with_items: "{{ sudo_users }}"
 
-- name: Ensure update alias in bashrc of new created users
+- name: Ensure update alias in bashrc of existing users
   lineinfile:
-    path: /etc/skel/.bashrc
-    regexp: '^alias update='
-    line: alias update="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml"
-
-- name: Ensure update alias in bashrc of new created users
-  lineinfile:
-    path: /etc/skel/.bashrc
+    path: "/home/{{ item }}/.bashrc"
     regexp: '^alias bigupdate='
     line: alias bigupdate="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/custom.yml"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+  with_items: "{{ sudo_users }}"
 
 - name: Ensure teamviewer daemon enable alias in bashrc of new created users
   lineinfile:
-    path: /etc/skel/.bashrc
+    path: "/home/{{ item }}/.bashrc"
     regexp: '^alias twstart='
     line: alias twstart="sudo killall /opt/teamviewer/tv_bin/TeamViewer; sudo teamviewer daemon enable"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+  with_items: "{{ sudo_users }}"

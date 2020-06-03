@@ -72,7 +72,7 @@ Once loaded the original Ubuntu image into Cubic, you will be logged into a root
 
 #### TeamViewer
 
-By default TeamViewer gets installed. Every time the playbook runs (e.g. 15 min after startup) it will be ensured, that the TeamViewer daemon ist **disabled**! So if you start TeamViewer there will reported "a problem with your internet connection". Actually it is just the switched-off daemon.
+By default TeamViewer gets installed. Every time the playbook runs (e.g. 15 min after startup) it will be ensured, that the TeamViewer daemon ist **disabled**! So if you start TeamViewer there will be reported "a problem with your internet connection". Actually it is just the switched-off daemon.
 
 If TeamViewer is needed, you have to enable the daemon manually by typing in the terminal:
 
