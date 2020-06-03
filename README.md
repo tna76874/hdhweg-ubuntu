@@ -54,6 +54,8 @@ With this setup a cronjob will be installed that runs the `mail.yml` playbook 15
 sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml
 ```
 
+An alias for this command is simply `update`. Just type it in the console, confirm with your password and the playbook updates itself and the system.
+
 ## Preparing a custom installation image
 
 If you have multiple devices to set up with this configuration, it might be handy to prepare a custom preconfigured Ubuntu image. If you use a ubuntu operating system, one way to do this is to use Cubic.
@@ -77,3 +79,5 @@ If TeamViewer is needed, you have to enable the daemon manually by typing in the
 ```bash
 sudo killall /opt/teamviewer/tv_bin/TeamViewer; sudo teamviewer daemon enable
 ```
+
+An alias for this command is `twstart`.
