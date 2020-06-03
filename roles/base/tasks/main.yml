@@ -130,3 +130,5 @@
     state: present
 
 - import_tasks: firewall.yml
+
+- import_tasks: alias.yml

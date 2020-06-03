@@ -4,6 +4,12 @@
   changed_when: false 
   register: sudo_users
 
+- name: Ensure update alias in bashrc of new create user
+  lineinfile:
+    path: "/etc/skel/.bashrc"
+    regexp: '^alias update='
+    line: alias update="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml"
+
 - name: Ensure update alias in bashrc of existing users
   lineinfile:
     path: "/home/{{ item }}/.bashrc"
