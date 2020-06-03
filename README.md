@@ -54,7 +54,7 @@ With this setup a cronjob will be installed that runs the `mail.yml` playbook 15
 sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml
 ```
 
-An alias for this command is simply `update`. Just type it in the console, confirm with your password and the playbook updates itself and the system.
+An alias for this command is simply `update`. Just type it in the console, confirm with your password and the playbook updates itself and the system. The update process for the bigger software bundle gets tiggered with `bigupdate`.
 
 ## Preparing a custom installation image
 
