@@ -62,7 +62,7 @@ With this setup two cronjobs will be installed. One gets triggered 10 minutes af
 update
 ```
 
-The update process for the bigger software bundle gets tiggered with `bigupdate`. Please note, that already installed software gets updated automatically in any case (by `main.yml`). **15 Minutes after the system starts up installed software gets downloaded updated. Sometimes this can be quite much traffic, so ensure to have a suitable internet connection.**
+The update process for the bigger software bundle gets tiggered with `bigupdate`. Please note, that already installed software gets updated automatically in any case (by `main.yml`). **15 Minutes after the system starts up installed software gets downloaded and updated. Sometimes this can be quite much traffic, so ensure to have a suitable internet connection.**
 
 >**TL;DR**  --> You don't have to do anything to keep your system safe. Install new software simply by typing  `update` or `bigupdate` in a terminal and ensure a suitable internet connection.
 
