@@ -2,6 +2,7 @@
 - name: Ensure autopull is disabled
   cron:
     name: "running ansible playbook at reboot"
+    cron_file: "autoupdate"
     special_time: reboot
     job: "(sleep 10m; sudo git -C /root/hdhweg-ubuntu pull > /dev/null 2>&1)&"
     user: root
