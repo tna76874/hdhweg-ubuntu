@@ -20,3 +20,5 @@ git clone https://github.com/tna76874/hdhweg-ubuntu.git ${REPODIR}
 # run the playbook to set up the system
 cd ${REPODIR}
 sudo ansible-playbook ${1-setup.yml}
+# enable automatic pulls from the git repository by default
+sudo ansible-playbook autoupdate.yml --tags enable
