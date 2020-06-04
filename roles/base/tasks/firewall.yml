@@ -11,18 +11,21 @@
     rule: limit
     name: OpenSSH
     state: enabled
+  ignore_errors: yes
 
 - name: Allow everything out and enable UFW
   ufw:
     direction: outgoing
     policy: allow
     state: enabled
+  ignore_errors: yes
 
 - name: Allow default nothing in and enable UFW
   ufw:
     direction: incoming
     policy: deny
     state: enabled
+  ignore_errors: yes
 
 - name: ensure fail2ban uses ufw
   copy:
@@ -32,3 +35,4 @@
     mode: 0644
     dest: /etc/fail2ban/jail.local
   notify: restart fail2ban
+  ignore_errors: yes
