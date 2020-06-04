@@ -11,7 +11,7 @@ This repository is the counterpart to the [homeschooling server stack](https://g
 * [Installing](https://www.youtube.com/watch?v=hHPaVvq81t4) an Ubuntu system.
 * First [startup and update](https://www.youtube.com/watch?v=dJ-NsT-xauk) of a WeG Ubuntu installation.
 * [(Re)Install](https://www.youtube.com/watch?v=8Hjj5Kpx7tc) WeG Ubuntu on any Ubuntu installation.
-* Just showing som random [features](https://www.youtube.com/watch?v=bTgEzdhq4nw) of Ubuntu.
+* Just showing some random [features](https://www.youtube.com/watch?v=bTgEzdhq4nw) of Ubuntu.
 
 ## Usb-installation-stick
 
