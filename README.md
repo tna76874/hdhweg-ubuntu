@@ -56,7 +56,7 @@ sudo /srv/install_ts.sh /srv
 
 ## Update your system
 
-With this setup a cronjob will be installed that runs the `mail.yml` playbook 15 minutes after every startup. With this, all packages gets updated. If you want to get the latest changes of this git-repository, you have to update the git-repository manually and run the notebook again.
+With this setup a cronjob will be installed that runs the `main.yml` playbook 15 minutes after every startup. With this, all packages gets updated. If you want to get the latest changes of this git-repository, you have to update the git-repository manually and run the notebook again.
 
 ```bash
 sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml
