@@ -6,6 +6,13 @@ Sometimes there are PCs/Notebooks available but without an up-to-date operating 
 
 This repository is the counterpart to the [homeschooling server stack](https://github.com/tna76874/hdhweg-homeschooling-stack), that allows to easily set up a server with different collaborative open-source tools.
 
+## Youtube
+
+* [Installing](https://www.youtube.com/watch?v=hHPaVvq81t4) an Ubuntu system.
+* First [startup and update](https://www.youtube.com/watch?v=dJ-NsT-xauk) of a WeG Ubuntu installation.
+* [(Re)Install](https://www.youtube.com/watch?v=8Hjj5Kpx7tc) WeG Ubuntu on any Ubuntu installation.
+* Just showing som random [features](https://www.youtube.com/watch?v=bTgEzdhq4nw) of Ubuntu.
+
 ## Usb-installation-stick
 
 First download a fresh [Ubuntu image](http://releases.ubuntu.com/18.04.4/ubuntu-18.04.4-desktop-amd64.iso). Then you proceed to create a bootable usb-installation-stick:
