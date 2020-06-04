@@ -121,6 +121,7 @@
     name: teamviewerd.service
     enabled: no
     state: stopped
+  ignore_errors: yes
 
 - name: running ansible playbook at reboot to make sure settings are as they should be
   cron:
