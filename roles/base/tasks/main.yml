@@ -114,6 +114,7 @@
   snap:
     name:
       - mumble
+  ignore_errors: yes
 
 - name: disable TeamViewer daemon
   systemd:
