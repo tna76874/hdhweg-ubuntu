@@ -2,16 +2,14 @@
 - name: Enable automatic pulls from the git repository
   hosts: localhost
   become: yes
-  tags:
-    - [ 'never', 'enable' ]
+  tags: [ 'never', 'enable' ]
   roles:
     - autoupdate_enable
 
 - name: Enable automatic pulls from the git repository
   hosts: localhost
   become: yes
-  tags:
-    - [ 'never', 'disable' ]
+  tags: [ 'never', 'disable' ]
   roles:
     - autoupdate_disable
 
