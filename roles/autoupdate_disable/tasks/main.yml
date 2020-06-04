@@ -5,4 +5,5 @@
     special_time: reboot
     job: "(sleep 10m; sudo git -C /root/hdhweg-ubuntu pull > /dev/null 2>&1)&"
     user: root
+    env: yes
     state: absent
