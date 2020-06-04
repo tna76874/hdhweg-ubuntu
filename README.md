@@ -32,6 +32,14 @@ when you want to install [additional software packages](roles/custom/tasks/main.
 wget -O setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh && sudo bash setup.sh custom.yml && rm setup.sh
 ```
 
+#### Automatic pulls
+
+By default automatic pulls from this git repository gets triggered 10 minutes after each system startup. To switch off this feature, type in terminal:
+
+```bash
+sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook autoupdate.yml --tags disable
+```
+
 #### Extra: TeamSpeak
 
 If you want, you can also install TeamSpeak. Because you have to accept the terms and conditions this will not be automatically set up. Type in a terminal after the setup playbook completed:
