@@ -76,6 +76,16 @@ sudo apt install cubic
 
 Once loaded the original Ubuntu image into Cubic, you will be logged into a root console. Proceed with the installation process of the ansible playbook and further customize the image to your needs. When finnished, you create a boot-installation-stick with your custom image.
 
+If you experience problems with the chroot-nameserver you can use the following workaround:
+
+```bash
+mkdir /run/systemd/resolve/
+echo "search lan          
+nameserver 127.0.0.53" | tee /run/systemd/resolve/resolv.conf
+ln -sr /run/systemd/resolve/resolv.conf /run/systemd/resolve/stub-resolv.conf
+
+```
+
 ## Miscellaneous
 
 #### TeamViewer
