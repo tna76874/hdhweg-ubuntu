@@ -15,10 +15,3 @@
     line="PermitRootLogin prohibit-password"
     state=present
   notify: Restart ssh
-
-- name: allow ssh in ufw
-  ufw:
-    rule: limit
-    name: OpenSSH
-    state: enabled
-  notify: Restart ufw
