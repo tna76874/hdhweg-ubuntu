@@ -18,7 +18,7 @@ If you have prepared your installation-stick, you [install](https://ubuntu.com/t
 
 ## Installation
 
-When everything is done, you log into your Ubuntu account and open a terminal (shortcut Ctrl+Alt+T). Copy the whole content of the box beneath, paste it into the console and press enter. This will download the setup-skript and install all [basic packages](roles/base/tasks/main.yml) including firewall configurations. For this setup you must enter again your password in the console - dont be confused that there is not shown anything when typing.
+When everything is done, you log into your Ubuntu account and open a terminal (shortcut Ctrl+Alt+T). Copy the whole content of the box beneath, paste it into the console and press enter. This will download the setup-skript and install all [basic packages](roles/base/tasks/main.yml) including firewall configurations. For this setup you must enter again your password in the console - don't be confused that there is not shown anything when typing.
 
 ```bash
 wget -O setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh && sudo bash setup.sh && rm setup.sh
@@ -54,37 +54,29 @@ If you want to prepare a Ubuntu image you can also install TeamSpeak into /srv.
 sudo /srv/install_ts.sh /srv
 ```
 
-## Update your system
+## Updates and maintenance
 
-With this setup a cronjob will be installed that runs the `main.yml` playbook 15 minutes after every startup. With this, all packages gets updated. If you want to get the latest changes of this git-repository, you have to update the git-repository manually and run the notebook again.
+With this setup two cronjobs will be installed. One gets triggered 10 minutes after every startup and updates the git-repository containing the playbooks. The second runs the `main.yml` playbook 15 minutes after every startup and all packages gets updated. Please check the content of [main.yml](roles/custom/tasks/main.yml) carefully and disable automatic pulls (described above) if you do not want this role to be kept up to date with this repository. **Disabling automatic pulls is recommended if you have experience with linux systems!**  In any case, every other role except `main.yml` have to be triggered manually. To pull and install the latest software of this repository you have just to type in the terminal and confirm with your password:
 
 ```bash
-sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml
+update
 ```
 
-An alias for this command is simply `update`. Just type it in the console, confirm with your password and the playbook updates itself and the system. The update process for the bigger software bundle gets tiggered with `bigupdate`.
+The update process for the bigger software bundle gets tiggered with `bigupdate`. Please note, that already installed software gets updated automatically in any case (by `main.yml`). **15 Minutes after the system starts up installed software gets downloaded updated. Sometimes this can be quite much traffic, so ensure to have a suitable internet connection.**
+
+>**TL;DR**  --> You don't have to do anything to keep your system safe. Install new software simply by typing  `update` or `bigupdate` in a terminal and ensure a suitable internet connection.
 
 ## Preparing a custom installation image
 
-If you have multiple devices to set up with this configuration, it might be handy to prepare a custom preconfigured Ubuntu image. If you use a ubuntu operating system, one way to do this is to use Cubic.
+If you have multiple devices to set up with this configuration, it might be handy to prepare a custom preconfigured Ubuntu image. If you use a ubuntu operating system, one way to do this is to use [Cubic](https://launchpad.net/cubic) ([Example](https://askubuntu.com/questions/741753/how-to-use-cubic-to-create-a-custom-ubuntu-live-cd-image)).
 
 ```bash
-sudo apt-add-repository ppa:cubic-wizard/classic
+sudo apt-add-repository ppa:cubic-wizard/release
 sudo apt update
 sudo apt install cubic
 ```
 
-Once loaded the original Ubuntu image into Cubic, you will be logged into a root console. Proceed with the installation process of the ansible playbook and further customize the image to your needs. When finnished, you create a boot-installation-stick with your custom image.
-
-If you experience problems with the chroot-nameserver you can use the following workaround:
-
-```bash
-mkdir /run/systemd/resolve/
-echo "search lan          
-nameserver 127.0.0.53" | tee /run/systemd/resolve/resolv.conf
-ln -sr /run/systemd/resolve/resolv.conf /run/systemd/resolve/stub-resolv.conf
-
-```
+Once loaded the original [Ubuntu image](http://releases.ubuntu.com/18.04.4/ubuntu-18.04.4-desktop-amd64.iso) into Cubic, you will be logged into a root console. Proceed with the installation process of the ansible playbook and further customize the image to your needs. When finnished, you create a boot-installation-stick with your custom image.
 
 ## Miscellaneous
 
