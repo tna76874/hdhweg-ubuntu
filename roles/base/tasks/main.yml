@@ -128,3 +128,5 @@
 - import_tasks: firewall.yml
 
 - import_tasks: alias.yml
+
+- import_tasks: nautilus.yml
