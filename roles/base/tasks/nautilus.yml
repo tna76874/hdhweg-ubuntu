@@ -1,0 +1,18 @@
+---
+- name: Determine existing users
+  shell: 'cat /etc/passwd | grep /bin/bash | grep -v root | cut -d: -f1'
+  changed_when: false 
+  register: ubuntu_users
+
+- name: Ensure nautilus scripts directory
+  file:
+    path: "/home/{{ item }}/.local/share/nautilus/scripts"
+    owner: "{{ item }}"
+    state: directory
+  with_items: "{{ ubuntu_users.stdout_lines }}"
+
+- name: Ensure nautilus script to compress pdf documents
+  template:
+    src: pdf_verkleinern.sh
+    dest: "/home/{{ item }}/.local/share/nautilus/pdf_verkleinern.sh"
+  with_items: "{{ ubuntu_users.stdout_lines }}"
