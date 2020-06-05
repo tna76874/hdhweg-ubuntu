@@ -94,6 +94,7 @@
       - libgnome-keyring0
       - python3
       - python3-pip
+      - gnome-shell-extensions
     state: latest
     install_recommends: yes
 
