@@ -1,0 +1,2 @@
+#!/bin/bash
+pdftk "$@" cat output ./zusammengefasstes_pdf.pdf
