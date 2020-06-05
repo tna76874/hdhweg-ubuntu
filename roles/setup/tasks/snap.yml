@@ -4,6 +4,7 @@
     name:
       - mumble
       - pdftk
+      - rambox
   ignore_errors: yes
 
 - name: Ensure some classic snap packages
