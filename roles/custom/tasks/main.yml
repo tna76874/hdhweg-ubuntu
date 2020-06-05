@@ -7,6 +7,10 @@
   apt_repository:
     repo: ppa:freecad-maintainers/freecad-stable
 
+- name: Ensure cubic ppa
+  apt_repository:
+    repo: ppa:cubic-wizard/release
+
 - name: Update apt
   apt:
     update_cache: yes
@@ -28,6 +32,7 @@
       - libxvidcore4
       - swh-plugins
       - freecad
+      - cubic
     state: latest
     install_recommends: yes
 
