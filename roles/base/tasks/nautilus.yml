@@ -13,6 +13,7 @@
 
 - name: Ensure nautilus script to compress pdf documents
   template:
-    src: pdf_verkleinern.sh
-    dest: "/home/{{ item }}/.local/share/nautilus/pdf_verkleinern.sh"
+    src: "pdf_verkleinern.sh"
+    dest: "/home/{{ item }}/.local/share/nautilus/scripts/pdf_verkleinern.sh"
+    mode: 0755
   with_items: "{{ ubuntu_users.stdout_lines }}"
