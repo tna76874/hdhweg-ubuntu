@@ -36,3 +36,12 @@
     owner: "{{ item }}"
     group: "{{ item }}"
   with_items: "{{ sudo_users.stdout_lines }}"
+
+- name: Ensure reinstall alias in bashrc of existing users
+  lineinfile:
+    path: "/home/{{ item }}/.bashrc"
+    regexp: '^alias reinstall='
+    line: alias reinstall="wget -O setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh  && sudo bash setup.sh && rm setup.sh"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+  with_items: "{{ sudo_users.stdout_lines }}"

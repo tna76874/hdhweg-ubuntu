@@ -110,12 +110,6 @@
   apt:
     autoremove: yes
 
-- name: Install mumble from snap
-  snap:
-    name:
-      - mumble
-  ignore_errors: yes
-
 - name: disable TeamViewer daemon
   systemd:
     name: teamviewerd.service

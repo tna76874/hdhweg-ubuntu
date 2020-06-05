@@ -1,0 +1,13 @@
+---
+- name: Ensure mumble from snap
+  snap:
+    name:
+      - mumble
+  ignore_errors: yes
+
+- name: Ensure vscode from snap
+  snap:
+    name:
+      - code
+    classic: yes
+  ignore_errors: yes
