@@ -21,6 +21,10 @@
   apt_repository:
     repo: ppa:andreasbutti/xournalpp-master
 
+- name: Ensure zotero ppa
+  apt_repository:
+    repo: ppa:smathot/cogscinl
+
 - name: Update apt
   apt:
     update_cache: yes
@@ -95,6 +99,7 @@
       - python3
       - python3-pip
       - gnome-shell-extensions
+      - zotero-standalone
     state: latest
     install_recommends: yes
 
