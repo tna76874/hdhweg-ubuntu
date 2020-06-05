@@ -1,11 +1,12 @@
 ---
-- name: Ensure mumble from snap
+- name: Ensure some snap packages
   snap:
     name:
       - mumble
+      - pdftk
   ignore_errors: yes
 
-- name: Ensure vscode from snap
+- name: Ensure some classic snap packages
   snap:
     name:
       - code
