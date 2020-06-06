@@ -1,0 +1,13 @@
+---
+- name: Upgrade all packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+
+- name: Update all dist packages to the latest version
+  apt:
+    upgrade: dist
+
+- name: Remove dependencies that are no longer required
+  apt:
+    autoremove: yes

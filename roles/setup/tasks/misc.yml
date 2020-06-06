@@ -9,3 +9,9 @@
   shell: /srv/install_masterpdf.sh
   args:
     chdir: /srv/
+
+- name: Ensure teamspeak install script
+  template:
+    src: install_ts.sh
+    dest: "/srv/install_ts.sh"
+    mode: 0755

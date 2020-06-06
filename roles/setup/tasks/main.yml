@@ -1,6 +1,6 @@
 ---
+- import_tasks: apt.yml
+
 - import_tasks: snap.yml
 
-- import_tasks: masterpdfeditor.yml
-
-- import_tasks: teamspeak.yml
+- import_tasks: misc.yml
