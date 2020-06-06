@@ -102,4 +102,3 @@
       - zotero-standalone
     state: latest
     install_recommends: yes
-    ignore_errors: yes
