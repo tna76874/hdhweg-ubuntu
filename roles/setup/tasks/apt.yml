@@ -100,5 +100,6 @@
       - python3-pip
       - gnome-shell-extensions
       - zotero-standalone
+      - youtube-dl
     state: latest
     install_recommends: yes
