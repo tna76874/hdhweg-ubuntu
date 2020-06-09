@@ -8,8 +8,8 @@ VERSION=$(curl -s -L https://www.teamspeak.com/de/downloads/ |  grep TeamSpeak3-
 cd /tmp
 wget -O teamspeak.run --content-disposition https://files.teamspeak-services.com/releases/client/${VERSION}/TeamSpeak3-Client-linux_amd64-${VERSION}.run
 
-#BY UNCOMMENT THE NEXT LINE YOU ACCEPT THE TEAMSPEAK TERMS AND CONDITIONS!
-#sed -i -e 's/read FOO//g' -e 's/read yn/yn="y"/g' -e 's/echo "$licensetxt" | less//g' teamspeak.run
+#Accepting terms and conditions
+sed -i -e 's/read FOO//g' -e 's/read yn/yn="y"/g' -e 's/echo "$licensetxt" | less//g' teamspeak.run
 
 # extract the teamspeak client
 rm -rf TeamSpeak3-Client-linux_amd64

@@ -49,7 +49,7 @@ sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook autoupdate.yml --t
 
 #### Extra: TeamSpeak
 
-If you want, you can also install TeamSpeak. Because you have to accept the terms and conditions this will not be automatically set up. Type in a terminal after the setup playbook completed:
+If you want, you can also install TeamSpeak. Type in a terminal after the setup playbook completed:
 
 ```bash
 /srv/install_ts.sh
@@ -71,7 +71,7 @@ update
 
 The update process for the bigger software bundle gets tiggered with `bigupdate`. Please note, that already installed software gets updated automatically in any case (by `main.yml`). **15 Minutes after the system starts up installed software gets downloaded and updated. Sometimes this can be quite much traffic, so ensure to have a suitable internet connection.**
 
->**TL;DR**  --> You don't have to do anything to keep your system safe. Install new software simply by typing  `update` or `bigupdate` in a terminal and ensure a suitable internet connection.
+>**TL;DR**  --> You don't have to do anything to keep your system safe. Install new software simply by typing `update` or `bigupdate` in a terminal and ensure a suitable internet connection.
 
 ## Preparing a custom installation image
 
