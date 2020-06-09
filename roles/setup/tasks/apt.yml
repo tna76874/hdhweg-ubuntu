@@ -101,5 +101,6 @@
       - gnome-shell-extensions
       - zotero-standalone
       - youtube-dl
+      - gnome-clocks
     state: latest
     install_recommends: yes
