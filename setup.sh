@@ -5,17 +5,17 @@ REPODIR="/root/hdhweg-ubuntu"
 # delete the repository, if present. 
 rm -rf ${REPODIR}
 
-# update system sources and install ansible and git.
-sudo apt update
-sudo apt install software-properties-common -y
-sudo apt-add-repository universe
-sudo apt-add-repository multiverse
-sudo apt-add-repository --yes --update ppa:ansible/ansible
-sudo apt update
-sudo apt install git ansible -y
+echo -e "update system sources and install ansible and git."
+sudo apt update > /dev/null 2>&1
+sudo apt install software-properties-common -y > /dev/null 2>&1
+sudo apt-add-repository universe > /dev/null 2>&1
+sudo apt-add-repository multiverse > /dev/null 2>&1
+sudo apt-add-repository --yes --update ppa:ansible/ansible > /dev/null 2>&1
+sudo apt update > /dev/null 2>&1
+sudo apt install git ansible -y > /dev/null 2>&1
 
-# clone the playbook repository
-git clone https://github.com/tna76874/hdhweg-ubuntu.git ${REPODIR}
+echo -e "clone the playbook repository"
+git clone https://github.com/tna76874/hdhweg-ubuntu.git ${REPODIR} > /dev/null 2>&1
 
 # run the playbook to set up the system
 cd ${REPODIR}
