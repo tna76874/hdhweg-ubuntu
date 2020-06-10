@@ -41,7 +41,16 @@
   lineinfile:
     path: "/home/{{ item }}/.bashrc"
     regexp: '^alias reinstall='
-    line: alias reinstall="wget -O setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh  && sudo bash setup.sh && rm setup.sh"
+    line: alias reinstall="wget -qO setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh  && sudo bash setup.sh && rm setup.sh"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+  with_items: "{{ sudo_users.stdout_lines }}"
+
+- name: Ensure repair alias in bashrc of existing users
+  lineinfile:
+    path: "/home/{{ item }}/.bashrc"
+    regexp: '^alias reinstall='
+    line: alias repair="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/main.yml --tags repair"
     owner: "{{ item }}"
     group: "{{ item }}"
   with_items: "{{ sudo_users.stdout_lines }}"
