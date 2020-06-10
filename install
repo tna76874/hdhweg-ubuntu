@@ -1,1 +1,1 @@
-wget -O setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh && sudo bash setup.sh && rm setup.sh
+wget -O setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh > /dev/null 2>&1 && chmod +x setup.sh && sudo bash setup.sh && rm setup.sh
