@@ -49,7 +49,7 @@
 - name: Ensure repair alias in bashrc of existing users
   lineinfile:
     path: "/home/{{ item }}/.bashrc"
-    regexp: '^alias reinstall='
+    regexp: '^alias repair='
     line: alias repair="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/main.yml --tags repair"
     owner: "{{ item }}"
     group: "{{ item }}"
