@@ -33,6 +33,10 @@
       - swh-plugins
       - freecad
       - cubic
+      - scribus
+      - scribus-doc
+      - scribus-template
+      - icc-profiles
     state: latest
     install_recommends: yes
 
