@@ -3,9 +3,9 @@ VERSION=$(curl -s -L https://code-industry.net/checksum-information/ |  grep all
 DEB=master-pdf-editor-"$VERSION".amd64.deb
 
 AVAILABLE=$(echo ${VERSION} | awk -F- '{print $1}')
-INSTALLED=$(dpkg -s master-pdf-editor | grep '^Version:' | awk '{print $2}')
+INSTALLED=$(dpkg -l | grep master-pdf-editor | tr -s ' ' | tr -s ' ' | cut -d" " -f3)
 
-if [ $AVAILABLE != $INSTALLED ]
+if [ "$AVAILABLE" != "$INSTALLED" ]
 then
   cd /tmp
   wget https://code-industry.net/public/$DEB
