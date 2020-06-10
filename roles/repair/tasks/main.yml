@@ -1,3 +1,4 @@
 ---
 - name: Resume interrupted system update
-  shell: sudo dpkg --configure -a
+  shell: dpkg --configure -a
+  become: yes
