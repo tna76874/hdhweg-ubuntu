@@ -28,7 +28,7 @@ If you have prepared your installation-stick, you [install](https://ubuntu.com/t
 When everything is done, you log into your Ubuntu account and open a terminal (shortcut Ctrl+Alt+T). Copy the whole content of the box beneath, paste it into the console and press enter. This will download the setup-skript and install all [basic packages](roles/setup/tasks/apt.yml) including firewall configurations. For this setup you must enter again your password in the console - don't be confused that there is not shown anything when typing.
 
 ```bash
-wget -O setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh && sudo bash setup.sh && rm setup.sh
+wget -qO setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh && sudo bash setup.sh && rm setup.sh
 ```
 
 **or**
@@ -36,7 +36,7 @@ wget -O setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master
 when you want to install [additional software packages](roles/custom/tasks/main.yml):
 
 ```bash
-wget -O setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh && sudo bash setup.sh custom.yml && rm setup.sh
+wget -qO setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh && sudo bash setup.sh custom.yml && rm setup.sh
 ```
 
 #### Automatic pulls
