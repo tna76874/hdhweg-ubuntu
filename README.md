@@ -83,10 +83,10 @@ sudo apt update
 sudo apt install cubic
 ```
 
-Once loaded the original [Ubuntu image](http://releases.ubuntu.com/18.04.4/ubuntu-18.04.4-desktop-amd64.iso) into Cubic, you will be logged into a root console. Proceed with the installation process of the ansible playbook and further customize the image to your needs. When finnished, you create a boot-installation-stick with your custom image. If the building process fails with Cubic, uninstall Cubic with `sudo apt purge cubic` and download an [earlier release](https://launchpad.net/~cubic-wizard/+archive/ubuntu/release/+build/18642578/+files/cubic_2020.02-62-release~202002012002~ubuntu18.04.1_all.deb). Install this with `sudo dpkg -i cubic_2020.02-62-release~202002012002~ubuntu18.04.1_all.deb` . Or you can use this single line command:
+Once loaded the original [Ubuntu image](http://releases.ubuntu.com/18.04.4/ubuntu-18.04.4-desktop-amd64.iso) into Cubic, you will be logged into a root console. Proceed with the installation process of the ansible playbook and further customize the image to your needs. When finnished, you create a boot-installation-stick with your custom image. If the building process fails with Cubic on Ubuntu 18.04. , you can use this single line command to downgrade:
 
 ```bash
-sudo apt purge cubic && wget -O cubic.deb https://launchpad.net/~cubic-wizard/+archive/ubuntu/release/+build/18642578/+files/cubic_2020.02-62-release~202002012002~ubuntu18.04.1_all.deb && sudo dpkg -i cubic.deb
+sudo apt purge cubic -y && wget -O cubic.deb https://launchpad.net/~cubic-wizard/+archive/ubuntu/release/+build/18642578/+files/cubic_2020.02-62-release~202002012002~ubuntu18.04.1_all.deb && sudo dpkg -i cubic.deb && rm cubic.deb
 ```
 
 ## Miscellaneous
