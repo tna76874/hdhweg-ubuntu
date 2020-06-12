@@ -5,6 +5,7 @@
   tags:
     - custom
   roles:
+    - repair
     - base
     - setup
     - security
