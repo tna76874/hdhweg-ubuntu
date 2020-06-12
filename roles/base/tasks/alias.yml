@@ -4,13 +4,7 @@
   changed_when: false 
   register: ubuntu_users
 
-- name: Ensure update alias in bashrc of new create user
-  lineinfile:
-    path: "/etc/skel/.bashrc"
-    regexp: '^alias update=(.*)$'
-    line: alias update="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml"
-
-- name: Ensure update alias in bashrc of existing users
+- name: Ensure update alias not present in bashrc of existing users
   lineinfile:
     path: "/home/{{ item }}/.bashrc"
     regexp: '^alias update=(.*)$'
@@ -20,7 +14,7 @@
     state: absent
   with_items: "{{ ubuntu_users.stdout_lines }}"
 
-- name: Ensure update alias in bashrc of existing users
+- name: Ensure update alias not present in bashrc of existing users
   lineinfile:
     path: "/home/{{ item }}/.bashrc"
     regexp: '^alias bigupdate=(.*)$'
@@ -30,7 +24,7 @@
     state: absent
   with_items: "{{ ubuntu_users.stdout_lines }}"
 
-- name: Ensure teamviewer daemon enable alias in bashrc of existing users
+- name: Ensure teamviewer daemon enable alias not present in bashrc of existing users
   lineinfile:
     path: "/home/{{ item }}/.bashrc"
     regexp: '^alias twstart=(.*)$'
@@ -40,7 +34,7 @@
     state: absent
   with_items: "{{ ubuntu_users.stdout_lines }}"
 
-- name: Ensure reinstall alias in bashrc of existing users
+- name: Ensure reinstall alias not present in bashrc of existing users
   lineinfile:
     path: "/home/{{ item }}/.bashrc"
     regexp: '^alias reinstall=(.*)$'
@@ -50,7 +44,7 @@
     state: absent
   with_items: "{{ ubuntu_users.stdout_lines }}"
 
-- name: Ensure repair alias in bashrc of existing users
+- name: Ensure repair alias not present in bashrc of existing users
   lineinfile:
     path: "/home/{{ item }}/.bashrc"
     regexp: '^alias repair=(.*)$'
@@ -58,4 +52,23 @@
     owner: "{{ item }}"
     group: "{{ item }}"
     state: absent
+  with_items: "{{ ubuntu_users.stdout_lines }}"
+
+- name: Ensure .wegrc integrated in .bashrc of existing users
+  lineinfile:
+    path: "/home/{{ item }}/.bashrc"
+    regexp: '^source "(.*)/.wegrc"$'
+    line: source "/home/{{ item }}/.wegrc"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    state: absent
+  with_items: "{{ ubuntu_users.stdout_lines }}"
+
+- name: Ensure .wegrc in homefolders
+  template:
+    src: "wegrc.j2"
+    dest: "/home/{{ item }}/.wegrc"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0755
   with_items: "{{ ubuntu_users.stdout_lines }}"
