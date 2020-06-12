@@ -1,1 +1,1 @@
-wget -qO setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh && sudo bash setup.sh && rm setup.sh
+wget -qO setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh && sudo bash setup.sh && rm setup.sh && sudo /srv/install_ts.sh /srv
