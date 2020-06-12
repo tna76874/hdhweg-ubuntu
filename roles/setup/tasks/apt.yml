@@ -45,6 +45,7 @@
       - htop
       - vim
       - nano
+      - nautilus
       - openssh-server
       - libreoffice
       - vlc
