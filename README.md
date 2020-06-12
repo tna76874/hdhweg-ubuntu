@@ -41,7 +41,7 @@ wget -qO setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/maste
 
 #### Custom commands
 
-With this configuration a few custom console commands are defined. These will be initialized within the .bashrc of every users. Check the details [here](roles/base/templates/wegrc.j2) .
+With this configuration a few custom console commands are defined. These will be initialized within the .bashrc of every user. Check the details [here](roles/base/templates/wegrc.j2) .
 
 #### Automatic pulls
 

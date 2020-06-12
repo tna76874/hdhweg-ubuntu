@@ -35,6 +35,7 @@
   apt:
     name:
       - byobu
+      - snapd
       - zsh
       - curl
       - wget
