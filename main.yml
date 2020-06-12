@@ -12,6 +12,5 @@
   tags:
     - base
   roles:
-    - repair
     - base
 
