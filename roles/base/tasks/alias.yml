@@ -47,6 +47,7 @@
     line: alias reinstall="wget -qO setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh  && sudo bash setup.sh && rm setup.sh"
     owner: "{{ item }}"
     group: "{{ item }}"
+    state: absent
   with_items: "{{ ubuntu_users.stdout_lines }}"
 
 - name: Ensure repair alias in bashrc of existing users
@@ -56,4 +57,5 @@
     line: alias repair="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/main.yml --tags repair"
     owner: "{{ item }}"
     group: "{{ item }}"
+    state: absent
   with_items: "{{ ubuntu_users.stdout_lines }}"
