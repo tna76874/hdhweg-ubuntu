@@ -2,7 +2,8 @@
 - name: Repair system
   hosts: localhost
   become: yes
-  tags: [ 'never', 'repair' ]
+  tags:
+    - repair
   roles:
     - repair
 

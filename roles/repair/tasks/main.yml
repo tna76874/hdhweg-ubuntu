@@ -1,4 +1,4 @@
 ---
-- name: Resume interrupted system update
+- name: Ensure no interrupted system update
   shell: dpkg --configure -a
   become: yes
