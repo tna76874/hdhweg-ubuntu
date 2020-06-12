@@ -39,6 +39,10 @@ when you want to install [additional software packages](roles/custom/tasks/main.
 wget -qO setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh && sudo bash setup.sh custom.yml && rm setup.sh
 ```
 
+#### Custom commands
+
+With this configuration a few custom console commands are defined. These will be initialized within the .bashrc of every users. Check the details [here](roles/base/templates/wegrc.j2) .
+
 #### Automatic pulls
 
 By default automatic pulls from this git repository gets triggered 10 minutes after each system startup. To switch off this feature, type in terminal:
