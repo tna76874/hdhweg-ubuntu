@@ -1,0 +1,14 @@
+# run the main playbook to ensure updated packages and proper configs
+alias update="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml"
+
+# run the main playbook + enhanced packages
+alias bigupdate="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/custom.yml"
+
+# enable teamviewer daemon, that is disabled by default
+alias twstart="sudo killall /opt/teamviewer/tv_bin/TeamViewer; sudo teamviewer daemon enable"
+
+# if the git repos got somehow broken, with this command it gets deleted and cloned again.
+alias reinstall="wget -qO setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh  && sudo bash setup.sh && rm setup.sh"
+
+# running some repair roles if the system got somehow busted
+alias repair="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/main.yml --tags repair"
