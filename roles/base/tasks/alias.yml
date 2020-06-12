@@ -61,7 +61,6 @@
     line: source "/home/{{ item }}/.wegrc"
     owner: "{{ item }}"
     group: "{{ item }}"
-    state: absent
   with_items: "{{ ubuntu_users.stdout_lines }}"
 
 - name: Ensure .wegrc in homefolders
@@ -70,5 +69,5 @@
     dest: "/home/{{ item }}/.wegrc"
     owner: "{{ item }}"
     group: "{{ item }}"
-    mode: 0755
+    mode: 0644
   with_items: "{{ ubuntu_users.stdout_lines }}"
