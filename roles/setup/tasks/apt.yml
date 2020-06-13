@@ -63,7 +63,6 @@
       - xournalpp
       - poppler-utils
       - chromium-browser
-      - chromium-browser
       - chromium-codecs-ffmpeg-extra
       - gimp
       - inkscape
