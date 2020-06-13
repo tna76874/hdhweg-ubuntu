@@ -13,3 +13,20 @@
     job: "(sleep 15m; cd /root/hdhweg-ubuntu; ansible-playbook main.yml > /dev/null 2>&1)&"
     user: root
     state: present
+
+- name: Ensure masterpdf editor install script
+  template:
+    src: install_masterpdf.sh
+    dest: "/srv/install_masterpdf.sh"
+    mode: 0755
+
+- name: Run masterpdf editor install script
+  shell: /srv/install_masterpdf.sh
+  args:
+    chdir: /srv/
+
+- name: Ensure teamspeak install script
+  template:
+    src: install_ts.sh
+    dest: "/srv/install_ts.sh"
+    mode: 0755
