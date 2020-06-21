@@ -2,10 +2,12 @@
 - name: Ensure darktable ppa
   apt_repository:
     repo: ppa:pmjdebruijn/darktable-release
+  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
 
 - name: Ensure freecad ppa
   apt_repository:
     repo: ppa:freecad-maintainers/freecad-stable
+  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
 
 - name: Ensure cubic ppa
   apt_repository:
