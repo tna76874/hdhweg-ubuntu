@@ -58,14 +58,12 @@
       - vlc-plugin-fluidsynth
       - vlc-plugin-jack
       - libdvdnav4
-      - libdvdread4
       - gstreamer1.0-plugins-bad
       - gstreamer1.0-plugins-ugly
       - ubuntu-restricted-extras
       - software-properties-common
       - audacious
       - audacious-plugins
-      - xournalpp
       - poppler-utils
       - chromium-browser
       - chromium-codecs-ffmpeg-extra
@@ -114,6 +112,7 @@
   apt:
     name:
       - teamviewer
+      - xournalpp
     state: latest
     install_recommends: yes
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
