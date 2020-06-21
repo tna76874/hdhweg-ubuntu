@@ -3,27 +3,33 @@
   apt_key:
     url: https://download.teamviewer.com/download/linux/signature/TeamViewer2017.asc
     state: present
+  when: ansible_facts['lsb']['id'] == "RedHat" and ansible_facts['lsb']['major_release'] <= 20
 
 - name: Add teamviewer repository
   apt_repository:
     repo: deb http://linux.teamviewer.com/deb stable main
     state: present
+  when: ansible_facts['lsb']['id'] == "RedHat" and ansible_facts['lsb']['major_release'] <= 20
 
 - name: Ensure recoll ppa
   apt_repository:
     repo: ppa:recoll-backports/recoll-1.15-on
+  when: ansible_facts['lsb']['id'] == "RedHat" and ansible_facts['lsb']['major_release'] <= 20
 
 - name: Ensure veracrypt ppa
   apt_repository:
     repo: ppa:unit193/encryption
+  when: ansible_facts['lsb']['id'] == "RedHat" and ansible_facts['lsb']['major_release'] <= 20
 
 - name: Ensure xournal ppa
   apt_repository:
     repo: ppa:andreasbutti/xournalpp-master
+  when: ansible_facts['lsb']['id'] == "RedHat" and ansible_facts['lsb']['major_release'] <= 20
 
 - name: Ensure zotero ppa
   apt_repository:
     repo: ppa:smathot/cogscinl
+  when: ansible_facts['lsb']['id'] == "RedHat" and ansible_facts['lsb']['major_release'] <= 20
 
 - name: Update apt
   apt:
@@ -105,3 +111,4 @@
       - gnome-clocks
     state: latest
     install_recommends: yes
+  when: ansible_facts['lsb']['id'] == "RedHat" and ansible_facts['lsb']['major_release'] <= 20
