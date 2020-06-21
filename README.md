@@ -48,7 +48,7 @@ With this configuration a few custom console commands are defined. These will be
 By default automatic pulls from this git repository gets triggered 10 minutes after each system startup. To switch off this feature, type in terminal:
 
 ```bash
-sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook autoupdate.yml --tags disable
+sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/autoupdate.yml --tags disable
 ```
 
 #### Extra: TeamSpeak
