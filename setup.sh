@@ -8,7 +8,7 @@ REPODIR="/root/hdhweg-ubuntu"
 # delete the repository, if present. 
 rm -rf ${REPODIR}
 
-echo -e "... update system sources, install ansible and git and clone the playbook repository ..."
+echo -e "... update system sources, install ansible and git and clone the playbook repository ... [this could take a few minutes now, depending on your internet connection]"
 sudo apt update > /dev/null 2>&1
 sudo apt install software-properties-common -y > /dev/null 2>&1
 sudo apt-add-repository universe > /dev/null 2>&1
