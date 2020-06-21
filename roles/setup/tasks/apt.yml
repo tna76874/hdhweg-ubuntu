@@ -100,7 +100,6 @@
       - python3
       - python3-pip
       - gnome-shell-extensions
-      - zotero-standalone
       - youtube-dl
       - gnome-clocks
     state: latest
@@ -112,6 +111,7 @@
       - teamviewer
       - xournalpp
       - veracrypt
+      - zotero-standalone
     state: latest
     install_recommends: yes
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
