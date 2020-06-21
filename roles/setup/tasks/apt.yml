@@ -52,7 +52,6 @@
       - vim
       - nano
       - nautilus
-      - openssh-server
       - libreoffice
       - vlc
       - libxvidcore4
