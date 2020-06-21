@@ -1,4 +1,8 @@
 ---
+- name: Ensure nextcloud-client ppa
+  apt_repository:
+    repo: ppa:nextcloud-devs/client
+
 - name: Ensure darktable ppa
   apt_repository:
     repo: ppa:pmjdebruijn/darktable-release
@@ -39,6 +43,7 @@
       - scribus-doc
       - scribus-template
       - icc-profiles
+      - nextcloud-client
     state: latest
     install_recommends: yes
 
