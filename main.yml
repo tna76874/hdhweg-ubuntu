@@ -1,4 +1,6 @@
 ---
+- debug: var=ansible_facts
+
 - name: Repair system
   hosts: localhost
   become: yes

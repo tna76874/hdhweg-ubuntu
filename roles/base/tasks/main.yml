@@ -1,4 +1,6 @@
 ---
+- debug: var=ansible_facts
+
 - import_tasks: alias.yml
 
 - import_tasks: updates.yml
