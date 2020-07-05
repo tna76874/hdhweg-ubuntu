@@ -102,6 +102,8 @@
       - gnome-shell-extensions
       - youtube-dl
       - gnome-clocks
+      - mupdf-tools
+      - pdfsam
     state: latest
     install_recommends: yes
 
@@ -112,8 +114,6 @@
       - xournalpp
       - veracrypt
       - zotero-standalone
-      - mupdf-tools
-      - pdfsam
     state: latest
     install_recommends: yes
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
