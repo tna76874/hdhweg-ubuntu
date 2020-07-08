@@ -8,6 +8,7 @@
   apt_repository:
     repo: deb http://www.geogebra.net/linux/ stable main
     state: present
+    filename: geogebra
 
 - name: Add teamviewer key
   apt_key:
