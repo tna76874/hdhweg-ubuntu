@@ -1,4 +1,16 @@
 ---
+- name: Add geogebra key
+  apt_key:
+    url: https://static.geogebra.org/linux/office@geogebra.org.gpg.key
+    state: present
+  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
+
+- name: Add geogebra repository
+  apt_repository:
+    repo: deb http://www.geogebra.net/linux/ stable main
+    state: present
+  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
+
 - name: Add teamviewer key
   apt_key:
     url: https://download.teamviewer.com/download/linux/signature/TeamViewer2017.asc
@@ -114,6 +126,7 @@
       - xournalpp
       - veracrypt
       - zotero-standalone
+      - geogebra-classic
     state: latest
     install_recommends: yes
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
