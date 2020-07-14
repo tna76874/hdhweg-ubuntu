@@ -116,6 +116,9 @@
       - mupdf-tools
       - pdfsam
       - geogebra-classic
+      - inxi
+      - txt2html
+      - wkhtmltopdf
     state: latest
     install_recommends: yes
 

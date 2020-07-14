@@ -12,3 +12,6 @@ alias reinstall="wget -qO setup.sh https://raw.githubusercontent.com/tna76874/hd
 
 # running some repair roles if the system got somehow busted
 alias repair="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/main.yml --tags repair"
+
+# creating a pdf that contains hardware informations
+alias hwpdf="{ date ; inxi -Fx ; } | txt2html | wkhtmltopdf - ~/Downloads/SYSTEMINFO.pdf"
