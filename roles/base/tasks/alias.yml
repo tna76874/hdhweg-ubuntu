@@ -20,6 +20,22 @@
     state: absent
   with_items: "{{ ubuntu_users.stdout_lines }}"
 
+- name: Ensure hardware specs in bashrc of new create user
+  lineinfile:
+    path: "/etc/skel/.bashrc"
+    regexp: '^alias update=(.*)$'
+    line: alias hwpdf="{ date ; sudo inxi -Fx -c 0; } | txt2html | wkhtmltopdf - ~/Downloads/SYSTEMINFO.pdf"
+
+- name: Ensure hardware specs alias not present in bashrc of existing users
+  lineinfile:
+    path: "/home/{{ item }}/.bashrc"
+    regexp: '^alias update=(.*)$'
+    line: alias hwpdf="{ date ; sudo inxi -Fx -c 0; } | txt2html | wkhtmltopdf - ~/Downloads/SYSTEMINFO.pdf"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    state: absent
+  with_items: "{{ ubuntu_users.stdout_lines }}"
+
 - name: Ensure update alias not present in bashrc of existing users
   lineinfile:
     path: "/home/{{ item }}/.bashrc"
