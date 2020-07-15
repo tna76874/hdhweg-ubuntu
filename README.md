@@ -81,7 +81,7 @@ The update process for the bigger software bundle gets tiggered with `bigupdate`
 
 ## Documentation of hardware components
 
-Sometimes it is mandatory to document the the hardware components of the system. For this purpose you can generate a pdf file with a short overview of the components with the tool `inxi`. You find the document in the downloads folder.
+Sometimes it is mandatory to document the hardware components of the system. For this purpose you can generate a pdf file with a short overview of the components with the tool `inxi`. You find the document in the downloads folder.
 
 ```bash
 hwpdf
