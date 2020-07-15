@@ -77,6 +77,18 @@ The update process for the bigger software bundle gets tiggered with `bigupdate`
 
 >**TL;DR**  --> You don't have to do anything to keep your system safe. Install new software simply by typing `update` or `bigupdate` in a terminal and ensure a suitable internet connection.
 
+
+
+## Documentation of hardware components
+
+Sometimes it is mandatory to document the the hardware components of the system. For this purpose you can generate a pdf file with a short overview of the components with the tool `inxi`. You find the document in the downloads folder.
+
+```bash
+hwpdf
+```
+
+
+
 ## Preparing a custom installation image
 
 If you have multiple devices to set up with this configuration, it might be handy to prepare a custom preconfigured Ubuntu image. If you use a ubuntu operating system, one way to do this is to use [Cubic](https://launchpad.net/cubic) ([Example](https://askubuntu.com/questions/741753/how-to-use-cubic-to-create-a-custom-ubuntu-live-cd-image)).
