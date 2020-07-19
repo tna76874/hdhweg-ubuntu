@@ -115,7 +115,7 @@
   lineinfile:
     path: "/etc/skel/.bashrc"
     regexp: '^source "(.*)/.wegrc"$'
-    line: source "~/.wegrc"
+    line: source "$HOME/.wegrc"
 
 - name: Ensure .wegrc in skel folder
   template:
