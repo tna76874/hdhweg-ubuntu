@@ -14,4 +14,8 @@ alias reinstall="wget -qO setup.sh https://raw.githubusercontent.com/tna76874/hd
 alias repair="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/main.yml --tags repair"
 
 # creating a pdf that contains hardware informations
-alias hwpdf="{ date ; sudo inxi -Fx -c 0; } | txt2html | wkhtmltopdf - ~/Downloads/SYSTEMINFO.pdf"
+hwpdf() {
+SERIAL=$(sudo inxi -v 2 -c 0 | grep serial | awk -v FS='(serial:|)' '{print $2}' | sed 's/^ //g')
+{ date ; sudo inxi -Fmxx -c 0; echo -e '\n\nBenutzer: \n\nPasswort:';} | txt2html | wkhtmltopdf - ~/Downloads/${SERIAL}_$(date +"%Y%m%d")_SYSTEMINFO.pdf"
+}
+export -f hwpdf

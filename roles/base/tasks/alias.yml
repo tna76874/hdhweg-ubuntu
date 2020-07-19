@@ -25,6 +25,7 @@
     path: "/etc/skel/.bashrc"
     regexp: '^alias hwpdf=(.*)$'
     line: alias hwpdf="{ date ; sudo inxi -Fx -c 0; } | txt2html | wkhtmltopdf - ~/Downloads/SYSTEMINFO.pdf"
+    state: absent
 
 - name: Ensure hardware specs alias not present in bashrc of existing users
   lineinfile:
@@ -93,3 +94,19 @@
     group: "{{ item }}"
     mode: 0644
   with_items: "{{ ubuntu_users.stdout_lines }}"
+
+- name: Ensure .wegrc integrated in .bashrc of root user
+  lineinfile:
+    path: "/root/.bashrc"
+    regexp: '^source "(.*)/.wegrc"$'
+    line: source "/root/.wegrc"
+    owner: root
+    group: root
+
+- name: Ensure .wegrc in root homefolder
+  template:
+    src: "wegrc.j2"
+    dest: "/root/.wegrc"
+    owner: root
+    group: root
+    mode: 0644
