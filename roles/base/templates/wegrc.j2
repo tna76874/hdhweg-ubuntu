@@ -16,6 +16,6 @@ alias repair="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /roo
 # creating a pdf that contains hardware informations
 hwpdf() {
 SERIAL=$(sudo inxi -v 2 -c 0 | grep serial | awk -v FS='(serial:|)' '{print $2}' | sed 's/^ //g')
-{ date ; sudo inxi -Fmxx -c 0; echo -e '\n\nBenutzer: \n\nPasswort:';} | txt2html | wkhtmltopdf - ~/Downloads/${SERIAL}_$(date +"%Y%m%d")_SYSTEMINFO.pdf"
+{ date ; sudo inxi -Fmxx -c 0; echo -e '\n\nBenutzer: \n\nPasswort:';} | txt2html | wkhtmltopdf - ~/Downloads/${SERIAL}_$(date +"%Y%m%d")_SYSTEMINFO.pdf
 }
 export -f hwpdf
