@@ -110,3 +110,17 @@
     owner: root
     group: root
     mode: 0644
+
+- name: Ensure .wegrc integrated in .bashrc of new create user
+  lineinfile:
+    path: "/etc/skel/.bashrc"
+    regexp: '^source "(.*)/.wegrc"$'
+    line: source "~/.wegrc"
+
+- name: Ensure .wegrc in skel folder
+  template:
+    src: "wegrc.j2"
+    dest: "/etc/skel/.wegrc"
+    owner: root
+    group: root
+    mode: 0644
