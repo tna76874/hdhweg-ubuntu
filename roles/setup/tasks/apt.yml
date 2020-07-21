@@ -102,6 +102,7 @@
       - ncdu
       - dos2unix
       - speedtest-cli
+      - net-tools
       - imagemagick
       - gnuplot
       - gnuplot-x11
