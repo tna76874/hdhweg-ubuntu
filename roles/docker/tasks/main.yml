@@ -36,7 +36,7 @@
 
 - name: Ensure Users are in Docker group
   user:
-    name: '{{ item.name }}'
+    name: '{{ item }}'
     groups: docker
     append: yes
     state: present
