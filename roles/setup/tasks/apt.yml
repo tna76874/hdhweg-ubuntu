@@ -114,6 +114,7 @@
       - youtube-dl
       - gnome-clocks
       - mupdf-tools
+      - pdfposter
       - pdfsam
       - geogebra-classic
       - inxi
