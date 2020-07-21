@@ -9,3 +9,10 @@
     - base
     - setup
     - security
+
+- name: Install docker
+  hosts: localhost
+  become: yes
+  tags: [ 'never', 'docker' ]
+  roles:
+    - docker
