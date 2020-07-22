@@ -101,6 +101,17 @@ sudo apt install cubic
 
 Once loaded the original [Ubuntu image](http://releases.ubuntu.com/18.04.4/ubuntu-18.04.4-desktop-amd64.iso) into Cubic, you will be logged into a root console. Proceed with the installation process of the ansible playbook and further customize the image to your needs. When finnished, you create a boot-installation-stick with your custom image.
 
+There might be problems with the DNS of the chroot environment of cubic running on ubuntu 18.04. As a workaround you can try:
+
+```bash
+mkdir /run/systemd/resolve/
+echo "nameserver 127.0.0.53
+search network" | tee /run/systemd/resolve/resolv.conf
+ln -sr /run/systemd/resolve/resolv.conf /run/systemd/resolve/stub-resolv.conf
+```
+
+
+
 ## Miscellaneous
 
 #### TeamViewer
