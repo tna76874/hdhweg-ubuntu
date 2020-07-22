@@ -19,3 +19,18 @@ SERIAL=$(sudo inxi -v 2 -c 0 -y 80 | grep serial | head -1 | awk -v FS='(serial:
 { date ; echo -e '\n' ; sudo inxi -Fmxx -c 0 -y 80; echo -e '\n\nBenutzer: \n\nPasswort: ';} | txt2html | wkhtmltopdf - ~/Downloads/"$SERIAL"_$(date +"%Y%m%d")_SYSTEMINFO.pdf
 }
 export -f hwpdf
+
+# A simple script to shred a drive
+
+shreddrive() {
+sudo lsblk
+echo -e "Enter device to shred: "
+read shreddev
+if [[ $USER != "ubuntu" ]]; then
+  echo "Bad idea ... aborting. Please only use this tool from a live-system."
+else
+  sudo ls /dev/"$shreddev"?* | xargs -n1 umount -l || echo "umount not possible"
+  sudo shred -vz -n 0 /dev/"$shreddev"
+fi
+}
+export -f shreddrive
