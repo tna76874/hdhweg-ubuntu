@@ -87,7 +87,11 @@ Sometimes it is mandatory to document the hardware components of the system. For
 hwpdf
 ```
 
+If it is mandatory to wipe the harddrive, you can use another function. With this command, you first select a harddrive to wipe (e.g. sda) and the wipe process will be added to the overview of the system components. This command can only be executed from within a ubuntu-live system (username "ubuntu").
 
+```bash
+shreddrive
+```
 
 ## Preparing a custom installation image
 

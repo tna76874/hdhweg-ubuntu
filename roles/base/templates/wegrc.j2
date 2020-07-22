@@ -29,7 +29,7 @@ read shreddev
 if [[ $USER != "ubuntu" ]]; then
   echo "Bad idea ... aborting. Please only use this tool from a live-system."
 else
-  { date ; inxi -Fmxx -c 0 -y 80 ; echo -e "\n Shredding hard drive: shred -vz -n 0 /dev/$shreddev \n" ; sudo shred -vz -n 0 /dev/"$shreddev" && echo -e "\nDrive wiped!\n\nBenutzer: \n\nPasswort: " ;} | txt2html | wkhtmltopdf - ~/Downloads/"$SERIAL"_$(date +"%Y%m%d")_WIPE.pdf
+  { date ; sudo inxi -Fmxx -c 0 -y 80 ; echo -e "\n Shredding hard drive: shred -vz -n 0 /dev/$shreddev \n" ; sudo shred -vz -n 0 /dev/"$shreddev" && echo -e "\nDrive wiped!\n\nBenutzer: \n\nPasswort: " ;} | txt2html | wkhtmltopdf - ~/Downloads/"$SERIAL"_$(date +"%Y%m%d")_WIPE.pdf
 fi
 }
 export -f shreddrive
