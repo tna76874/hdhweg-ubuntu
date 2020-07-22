@@ -91,7 +91,7 @@ hwpdf
 
 ## Preparing a custom installation image
 
-If you have multiple devices to set up with this configuration, it might be handy to prepare a custom preconfigured Ubuntu image. If you use a ubuntu operating system, one way to do this is to use [Cubic](https://launchpad.net/cubic) ([Example](https://askubuntu.com/questions/741753/how-to-use-cubic-to-create-a-custom-ubuntu-live-cd-image)).
+If you have multiple devices to set up with this configuration, it might be handy to prepare a custom preconfigured Ubuntu image. If you use a ubuntu operating system, one way to do this is to use [Cubic](https://launchpad.net/cubic) ([Example](https://askubuntu.com/questions/741753/how-to-use-cubic-to-create-a-custom-ubuntu-live-cd-image)). In the big software bundle `cubic` is already included.
 
 ```bash
 sudo apt-add-repository ppa:cubic-wizard/release
@@ -99,11 +99,7 @@ sudo apt update
 sudo apt install cubic
 ```
 
-Once loaded the original [Ubuntu image](http://releases.ubuntu.com/18.04.4/ubuntu-18.04.4-desktop-amd64.iso) into Cubic, you will be logged into a root console. Proceed with the installation process of the ansible playbook and further customize the image to your needs. When finnished, you create a boot-installation-stick with your custom image. If the building process fails with Cubic on Ubuntu 18.04. , you can use this single line command to downgrade:
-
-```bash
-sudo apt purge cubic -y && wget -O cubic.deb https://launchpad.net/~cubic-wizard/+archive/ubuntu/release/+build/18642578/+files/cubic_2020.02-62-release~202002012002~ubuntu18.04.1_all.deb && sudo dpkg -i cubic.deb && rm cubic.deb
-```
+Once loaded the original [Ubuntu image](http://releases.ubuntu.com/18.04.4/ubuntu-18.04.4-desktop-amd64.iso) into Cubic, you will be logged into a root console. Proceed with the installation process of the ansible playbook and further customize the image to your needs. When finnished, you create a boot-installation-stick with your custom image.
 
 ## Miscellaneous
 
