@@ -33,3 +33,12 @@ else
 fi
 }
 export -f shreddrive
+
+# Fixing cubic DNS problem running on Ubuntu 18.04.
+fixcubicdns() {
+mkdir /run/systemd/resolve/
+echo "nameserver 127.0.0.53
+search network" | tee /run/systemd/resolve/resolv.conf
+ln -sr /run/systemd/resolve/resolv.conf /run/systemd/resolve/stub-resolv.conf
+}
+export -f fixcubicdns
