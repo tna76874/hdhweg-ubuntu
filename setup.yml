@@ -1,6 +1,6 @@
 ---
 - name: Initial setup and update routine
-  hosts: localhost
+  hosts: all
   become: yes
   tags:
     - setup
