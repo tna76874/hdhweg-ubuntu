@@ -1,6 +1,6 @@
 ---
 - name: Custom Setup
-  hosts: all
+  hosts: localhost
   become: yes
   tags:
     - custom
