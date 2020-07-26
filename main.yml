@@ -1,13 +1,13 @@
 ---
 - name: Repair system
-  hosts: all
+  hosts: localhost
   become: yes
   tags: [ 'never', 'repair' ]
   roles:
     - repair
 
 - name: Maintenance script
-  hosts: all
+  hosts: localhost
   become: yes
   tags:
     - base
