@@ -121,6 +121,8 @@
       - inxi
       - txt2html
       - wkhtmltopdf
+      - gnome-shell-extensions
+      - chrome-gnome-shell
     state: latest
     install_recommends: yes
 
