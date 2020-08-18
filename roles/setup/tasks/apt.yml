@@ -1,4 +1,8 @@
 ---
+- name: Ensure nextcloud-client ppa
+  apt_repository:
+    repo: ppa:nextcloud-devs/client
+
 - name: Add geogebra key
   apt_key:
     url: https://static.geogebra.org/linux/office@geogebra.org.gpg.key
@@ -123,6 +127,7 @@
       - wkhtmltopdf
       - gnome-shell-extensions
       - chrome-gnome-shell
+      - nextcloud-client
     state: latest
     install_recommends: yes
 
