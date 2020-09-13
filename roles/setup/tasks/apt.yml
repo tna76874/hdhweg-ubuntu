@@ -121,6 +121,7 @@
       - mupdf-tools
       - pdfposter
       - pdfsam
+      - img2pdf
       - geogebra-classic
       - inxi
       - txt2html
