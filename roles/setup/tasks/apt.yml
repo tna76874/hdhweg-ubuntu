@@ -116,7 +116,6 @@
       - python3
       - python3-pip
       - gnome-shell-extensions
-      - youtube-dl
       - gnome-clocks
       - mupdf-tools
       - pdfposter
