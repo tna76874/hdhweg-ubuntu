@@ -39,6 +39,8 @@
       - scribus-doc
       - scribus-template
       - icc-profiles
+      - liblocale-codes-perl
+      - gscan2pdf
     state: latest
     install_recommends: yes
 

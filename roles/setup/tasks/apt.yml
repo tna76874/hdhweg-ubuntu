@@ -84,7 +84,6 @@
       - chromium-codecs-ffmpeg-extra
       - gimp
       - inkscape
-      - gscan2pdf
       - ocrmypdf
       - tesseract-ocr
       - tesseract-ocr-deu
