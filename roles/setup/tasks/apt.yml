@@ -36,9 +36,16 @@
     repo: ppa:unit193/encryption
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
 
-- name: Ensure xournal ppa
+- name: Ensure unstable xournal ppa is not present
   apt_repository:
     repo: ppa:andreasbutti/xournalpp-master
+    state: absent
+  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
+
+- name: Ensure stable xournal ppa is present
+  apt_repository:
+    repo: ppa:apandada1/xournalpp-stable
+    state: present
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
 
 - name: Ensure zotero ppa
