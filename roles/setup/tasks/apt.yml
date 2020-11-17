@@ -135,6 +135,7 @@
       - chrome-gnome-shell
       - nextcloud-client
       - xournalpp
+      - qtqr
     state: latest
     install_recommends: yes
 
