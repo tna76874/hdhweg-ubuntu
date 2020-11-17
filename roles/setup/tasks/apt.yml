@@ -136,6 +136,7 @@
       - nextcloud-client
       - xournalpp
       - qtqr
+      - macchanger
     state: latest
     install_recommends: yes
 
