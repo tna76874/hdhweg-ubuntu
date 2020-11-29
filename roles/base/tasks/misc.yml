@@ -5,7 +5,7 @@
     enabled: no
     state: stopped
   ignore_errors: yes
-  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int =< 20
+  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int >= 20
 
 - name: running ansible playbook at reboot to make sure settings are as they should be
   cron:

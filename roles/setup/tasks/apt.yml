@@ -18,13 +18,13 @@
   apt_key:
     url: https://download.teamviewer.com/download/linux/signature/TeamViewer2017.asc
     state: present
-  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int =< 20
+  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int <= 20
 
 - name: Add teamviewer repository
   apt_repository:
     repo: deb http://linux.teamviewer.com/deb stable main
     state: present
-  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int =< 20
+  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int <= 20
 
 - name: Ensure recoll ppa
   apt_repository:
