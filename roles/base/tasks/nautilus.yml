@@ -24,3 +24,10 @@
     dest: "/home/{{ item }}/.local/share/nautilus/scripts/pdf_zusammenfassen"
     mode: 0755
   with_items: "{{ ubuntu_users.stdout_lines }}"
+
+- name: Ensure nautilus script to merge images to pdf
+  template:
+    src: "img2pdf.sh"
+    dest: "/home/{{ item }}/.local/share/nautilus/scripts/img2pdf"
+    mode: 0755
+  with_items: "{{ ubuntu_users.stdout_lines }}"
