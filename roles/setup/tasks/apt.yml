@@ -18,13 +18,13 @@
   apt_key:
     url: https://download.teamviewer.com/download/linux/signature/TeamViewer2017.asc
     state: present
-  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
+  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int =< 20
 
 - name: Add teamviewer repository
   apt_repository:
     repo: deb http://linux.teamviewer.com/deb stable main
     state: present
-  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
+  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int =< 20
 
 - name: Ensure recoll ppa
   apt_repository:
@@ -59,7 +59,7 @@
     cache_valid_time: 3600
     upgrade: safe
 
-- name: Ensure packages
+- name: Ensure packages (all ubuntu versions)
   apt:
     name:
       - byobu
@@ -137,15 +137,29 @@
       - xournalpp
       - qtqr
       - macchanger
+      - youtube-dl
+      - teamviewer
+      - autossh
+      - zbar-tools
+      - texlive-extra-utils
     state: latest
     install_recommends: yes
 
-- name: Ensure some other packages
+- name: Ensure packages for ubuntu < 20
   apt:
     name:
-      - teamviewer
       - veracrypt
       - zotero-standalone
     state: latest
     install_recommends: yes
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
+
+- name: Ensure packages for ubuntu => 20
+  apt:
+    name:
+      - python3
+      - python3-pip
+      - python-is-python3
+    state: latest
+    install_recommends: yes
+  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int == 20

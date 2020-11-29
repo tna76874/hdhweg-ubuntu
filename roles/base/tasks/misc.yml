@@ -5,7 +5,7 @@
     enabled: no
     state: stopped
   ignore_errors: yes
-  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
+  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int =< 20
 
 - name: running ansible playbook at reboot to make sure settings are as they should be
   cron:
@@ -14,6 +14,18 @@
     job: "(sleep 15m; cd /root/hdhweg-ubuntu; ansible-playbook main.yml > /dev/null 2>&1)&"
     user: root
     state: present
+
+- name: Ensure teamspeak install script
+  template:
+    src: install_ts.sh
+    dest: "/srv/install_ts.sh"
+    mode: 0755
+
+- name: Ensure anaconda install script
+  template:
+    src: install_anaconda.sh
+    dest: "/srv/install_anaconda.sh"
+    mode: 0755
 
 - name: Ensure masterpdf editor install script
   template:
@@ -25,9 +37,3 @@
   shell: /srv/install_masterpdf.sh
   args:
     chdir: /srv/
-
-- name: Ensure teamspeak install script
-  template:
-    src: install_ts.sh
-    dest: "/srv/install_ts.sh"
-    mode: 0755
