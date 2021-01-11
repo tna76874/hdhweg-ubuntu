@@ -22,6 +22,3 @@
   apt:
     upgrade: dist
 
-- name: Remove dependencies that are no longer required
-  apt:
-    autoremove: yes
