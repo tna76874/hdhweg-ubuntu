@@ -142,6 +142,7 @@
       - autossh
       - zbar-tools
       - texlive-extra-utils
+      - ca-certificates
     state: latest
     install_recommends: yes
 
