@@ -1,0 +1,42 @@
+---
+- name: Ensure flatpak ppa
+  apt_repository:
+    repo: ppa:alexlarsson/flatpak
+  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
+
+- name: Update apt
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    upgrade: safe
+
+- name: Ensure flatpack package
+  apt:
+    name:
+      - flatpak
+    state: latest
+    install_recommends: yes
+
+- name: Add the flathub flatpak repository remote to the system installation
+  flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+
+- name: Install flatpak UngoogledChromium
+  flatpak:
+    remote: flathub
+    name: com.github.Eloston.UngoogledChromium
+    state: present
+
+- name: Install flatpak TeamSpeak
+  flatpak:
+    remote: flathub
+    name: com.teamspeak.TeamSpeak
+    state: present
+
+- name: Install flatpak FreeTube
+  flatpak:
+    remote: flathub
+    name: io.freetubeapp.FreeTube
+    state: present
