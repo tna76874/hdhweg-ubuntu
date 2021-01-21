@@ -36,16 +36,16 @@
     repo: ppa:unit193/encryption
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
 
-- name: Ensure unstable xournal ppa is not present
+- name: Ensure no unstable xournal ppa is present
   apt_repository:
     repo: ppa:andreasbutti/xournalpp-master
     state: absent
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int <= 20
 
-- name: Ensure stable xournal ppa is present
+- name: Ensure no xournal ppa is present
   apt_repository:
     repo: ppa:apandada1/xournalpp-stable
-    state: present
+    state: absent
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int <= 20
 
 - name: Ensure zotero ppa
@@ -134,7 +134,6 @@
       - gnome-shell-extensions
       - chrome-gnome-shell
       - nextcloud-client
-      - xournalpp
       - qtqr
       - macchanger
       - youtube-dl
@@ -154,6 +153,13 @@
     state: latest
     install_recommends: yes
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
+
+- name: Ensure packages absent
+  apt:
+    name:
+      - xournalpp
+      - master-pdf-editor
+    state: absent
 
 - name: Ensure packages for ubuntu => 20
   apt:

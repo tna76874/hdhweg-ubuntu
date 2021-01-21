@@ -14,6 +14,7 @@
   apt:
     name:
       - flatpak
+      - gnome-software-plugin-flatpak
     state: latest
     install_recommends: yes
 
@@ -23,26 +24,15 @@
     state: present
     flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
 
-- name: Install flatpak UngoogledChromium
+- name: Install flatpak packages
   flatpak:
     remote: flathub
-    name: com.github.Eloston.UngoogledChromium
+    name: "{{ item }}"
     state: present
+  with_items:
+     - io.freetubeapp.FreeTube
+     - com.teamspeak.TeamSpeak
+     - net.codeindustry.MasterPDFEditor
+     - com.github.Eloston.UngoogledChromium
+     - com.github.xournalpp.xournalpp
 
-- name: Install flatpak TeamSpeak
-  flatpak:
-    remote: flathub
-    name: com.teamspeak.TeamSpeak
-    state: present
-
-- name: Install flatpak FreeTube
-  flatpak:
-    remote: flathub
-    name: io.freetubeapp.FreeTube
-    state: present
-
-- name: Install flatpak MasterPDFEditor
-  flatpak:
-    remote: flathub
-    name: net.codeindustry.MasterPDFEditor
-    state: present
