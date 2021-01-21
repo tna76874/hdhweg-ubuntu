@@ -30,6 +30,7 @@
     state: present
   with_items:
      - io.freetubeapp.FreeTube
+     - io.typora.Typora
      - com.teamspeak.TeamSpeak
      - net.codeindustry.MasterPDFEditor
      - com.github.Eloston.UngoogledChromium
