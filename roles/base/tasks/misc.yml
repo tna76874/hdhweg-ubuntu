@@ -15,25 +15,8 @@
     user: root
     state: present
 
-- name: Ensure teamspeak install script
-  template:
-    src: install_ts.sh
-    dest: "/srv/install_ts.sh"
-    mode: 0755
-
 - name: Ensure anaconda install script
   template:
     src: install_anaconda.sh
     dest: "/srv/install_anaconda.sh"
     mode: 0755
-
-- name: Ensure masterpdf editor install script
-  template:
-    src: install_masterpdf.sh
-    dest: "/srv/install_masterpdf.sh"
-    mode: 0755
-
-- name: Run masterpdf editor install script
-  shell: /srv/install_masterpdf.sh
-  args:
-    chdir: /srv/

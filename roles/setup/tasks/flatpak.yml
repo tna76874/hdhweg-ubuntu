@@ -40,3 +40,9 @@
     remote: flathub
     name: io.freetubeapp.FreeTube
     state: present
+
+- name: Install flatpak MasterPDFEditor
+  flatpak:
+    remote: flathub
+    name: net.codeindustry.MasterPDFEditor
+    state: present
