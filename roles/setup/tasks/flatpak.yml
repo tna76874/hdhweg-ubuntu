@@ -34,4 +34,5 @@
      - net.codeindustry.MasterPDFEditor
      - com.github.Eloston.UngoogledChromium
      - com.github.xournalpp.xournalpp
-
+     - com.belmoussaoui.Decoder
+     - org.zotero.Zotero
