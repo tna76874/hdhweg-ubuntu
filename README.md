@@ -41,7 +41,7 @@ wget -qO setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/maste
 
 #### Custom commands
 
-With this configuration a few custom console commands are defined. These will be initialized within the .bashrc of every user. Check the details [here](roles/base/templates/wegrc.j2) .
+With this configuration a few custom console commands are defined. These will be initialized within the `.bashrc` of every user. Check the details [here](roles/base/templates/wegrc.j2) .
 
 #### Automatic pulls
 
@@ -51,9 +51,13 @@ By default automatic pulls from this git repository gets triggered 10 minutes af
 sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/autoupdate.yml --tags disable
 ```
 
-#### Extra: TeamSpeak
+#### Package management
 
-If you want, you can also install TeamSpeak. Type in a terminal after the setup playbook completed:
+This repository uses `apt`, `snap` and `flatpak` as package management systems. If possible, a flatpak version is preferred. 
+
+#### Extra: manual TeamSpeak install
+
+TeamSpeak is included in the flatpak packages. If you want, you can also install TeamSpeak manually. Type in a terminal after the setup playbook completed:
 
 ```bash
 /srv/install_ts.sh
