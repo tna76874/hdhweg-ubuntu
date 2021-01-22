@@ -1,15 +1,16 @@
 ---
-- name: Ensure some snap packages
+- name: Ensure snap packages present
+  snap:
+    name:
+      - pdftk
+  ignore_errors: yes
+
+- name: Ensure snap packages absent
   snap:
     name:
       - mumble
-      - pdftk
-      - rambox
-  ignore_errors: yes
-
-- name: Ensure some classic snap packages
-  snap:
-    name:
       - code
-    classic: yes
+      - rambox
+    state: absent
   ignore_errors: yes
+  

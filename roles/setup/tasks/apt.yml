@@ -14,6 +14,17 @@
     state: present
     filename: geogebra
 
+- name: Add VScodium key
+  apt_key:
+    url: https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg
+    state: present
+
+- name: Add VScodium repository
+  apt_repository:
+    repo: deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main
+    state: present
+    filename: vscodium
+
 - name: Add teamviewer key
   apt_key:
     url: https://download.teamviewer.com/download/linux/signature/TeamViewer2017.asc
@@ -142,6 +153,7 @@
       - zbar-tools
       - texlive-extra-utils
       - ca-certificates
+      - codium
     state: latest
     install_recommends: yes
 
