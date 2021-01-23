@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=System Update
+GenericName=systemupdate
+Comment=Update your system
+Comment[de]=Update dein System
+Exec=gnome-terminal --tab -e "/bin/bash -c 'sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml'"
+Icon=/usr/share/icons/breeze/apps/48/updateico.svg
+Terminal=true
+X-MultipleArgs=false
+Type=Application
+Categories=Network;
+StartupWMClass=Systemupdate
+StartupNotify=true

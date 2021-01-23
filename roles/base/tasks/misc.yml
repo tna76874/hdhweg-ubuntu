@@ -20,3 +20,15 @@
     src: install_anaconda.sh
     dest: "/srv/install_anaconda.sh"
     mode: 0755
+
+- name: Ensure update icon
+  template:
+    src: updateico.svg
+    dest: "/usr/share/icons/breeze/apps/48/updateico.svg"
+    mode: 0644
+
+- name: Ensure update desktop entry
+  template:
+    src: update.desktop
+    dest: "/usr/share/applications/update.desktop"
+    mode: 0644
