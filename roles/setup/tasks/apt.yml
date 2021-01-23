@@ -70,13 +70,23 @@
     cache_valid_time: 3600
     upgrade: safe
 
+- name: Upgrade all apt packages to the latest version
+  apt:
+    name: "*"
+    state: latest
+
+- name: Update all dist packages to the latest version
+  apt:
+    upgrade: dist
+
 - name: Ensure packages (all ubuntu versions)
   apt:
     name:
+      - curl
+      - openssh-server
       - byobu
       - snapd
       - zsh
-      - curl
       - wget
       - dnsutils
       - git
