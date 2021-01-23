@@ -24,7 +24,7 @@
 - name: Ensure update icon
   template:
     src: updateico.svg
-    dest: "/usr/share/icons/breeze/apps/48/updateico.svg"
+    dest: "/usr/share/icons/updateico.svg"
     mode: 0644
 
 - name: Ensure update desktop entry
