@@ -9,7 +9,7 @@
     cache_valid_time: 3600
     upgrade: safe
 
-- name: Ensure flatpack package
+- name: Ensure flatpak package
   apt:
     name:
       - flatpak

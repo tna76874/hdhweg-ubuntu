@@ -57,12 +57,11 @@
   apt_repository:
     repo: ppa:apandada1/xournalpp-stable
     state: absent
-  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int <= 20
 
 - name: Ensure zotero ppa
   apt_repository:
     repo: ppa:smathot/cogscinl
-  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
+    state: absent
 
 - name: Update apt
   apt:
