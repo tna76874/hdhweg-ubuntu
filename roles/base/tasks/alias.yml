@@ -136,7 +136,7 @@
   ignore_errors: yes
 
 - name: Ensure trusted update launcher
-  shell: sudo -u {{ item }} dbus-launch gio set /home/{{ item }}/Schreibtisch/update.desktop metadata::trusted yes
+  shell: sudo -u {{ item }} dbus-launch gio set /home/{{ item }}/Schreibtisch/update.desktop metadata::trusted true
   with_items: "{{ ubuntu_users.stdout_lines }}"
   ignore_errors: yes
   become: yes
