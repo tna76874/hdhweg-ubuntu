@@ -124,3 +124,21 @@
     owner: root
     group: root
     mode: 0644
+
+- name: Ensure update desktop entry
+  template:
+    src: update.desktop
+    dest: "/home/{{ item }}/Schreibtisch/update.desktop"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0755
+  with_items: "{{ ubuntu_users.stdout_lines }}"
+  ignore_errors: yes
+
+- name: Ensure trusted update launcher
+  shell: sudo -u {{ item }} dbus-launch gio set /home/{{ item }}/Schreibtisch/update.desktop metadata::trusted yes
+  with_items: "{{ ubuntu_users.stdout_lines }}"
+  ignore_errors: yes
+  become: yes
+  args:
+    warn: false
