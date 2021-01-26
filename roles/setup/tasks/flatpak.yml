@@ -42,3 +42,10 @@
     name: "{{ item }}"
     state: present
   with_items: "{{ flatpak_list }}"
+
+- name: Ensure flatpaks up-to-date
+  shell: "flatpak update -y {{ item }}"
+  become: yes
+  with_items: "{{ flatpak_list }}"
+
+
