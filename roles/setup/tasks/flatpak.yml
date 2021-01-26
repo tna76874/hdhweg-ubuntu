@@ -23,12 +23,9 @@
     state: present
     flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
 
-- name: Install flatpak packages
-  flatpak:
-    remote: flathub
-    name: "{{ item }}"
-    state: present
-  with_items:
+- name: Register flatpak list
+  set_fact:
+    flatpak_list:
      - io.freetubeapp.FreeTube
      - io.typora.Typora
      - com.teamspeak.TeamSpeak
@@ -38,3 +35,10 @@
      - com.belmoussaoui.Decoder
      - org.zotero.Zotero
      - info.mumble.Mumble
+
+- name: Install flatpak packages
+  flatpak:
+    remote: flathub
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ flatpak_list }}"
