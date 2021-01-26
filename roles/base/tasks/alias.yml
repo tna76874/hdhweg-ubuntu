@@ -140,4 +140,3 @@
   become_user: "{{ item }}"
   with_items: "{{ ubuntu_users.stdout_lines }}"
   ignore_errors: yes
-
