@@ -136,17 +136,8 @@
   ignore_errors: yes
 
 - name: Ensure trusted update launcher
-  shell: sudo -u {{ item }} dbus-launch gio set /home/{{ item }}/Schreibtisch/update.desktop metadata::trusted true
+  shell: dbus-launch gio set /home/{{ item }}/Schreibtisch/update.desktop "metadata::trusted" true
+  become_user: "{{ item }}"
   with_items: "{{ ubuntu_users.stdout_lines }}"
   ignore_errors: yes
-  become: yes
-  args:
-    warn: false
 
-- name: Ensure .dbus permissions
-  file:
-    path: /home/{{ item }}/.dbus
-    recurse: yes
-    owner: "{{ item }}"
-    group: "{{ item }}"
-  with_items: "{{ ubuntu_users.stdout_lines }}"
