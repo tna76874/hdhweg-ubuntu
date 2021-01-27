@@ -35,6 +35,7 @@
      - com.belmoussaoui.Decoder
      - org.zotero.Zotero
      - info.mumble.Mumble
+     - org.jitsi.jitsi-meet
 
 - name: Install flatpak packages
   flatpak:
