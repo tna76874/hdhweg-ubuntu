@@ -26,6 +26,7 @@
 - name: Register flatpak list
   set_fact:
     flatpak_list:
+     - com.github.tchx84.Flatseal
      - io.freetubeapp.FreeTube
      - io.typora.Typora
      - com.teamspeak.TeamSpeak
