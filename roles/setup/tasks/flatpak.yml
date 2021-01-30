@@ -37,6 +37,7 @@
      - org.zotero.Zotero
      - info.mumble.Mumble
      - org.jitsi.jitsi-meet
+     - com.github.jeromerobert.pdfarranger
 
 - name: Install flatpak packages
   flatpak:
