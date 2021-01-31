@@ -1,7 +1,9 @@
 ---
+- import_tasks: alias.yml
+
 - import_tasks: misc.yml
 
-- import_tasks: alias.yml
+- import_tasks: apt.yml
 
 - import_tasks: firewall.yml
 
