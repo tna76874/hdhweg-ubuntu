@@ -3,8 +3,6 @@
 
 - import_tasks: misc.yml
 
-- import_tasks: apt.yml
-
 - import_tasks: firewall.yml
 
 - import_tasks: nautilus.yml
