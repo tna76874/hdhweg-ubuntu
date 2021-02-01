@@ -38,6 +38,7 @@
      - info.mumble.Mumble
      - org.jitsi.jitsi-meet
      - com.github.jeromerobert.pdfarranger
+     - ink.scribl.Scribl
 
 - name: Install flatpak packages
   flatpak:
