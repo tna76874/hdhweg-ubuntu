@@ -3,15 +3,10 @@
   apt_repository:
     repo: ppa:nextcloud-devs/client
 
-- name: Add geogebra key
-  apt_key:
-    url: https://static.geogebra.org/linux/office@geogebra.org.gpg.key
-    state: present
-
-- name: Add geogebra repository
+- name: Ensure absent geogebra repository
   apt_repository:
     repo: deb http://www.geogebra.net/linux/ stable main
-    state: present
+    state: absent
     filename: geogebra
 
 - name: Add VScodium key
@@ -147,7 +142,6 @@
       - pdfposter
       - pdfsam
       - img2pdf
-      - geogebra-classic
       - inxi
       - txt2html
       - wkhtmltopdf
@@ -180,6 +174,7 @@
       - xournalpp
       - master-pdf-editor
       - zotero-standalone
+      - geogebra-classic
     state: absent
 
 - name: Ensure packages for ubuntu => 20

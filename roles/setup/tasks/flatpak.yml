@@ -39,6 +39,7 @@
      - org.jitsi.jitsi-meet
      - com.github.jeromerobert.pdfarranger
      - ink.scribl.Scribl
+     - org.geogebra.GeoGebra
 
 - name: Install flatpak packages
   flatpak:
