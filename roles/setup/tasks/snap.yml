@@ -13,4 +13,7 @@
       - rambox
     state: absent
   ignore_errors: yes
-  
+
+- name: Ensure snaps are refreshed
+  shell: "snap refresh"
+  become: yes
