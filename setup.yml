@@ -13,3 +13,12 @@
     - base
     - setup
     - security
+
+- name: Install Docker
+  hosts: localhost
+  become: yes
+  vars_files:
+    - vars.yml
+  tags: [ 'never', 'docker' ]
+  roles:
+    - docker
