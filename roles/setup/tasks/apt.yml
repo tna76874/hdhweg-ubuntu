@@ -89,7 +89,6 @@
       - vim
       - nano
       - nautilus
-      - libreoffice
       - vlc
       - libxvidcore4
       - vlc-plugin-fluidsynth
@@ -175,6 +174,7 @@
       - master-pdf-editor
       - zotero-standalone
       - geogebra-classic
+      - libreoffice
     state: absent
 
 - name: Ensure packages for ubuntu => 20

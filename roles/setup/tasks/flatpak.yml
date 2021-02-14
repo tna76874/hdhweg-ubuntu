@@ -40,6 +40,7 @@
      - com.github.jeromerobert.pdfarranger
      - ink.scribl.Scribl
      - org.geogebra.GeoGebra
+     - org.libreoffice.LibreOffice
 
 - name: Install flatpak packages
   flatpak:
