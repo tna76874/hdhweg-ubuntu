@@ -42,6 +42,10 @@
      - org.geogebra.GeoGebra
      - org.libreoffice.LibreOffice
 
+- name: Ensure verify flatpaks
+  shell: "flatpak repair"
+  become: yes
+
 - name: Install flatpak packages
   flatpak:
     remote: flathub
@@ -53,7 +57,3 @@
   shell: "flatpak update -y {{ item }}"
   become: yes
   with_items: "{{ flatpak_list }}"
-
-- name: Ensure verify flatpaks
-  shell: "flatpak repair"
-  become: yes
