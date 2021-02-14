@@ -32,6 +32,10 @@
     state: present
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int <= 20
 
+- name: Ensure thunderbird ppa
+  apt_repository:
+    repo: ppa:ubuntu-mozilla-security/ppa
+
 - name: Ensure recoll ppa
   apt_repository:
     repo: ppa:recoll-backports/recoll-1.15-on
@@ -156,6 +160,7 @@
       - texlive-extra-utils
       - ca-certificates
       - codium
+      - thunderbird
     state: latest
     install_recommends: yes
 
