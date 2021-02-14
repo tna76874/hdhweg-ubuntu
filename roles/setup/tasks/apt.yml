@@ -160,7 +160,6 @@
       - texlive-extra-utils
       - ca-certificates
       - codium
-      - thunderbird
     state: latest
     install_recommends: yes
 
