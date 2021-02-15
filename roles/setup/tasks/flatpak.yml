@@ -41,6 +41,7 @@
      - ink.scribl.Scribl
      - org.geogebra.GeoGebra
      - org.libreoffice.LibreOffice
+     - org.js.nuclear.Nuclear
 
 - name: Ensure verify flatpaks
   shell: "flatpak repair"
