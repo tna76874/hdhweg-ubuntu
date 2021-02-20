@@ -4,6 +4,9 @@ alias update="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /roo
 # run the main playbook + enhanced packages
 alias bigupdate="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/custom.yml"
 
+# install docker
+alias install_docker="sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml -t docker"
+
 # enable teamviewer daemon, that is disabled by default
 alias twstart="sudo killall /opt/teamviewer/tv_bin/TeamViewer; sudo teamviewer daemon enable"
 
