@@ -20,3 +20,12 @@
   tags: [ 'never', 'docker' ]
   roles:
     - docker
+
+- name: Install Webcam Tools
+  hosts: localhost
+  become: yes
+  tags: [ 'never', 'webcam' ]
+  roles:
+    - repair
+    - webcam
+    
