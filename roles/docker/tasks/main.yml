@@ -37,10 +37,15 @@
       - python3-pip
     state: present
 
+- name: Ensure pip is up-to-date
+  shell: "pip3 install --upgrade pip"
+  become: yes
+
 - name: Ensure docker-compose installed
   pip:
     name: docker-compose
     executable: pip3
+    state: present
   become: true
 
 - name: Determine existing sudo users
