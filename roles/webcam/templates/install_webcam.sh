@@ -113,10 +113,16 @@ install_droidcam() {
     DOWNLOAD_URL=$( curl -s https://api.github.com/repos/dev47apps/droidcam/releases/latest | grep 'browser_' | cut -d\" -f4 )
     DROIDCAM_ZIP="$TMP/droidcam_latest.zip"
 
+    # cleanup
     rm "$DROIDCAM_ZIP"
-    wget -O "$DROIDCAM_ZIP" "$DOWNLOAD_URL"
+    rm -rf "$TMP"/droidcam
+    sudo rmmod v4l2loopback_dc > /dev/null 2>&1 || echo "No driver to unload"
 
+    # download
+    wget -O "$DROIDCAM_ZIP" "$DOWNLOAD_URL"
     unzip droidcam_latest.zip -d droidcam
+
+    # install
     cd droidcam && sudo ./install-client
 
     sudo apt install linux-headers-`uname -r` gcc make
