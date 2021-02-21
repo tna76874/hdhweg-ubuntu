@@ -26,7 +26,6 @@
 - name: Register flatpak list
   set_fact:
     flatpak_list:
-     - com.github.tchx84.Flatseal
      - io.freetubeapp.FreeTube
      - io.typora.Typora
      - com.teamspeak.TeamSpeak
@@ -34,9 +33,7 @@
      - com.github.Eloston.UngoogledChromium
      - com.github.xournalpp.xournalpp
      - com.belmoussaoui.Decoder
-     - org.zotero.Zotero
      - info.mumble.Mumble
-     - org.jitsi.jitsi-meet
      - com.github.jeromerobert.pdfarranger
      - ink.scribl.Scribl
      - org.geogebra.GeoGebra

@@ -41,6 +41,10 @@
       - icc-profiles
       - liblocale-codes-perl
       - gscan2pdf
+      - virtualbox
+      - virtualbox-qt
+      - virtualbox-dkms
+      - virtualbox-guest-additions-iso
     state: latest
     install_recommends: yes
 
@@ -49,10 +53,16 @@
     name: "*"
     state: latest
 
-- name: Update all dist packages to the latest version
-  apt:
-    upgrade: dist
-
 - name: Remove dependencies that are no longer required
   apt:
     autoremove: yes
+
+- name: Install flatpak packages
+  flatpak:
+    remote: flathub
+    name: "{{ item }}"
+    state: present
+  with_items:
+     - org.zotero.Zotero
+     - com.github.tchx84.Flatseal
+     - io.github.Soundux
