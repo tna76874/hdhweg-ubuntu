@@ -15,13 +15,12 @@
     update_cache: yes
     cache_valid_time: 3600
 
-- name: Ensure libs
+- name: Ensure libs absent
   apt:
     name:
       - libobs0
       - libobs-dev
-    state: latest
-    install_recommends: yes
+    state: absent
   ignore_errors: yes
 
 - name: Ensure packages
@@ -32,7 +31,6 @@
       - qtbase5-dev
       - obs-plugins
     state: latest
-    install_recommends: yes
   ignore_errors: yes
 
 - name: Ensure obs-studio repo
