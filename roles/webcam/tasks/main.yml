@@ -50,6 +50,12 @@
     dest: /srv/webcam/obs-v4l2
     force: yes
 
+- name: Ensure fakecam repo
+  ansible.builtin.git:
+    repo: 'https://github.com/fangfufu/Linux-Fake-Background-Webcam.git'
+    dest: /srv/webcam/fakecam
+    force: yes
+
 - name: Ensure install_webcam.sh
   template:
     src: "install_webcam.sh"
@@ -93,4 +99,6 @@
     dest: "/usr/share/icons/droidcam.png"
     mode: 0644
 
-
+- name: Building fakecam docker images (might take a while)
+  shell: "docker-compose -f /srv/webcam/fakecam/docker-compose.yml --env-file /srv/webcam/fakecam/docker_defaults.env build --no-cache --pull"
+  become: yes

@@ -27,5 +27,6 @@
   tags: [ 'never', 'webcam' ]
   roles:
     - repair
+    - docker
     - webcam
     
