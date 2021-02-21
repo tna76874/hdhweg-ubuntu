@@ -22,7 +22,7 @@
       - obs-studio
       - obs-plugins
       - qtbase5-dev
-      state: latest
+    state: latest
   ignore_errors: yes
 
 - name: Ensure lib
