@@ -68,7 +68,6 @@
     state: directory
     owner: "{{ item }}"
     group: "{{ item }}"
-    state: link
   become: yes
   with_items: "{{ ubuntu_users.stdout_lines }}"
 

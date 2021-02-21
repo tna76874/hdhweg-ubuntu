@@ -197,8 +197,8 @@ case "$opt" in
 esac
 done
 if [ $OPTIND -eq 1 ]; then
-    install_droidcam && echo "Installed Droidcam" || { echo "Error installing Droidcam"; exit 1 }
-    install_loopback && echo "Installed loopback" || { echo "Error installing loopback"; exit 1 }
-    install_akvcam && echo "Installed akvcam" || { echo "Error installing akvcam"; exit 1 }
-    install_obsloop && echo "Installed obsloop" || { echo "Error installing obsloop"; exit 1 }
+    install_droidcam > /dev/null 2>&1 && echo "Installed Droidcam" || ( echo "Error installing Droidcam"; exit 1 )
+    install_loopback > /dev/null 2>&1 && echo "Installed loopback" || ( echo "Error installing loopback"; exit 1 )
+    install_akvcam > /dev/null 2>&1 && echo "Installed akvcam" || ( echo "Error installing akvcam"; exit 1 )
+    install_obsloop > /dev/null 2>&1 && echo "Installed obsloop" || ( echo "Error installing obsloop"; exit 1 )
 fi
