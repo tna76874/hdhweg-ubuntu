@@ -22,7 +22,7 @@
       - libobs-dev
     state: latest
     install_recommends: yes
-    ignore_errors: yes
+  ignore_errors: yes
 
 - name: Ensure obs-studio repo
   ansible.builtin.git:
