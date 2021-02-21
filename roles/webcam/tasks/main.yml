@@ -19,7 +19,6 @@
   apt:
     name:
       - libobs-dev
-      - libobs0
     state: latest
   ignore_errors: yes
 

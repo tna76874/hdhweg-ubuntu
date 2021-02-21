@@ -37,6 +37,8 @@ git submodule foreach -q 'echo $sm_path' | xargs -i bash -c 'pulllatest {}'
 
 
 install_obsloop() {
+    sudo apt install libobs-dev -y
+
     # cleanup and update
     repocleanup "$OBSLOOPDIR"
     repocleanup "$OBSDIR"
