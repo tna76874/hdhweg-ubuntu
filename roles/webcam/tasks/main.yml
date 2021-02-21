@@ -22,6 +22,12 @@
       - obs-studio
       - obs-plugins
       - qtbase5-dev
+      state: latest
+  ignore_errors: yes
+
+- name: Ensure lib
+  apt:
+    name:
       - libobs-dev
     state: latest
   ignore_errors: yes
