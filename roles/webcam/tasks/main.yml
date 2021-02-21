@@ -14,12 +14,15 @@
   apt:
     name:
       - obs-studio
-      - libobs0
-      - libobs-dev
       - cmake
       - qtbase5-dev
+      - obs-plugins
+      - libqt
+      - libobs0
+      - libobs-dev
     state: latest
     install_recommends: yes
+    ignore_errors: yes
 
 - name: Ensure obs-studio repo
   ansible.builtin.git:
