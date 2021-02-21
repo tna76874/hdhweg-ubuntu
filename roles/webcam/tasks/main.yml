@@ -22,6 +22,7 @@
       - obs-studio
       - obs-plugins
       - qtbase5-dev
+      - libobs-dev
     state: latest
   ignore_errors: yes
 
@@ -73,7 +74,7 @@
 
 - name: Ensure obs v4l2sink.so softlink
   ansible.builtin.file:
-    src: /usr/lib/obs-plugins/v4l2sink.so
+    src: /usr/lib/x86_64-linux-gnu/obs-plugins/v4l2sink.so
     dest: "/home/{{ item }}/.config/obs-studio/plugins/v4l2sink/bin/64bit/v4l2sink.so"
     owner: "{{ item }}"
     group: "{{ item }}"
