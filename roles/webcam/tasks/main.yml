@@ -39,12 +39,6 @@
     dest: /srv/webcam/akvcam
     force: yes
 
-- name: Ensure akvcam repo
-  ansible.builtin.git:
-    repo: 'https://github.com/webcamoid/akvcam.git'
-    dest: /srv/webcam/akvcam
-    force: yes
-
 - name: Ensure obs-v4l2 repo
   ansible.builtin.git:
     repo: 'https://github.com/CatxFish/obs-v4l2sink'
