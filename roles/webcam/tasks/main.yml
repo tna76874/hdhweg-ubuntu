@@ -13,11 +13,11 @@
 - name: Ensure packages
   apt:
     name:
-      - obs-studio
+      - software-properties-common
       - cmake
+      - obs-studio
       - qtbase5-dev
       - obs-plugins
-      - libqt
       - libobs0
       - libobs-dev
     state: latest
