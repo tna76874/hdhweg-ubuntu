@@ -65,15 +65,20 @@
   ansible.builtin.file:
     path: "/home/{{ item }}/.config/obs-studio/plugins/v4l2sink/bin/64bit/"
     state: directory
-  become_user: "{{ item }}"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    state: link
+  become: yes
   with_items: "{{ ubuntu_users.stdout_lines }}"
 
 - name: Ensure obs v4l2sink.so softlink
   ansible.builtin.file:
     src: /usr/lib/obs-plugins/v4l2sink.so
     dest: "/home/{{ item }}/.config/obs-studio/plugins/v4l2sink/bin/64bit/v4l2sink.so"
+    owner: "{{ item }}"
+    group: "{{ item }}"
     state: link
-  become_user: "{{ item }}"
+  become: yes
   with_items: "{{ ubuntu_users.stdout_lines }}"
 
 - name: Ensure droidcam desktop entry
