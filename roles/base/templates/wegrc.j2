@@ -8,7 +8,7 @@ alias bigupdate="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /
 alias install_docker="sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml -t docker"
 
 # install webcam tools
-alias install_docker="sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml -t webcam"
+alias install_webcam="sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml -t webcam"
 
 # enable teamviewer daemon, that is disabled by default
 alias twstart="sudo killall /opt/teamviewer/tv_bin/TeamViewer; sudo teamviewer daemon enable"
