@@ -21,14 +21,23 @@
     state: present
     filename: docker
 
+- name: Ensure docker-compose is absent from apt package
+  apt:
+    name:
+      - docker-compose
+    state: absent
+
 - name: Ensure Docker is installed
   apt:
     name:
       - docker-ce
       - docker-ce-cli
       - containerd.io
-      - docker-compose
     state: present
+
+- name: Ensure docker-compose installed
+  pip:
+    name: docker-compose
 
 - name: Determine existing sudo users
   shell: 'grep sudo /etc/group | cut -d: -f4 | sed "s/,/\n/"'
