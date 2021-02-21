@@ -10,16 +10,27 @@
     state: present
     filename: obsstudio
 
+- name: Update apt
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Ensure libs
+  apt:
+    name:
+      - libobs0
+      - libobs-dev
+    state: latest
+    install_recommends: yes
+  ignore_errors: yes
+
 - name: Ensure packages
   apt:
     name:
-      - software-properties-common
       - cmake
       - obs-studio
       - qtbase5-dev
       - obs-plugins
-      - libobs0
-      - libobs-dev
     state: latest
     install_recommends: yes
   ignore_errors: yes
