@@ -15,20 +15,27 @@
     update_cache: yes
     cache_valid_time: 3600
 
+- name: Ensure lib
+  apt:
+    name:
+      - libobs-dev
+      - libobs0
+    state: latest
+  ignore_errors: yes
+
 - name: Ensure packages
   apt:
     name:
       - cmake
       - obs-studio
-      - obs-plugins
       - qtbase5-dev
     state: latest
   ignore_errors: yes
 
-- name: Ensure lib
+- name: Ensure obs-plugins
   apt:
     name:
-      - libobs-dev
+      - obs-plugins
     state: latest
   ignore_errors: yes
 
