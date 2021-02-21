@@ -113,6 +113,7 @@ install_droidcam() {
     DOWNLOAD_URL=$( curl -s https://api.github.com/repos/dev47apps/droidcam/releases/latest | grep 'browser_' | cut -d\" -f4 )
     DROIDCAM_ZIP="$TMP/droidcam_latest.zip"
 
+    rm "$DROIDCAM_ZIP"
     wget -O "$DROIDCAM_ZIP" "$DOWNLOAD_URL"
 
     unzip droidcam_latest.zip -d droidcam
