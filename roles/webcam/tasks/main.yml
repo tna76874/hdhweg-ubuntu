@@ -104,7 +104,7 @@
     dest: "/usr/share/icons/droidcam.png"
     mode: 0644
 
-- name: Building fakecam docker images (might take a while)
-  shell: "docker-compose -f /srv/webcam/fakecam/docker-compose.yml --env-file /srv/webcam/fakecam/docker_defaults.env build --no-cache --pull"
-  become: yes
-  ignore_errors: yes
+# - name: Building fakecam docker images (might take a while)
+#   shell: "/usr/local/bin/docker-compose -f /srv/webcam/fakecam/docker-compose.yml --env-file /srv/webcam/fakecam/docker_defaults.env build --no-cache --pull"
+#   become: yes
+#   ignore_errors: yes
