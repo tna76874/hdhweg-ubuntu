@@ -11,7 +11,7 @@ alias install_docker="sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml -t doc
 alias install_webcam="sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml -t webcam"
 
 # build fakecam docker image
-alias build_fakecam="sudo docker-compose -f /srv/webcam/fakecam/docker-compose.yml --env-file /srv/webcam/fakecam/docker_defaults.env build --no-cache --pull"
+alias build_fakecam="docker-compose -f /srv/webcam/fakecam/docker-compose.yml --env-file /srv/webcam/fakecam/docker_defaults.env build --no-cache --pull"
 
 # enable teamviewer daemon, that is disabled by default
 alias twstart="sudo killall /opt/teamviewer/tv_bin/TeamViewer; sudo teamviewer daemon enable"
