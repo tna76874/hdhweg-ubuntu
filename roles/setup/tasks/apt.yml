@@ -30,6 +30,7 @@
   apt_repository:
     repo: deb http://linux.teamviewer.com/deb stable main
     state: present
+    filename: teamviewer
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int <= 20
 
 - name: Ensure thunderbird ppa
@@ -179,6 +180,9 @@
       - zotero-standalone
       - geogebra-classic
       - libreoffice
+      - darktable
+      - freecad
+      - signal-desktop
     state: absent
 
 - name: Ensure packages for ubuntu => 20

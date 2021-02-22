@@ -170,17 +170,16 @@ usage() {
    -c,    install akvcam
    -a,    install droidcam
    -o,    install obs loop
-   -d,    Desktop entry
    -p,    pull submodules
    -h,    Print this help text
 
 If the script will be called without parameters, it will run:
-    $0 -p -l -c -a -o -b -d``
+    $0 -p -a -l -c -o``
    ">&2
     exit 1
 }
 
-while getopts ':lcaobpd' opt
+while getopts ':lcaobp' opt
 #putting : in the beginnnig suppresses the errors for invalid options
 do
 case "$opt" in
@@ -192,15 +191,16 @@ case "$opt" in
        ;;
    'o')install_obsloop;
        ;;
-   'd')desktopentry_fakecam && desktopentry_droidcam;
-       ;;
     *) usage;
        ;;
 esac
 done
 if [ $OPTIND -eq 1 ]; then
+    echo -e "Starting installation ... "
     install_droidcam > /dev/null 2>&1 && echo "Installed Droidcam" || ( echo "Error installing Droidcam"; exit 1 )
     install_loopback > /dev/null 2>&1 && echo "Installed loopback" || ( echo "Error installing loopback"; exit 1 )
     install_akvcam > /dev/null 2>&1 && echo "Installed akvcam" || ( echo "Error installing akvcam"; exit 1 )
     install_obsloop > /dev/null 2>&1 && echo "Installed obsloop" || ( echo "Error installing obsloop"; exit 1 )
+
+    sudo modprobe v4l2loopback
 fi

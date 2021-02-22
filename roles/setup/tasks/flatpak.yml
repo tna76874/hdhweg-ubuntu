@@ -39,6 +39,7 @@
      - org.geogebra.GeoGebra
      - org.libreoffice.LibreOffice
      - org.js.nuclear.Nuclear
+     - org.signal.Signal
 
 - name: Ensure verify flatpaks
   shell: "flatpak repair"

@@ -1,12 +1,14 @@
 ---
-- name: Ensure darktable ppa
+- name: Ensure darktable ppa absent
   apt_repository:
     repo: ppa:pmjdebruijn/darktable-release
+    
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
 
 - name: Ensure freecad ppa
   apt_repository:
     repo: ppa:freecad-maintainers/freecad-stable
+    state: absent
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
 
 - name: Ensure cubic ppa
@@ -26,14 +28,12 @@
       - texlive-full
       - texlive-extra-utils
       - texlive-latex-recommended
-      - darktable
       - kdenlive
       - libmp3lame-dev
       - libfaac-dev
       - libfaad-dev
       - libxvidcore4
       - swh-plugins
-      - freecad
       - cubic
       - scribus
       - scribus-doc
@@ -66,3 +66,5 @@
      - org.zotero.Zotero
      - com.github.tchx84.Flatseal
      - io.github.Soundux
+     - org.darktable.Darktable
+     - org.freecadweb.FreeCAD
