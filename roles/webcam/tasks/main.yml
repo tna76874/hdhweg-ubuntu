@@ -20,7 +20,7 @@
     name:
       - cmake
       - qtbase5-dev
-      - v4l2-ctl
+      - v4l-utils
     state: latest
     install_recommends: yes
 
