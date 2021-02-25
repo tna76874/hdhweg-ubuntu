@@ -172,6 +172,14 @@
     install_recommends: yes
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
 
+- name: Ensure HP printer drivers
+  apt:
+    name:
+      - hplip
+      - hplip-gui
+    state: latest
+    install_recommends: yes
+
 - name: Ensure packages absent
   apt:
     name:
