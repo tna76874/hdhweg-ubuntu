@@ -40,6 +40,7 @@
      - org.libreoffice.LibreOffice
      - org.js.nuclear.Nuclear
      - org.signal.Signal
+     - fr.handbrake.ghb
 
 - name: Ensure verify flatpaks
   shell: "flatpak repair"
