@@ -159,6 +159,7 @@
       - texlive-extra-utils
       - ca-certificates
       - codium
+      - hplip
     state: latest
     install_recommends: yes
 
@@ -177,7 +178,11 @@
       - master-pdf-editor
       - zotero-standalone
       - geogebra-classic
-      - libreoffice
+      - libreoffice-draw
+      - libreoffice-calc
+      - libreoffice-common
+      - libreoffice-impress
+      - libreoffice-writer
       - darktable
       - freecad
       - signal-desktop
