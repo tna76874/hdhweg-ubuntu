@@ -160,6 +160,7 @@
       - ca-certificates
       - codium
       - hplip
+      - libreoffice-common
     state: latest
     install_recommends: yes
 
@@ -180,7 +181,6 @@
       - geogebra-classic
       - libreoffice-draw
       - libreoffice-calc
-      - libreoffice-common
       - libreoffice-impress
       - libreoffice-writer
       - darktable
