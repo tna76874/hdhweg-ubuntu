@@ -41,6 +41,7 @@
      - org.js.nuclear.Nuclear
      - org.signal.Signal
      - fr.handbrake.ghb
+     - ch.openboard.OpenBoard
 
 - name: Ensure verify flatpaks
   shell: "flatpak repair"
