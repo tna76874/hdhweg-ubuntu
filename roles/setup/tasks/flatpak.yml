@@ -42,6 +42,7 @@
      - org.signal.Signal
      - fr.handbrake.ghb
      - ch.openboard.OpenBoard
+     - fr.romainvigier.MetadataCleaner
 
 - name: Ensure verify flatpaks
   shell: "flatpak repair"
