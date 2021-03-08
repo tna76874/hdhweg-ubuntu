@@ -1,0 +1,16 @@
+---
+- name: Ensure python3 and pip3
+  apt:
+    name:
+      - python3
+      - python3-pip
+      - gir1.2-poppler-0.18
+    state: latest
+    install_recommends: yes
+
+- name: Ensure mat2 is installed
+  pip:
+    name: mat2
+    executable: pip3
+    state: present
+  become: true

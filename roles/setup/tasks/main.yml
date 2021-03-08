@@ -4,3 +4,5 @@
 - import_tasks: flatpak.yml
 
 - import_tasks: snap.yml
+
+- import_tasks: misc.yml
