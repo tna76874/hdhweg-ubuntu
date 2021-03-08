@@ -31,3 +31,10 @@
     dest: "/home/{{ item }}/.local/share/nautilus/scripts/img2pdf"
     mode: 0755
   with_items: "{{ ubuntu_users.stdout_lines }}"
+
+- name: Ensure nautilus script to anonymize files
+  template:
+    src: "anonymisieren"
+    dest: "/home/{{ item }}/.local/share/nautilus/scripts/anonymisieren"
+    mode: 0755
+  with_items: "{{ ubuntu_users.stdout_lines }}"
