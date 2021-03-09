@@ -163,7 +163,6 @@
       - libreoffice-common
       - python3
       - python3-pip
-      - ttf-mscorefonts-installer
     state: latest
     install_recommends: yes
 
