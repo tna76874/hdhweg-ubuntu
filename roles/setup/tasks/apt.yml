@@ -91,6 +91,7 @@
       - git
       - sudo
       - htop
+      - bmon
       - vim
       - nano
       - nautilus
