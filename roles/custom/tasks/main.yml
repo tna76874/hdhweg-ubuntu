@@ -41,6 +41,9 @@
       - icc-profiles
       - liblocale-codes-perl
       - gscan2pdf
+      - octave
+      - octave-doc
+      - gnuplot 
       - virtualbox
       - virtualbox-qt
       - virtualbox-dkms
