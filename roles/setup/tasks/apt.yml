@@ -188,6 +188,7 @@
       - darktable
       - freecad
       - signal-desktop
+      - restic
     state: absent
 
 - name: Ensure packages for ubuntu => 20

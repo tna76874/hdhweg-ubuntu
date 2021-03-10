@@ -5,6 +5,12 @@
       - pdftk
   ignore_errors: yes
 
+- name: Ensure classic snap packages present
+  snap:
+    name:
+      - restic
+    classic: yes
+
 - name: Ensure snap packages absent
   snap:
     name:
