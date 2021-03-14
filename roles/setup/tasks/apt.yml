@@ -108,8 +108,6 @@
       - poppler-utils
       - chromium-browser
       - chromium-codecs-ffmpeg-extra
-      - gimp
-      - inkscape
       - ocrmypdf
       - tesseract-ocr
       - tesseract-ocr-deu
@@ -182,6 +180,8 @@
       - freecad
       - signal-desktop
       - restic
+      - gimp
+      - inkscape
     state: absent
 
 - name: Ensure packages for ubuntu => 20

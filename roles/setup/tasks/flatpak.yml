@@ -43,6 +43,8 @@
      - fr.handbrake.ghb
      - ch.openboard.OpenBoard
      - fr.romainvigier.MetadataCleaner
+     - org.gimp.GIMP
+     - org.inkscape.Inkscape
 
 - name: Ensure verify flatpaks
   shell: "flatpak repair"
