@@ -163,6 +163,7 @@
       - python3-pip
       - veracrypt
       - simple-scan
+      - nautilus-wipe
     state: latest
     install_recommends: yes
 
