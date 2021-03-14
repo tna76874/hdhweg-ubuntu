@@ -45,7 +45,6 @@
 - name: Ensure veracrypt ppa
   apt_repository:
     repo: ppa:unit193/encryption
-  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
 
 - name: Ensure no unstable xournal ppa is present
   apt_repository:
@@ -78,7 +77,7 @@
   apt:
     upgrade: dist
 
-- name: Ensure packages (all ubuntu versions)
+- name: Ensure packages (this might take a looooong time)
   apt:
     name:
       - curl
@@ -164,16 +163,9 @@
       - libreoffice-common
       - python3
       - python3-pip
-    state: latest
-    install_recommends: yes
-
-- name: Ensure packages for ubuntu < 20
-  apt:
-    name:
       - veracrypt
     state: latest
     install_recommends: yes
-  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
 
 - name: Ensure packages absent
   apt:
