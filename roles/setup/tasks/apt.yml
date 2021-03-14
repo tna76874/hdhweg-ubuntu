@@ -82,6 +82,7 @@
     name:
       - curl
       - openssh-server
+      - gparted
       - byobu
       - snapd
       - zsh
@@ -145,7 +146,6 @@
       - inxi
       - txt2html
       - wkhtmltopdf
-      - gnome-shell-extensions
       - chrome-gnome-shell
       - nextcloud-client
       - qtqr
