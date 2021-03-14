@@ -162,6 +162,7 @@
       - python3
       - python3-pip
       - veracrypt
+      - simple-scan
     state: latest
     install_recommends: yes
 
