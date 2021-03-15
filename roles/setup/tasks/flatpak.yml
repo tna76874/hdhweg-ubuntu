@@ -31,6 +31,7 @@
      - com.teamspeak.TeamSpeak
      - net.codeindustry.MasterPDFEditor
      - com.github.Eloston.UngoogledChromium
+     - org.chromium.Chromium
      - com.github.xournalpp.xournalpp
      - com.belmoussaoui.Decoder
      - info.mumble.Mumble

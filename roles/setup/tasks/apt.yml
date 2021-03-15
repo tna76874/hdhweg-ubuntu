@@ -111,7 +111,6 @@
       - inxi
       - txt2html
       - wkhtmltopdf
-      - chrome-gnome-shell
       - nextcloud-client
       - qtqr
       - macchanger
@@ -149,6 +148,8 @@
       - restic
       - gimp
       - inkscape
+      - chromium-browser
+      - chromium-codecs-ffmpeg-extra
     state: absent
 
 - name: Ensure packages for ubuntu => 20
