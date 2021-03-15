@@ -1,81 +1,48 @@
 ---
-- name: Ensure nextcloud-client ppa
+- name: Ensure ppa's states
   apt_repository:
-    repo: ppa:nextcloud-devs/client
+    repo: "{{ item.ppa }}"
+    state: "{{ item.state }}"
+  loop:
+    - { ppa: "ppa:nextcloud-devs/client", state: "present"}
+    - { ppa: "ppa:ubuntu-mozilla-security/ppa", state: "present"}
+    - { ppa: "ppa:unit193/encryption", state: "present"}
+    - { ppa: "ppa:andreasbutti/xournalpp-master", state: "absent"}
+    - { ppa: "ppa:apandada1/xournalpp-stable", state: "absent"}
+    - { ppa: "ppa:smathot/cogscinl", state: "absent"}
 
-- name: Ensure absent geogebra repository
+- name: Ensure ppa's states (< Ubuntu 20)
   apt_repository:
-    repo: deb http://www.geogebra.net/linux/ stable main
-    state: absent
-    filename: geogebra
-
-- name: Add VScodium key
-  apt_key:
-    url: https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg
-    state: present
-
-- name: Add VScodium repository
-  apt_repository:
-    repo: deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main
-    state: present
-    filename: vscodium
-
-- name: Add teamviewer key
-  apt_key:
-    url: https://download.teamviewer.com/download/linux/signature/TeamViewer2017.asc
-    state: present
-  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int <= 20
-
-- name: Add teamviewer repository
-  apt_repository:
-    repo: deb http://linux.teamviewer.com/deb stable main
-    state: present
-    filename: teamviewer
-  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int <= 20
-
-- name: Ensure thunderbird ppa
-  apt_repository:
-    repo: ppa:ubuntu-mozilla-security/ppa
-
-- name: Ensure recoll ppa
-  apt_repository:
-    repo: ppa:recoll-backports/recoll-1.15-on
+    repo: "{{ item.ppa }}"
+    state: "{{ item.state }}"
+  loop:
+    - { ppa: "ppa:recoll-backports/recoll-1.15-on", state: "present"}
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
 
-- name: Ensure veracrypt ppa
-  apt_repository:
-    repo: ppa:unit193/encryption
+- name: Ensure key states
+  apt_key:
+    url: "{{ item.url }}"
+    state: "{{ item.state }}"
+  loop:
+    - { url: "https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg", state: "present"}
+    - { url: "https://download.teamviewer.com/download/linux/signature/TeamViewer2017.asc", state: "present"}
 
-- name: Ensure no unstable xournal ppa is present
+- name: Ensure source states
   apt_repository:
-    repo: ppa:andreasbutti/xournalpp-master
-    state: absent
-  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int <= 20
+    repo: "{{ item.repo }}"
+    state: "{{ item.state }}"
+    filename: "{{ item.filename }}"
+  loop:
+    - { repo: "deb http://www.geogebra.net/linux/ stable main", state: "absent", filename: "geogebra"}
+    - { repo: "deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main", state: "present", filename: "vscodium"}
+    - { repo: "deb http://linux.teamviewer.com/deb stable main", state: "present", filename: "teamviewer"}
 
-- name: Ensure no xournal ppa is present
-  apt_repository:
-    repo: ppa:apandada1/xournalpp-stable
-    state: absent
 
-- name: Ensure zotero ppa
-  apt_repository:
-    repo: ppa:smathot/cogscinl
-    state: absent
-
-- name: Update apt
+- name: Update apt (this might take a long time)
   apt:
     update_cache: yes
     cache_valid_time: 3600
     upgrade: safe
-
-- name: Upgrade all apt packages to the latest version
-  apt:
-    name: "*"
-    state: latest
-
-- name: Update all dist packages to the latest version
-  apt:
-    upgrade: dist
 
 - name: Ensure packages (this might take a looooong time)
   apt:
@@ -107,8 +74,6 @@
       - audacious
       - audacious-plugins
       - poppler-utils
-      - chromium-browser
-      - chromium-codecs-ffmpeg-extra
       - ocrmypdf
       - tesseract-ocr
       - tesseract-ocr-deu
@@ -167,7 +132,7 @@
     state: latest
     install_recommends: yes
 
-- name: Ensure packages absent
+- name: Ensure apt packages absent
   apt:
     name:
       - xournalpp
