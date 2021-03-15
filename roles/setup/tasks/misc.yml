@@ -8,9 +8,11 @@
     state: latest
     install_recommends: yes
 
-- name: Ensure mat2 is installed
+- name: Ensure pip packages
   pip:
-    name: mat2
-    executable: pip3
-    state: present
+    name: "{{ item.name }}"
+    executable: "{{ item.executable }}"
+    state: "{{ item.state }}"
   become: true
+  loop:
+    - { name: "mat2", executable: "pip3", state: "present"}
