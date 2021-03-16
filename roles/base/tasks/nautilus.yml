@@ -18,6 +18,13 @@
     mode: 0755
   with_items: "{{ ubuntu_users.stdout_lines }}"
 
+- name: Ensure nautilus script to improve scanned documents
+  template:
+    src: "scans_verbessern"
+    dest: "/home/{{ item }}/.local/share/nautilus/scripts/scans_verbessern"
+    mode: 0755
+  with_items: "{{ ubuntu_users.stdout_lines }}"
+
 - name: Ensure nautilus script to merge pdf documents
   template:
     src: "pdf_zusammenfassen"
