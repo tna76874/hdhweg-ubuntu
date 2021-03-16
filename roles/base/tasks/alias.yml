@@ -4,78 +4,6 @@
   changed_when: false 
   register: ubuntu_users
 
-- name: Ensure update alias in bashrc of new create user
-  lineinfile:
-    path: "/etc/skel/.bashrc"
-    regexp: '^alias update=(.*)$'
-    line: alias update="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml"
-
-- name: Ensure update alias not present in bashrc of existing users
-  lineinfile:
-    path: "/home/{{ item }}/.bashrc"
-    regexp: '^alias update=(.*)$'
-    line: alias update="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml"
-    owner: "{{ item }}"
-    group: "{{ item }}"
-    state: absent
-  with_items: "{{ ubuntu_users.stdout_lines }}"
-
-- name: Ensure hardware specs in bashrc of new create user
-  lineinfile:
-    path: "/etc/skel/.bashrc"
-    regexp: '^alias hwpdf=(.*)$'
-    line: alias hwpdf="{ date ; sudo inxi -Fx -c 0; } | txt2html | wkhtmltopdf - ~/Downloads/SYSTEMINFO.pdf"
-    state: absent
-
-- name: Ensure hardware specs alias not present in bashrc of existing users
-  lineinfile:
-    path: "/home/{{ item }}/.bashrc"
-    regexp: '^alias hwpdf=(.*)$'
-    line: alias hwpdf="{ date ; sudo inxi -Fx -c 0; } | txt2html | wkhtmltopdf - ~/Downloads/SYSTEMINFO.pdf"
-    owner: "{{ item }}"
-    group: "{{ item }}"
-    state: absent
-  with_items: "{{ ubuntu_users.stdout_lines }}"
-
-- name: Ensure update alias not present in bashrc of existing users
-  lineinfile:
-    path: "/home/{{ item }}/.bashrc"
-    regexp: '^alias bigupdate=(.*)$'
-    line: alias bigupdate="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/custom.yml"
-    owner: "{{ item }}"
-    group: "{{ item }}"
-    state: absent
-  with_items: "{{ ubuntu_users.stdout_lines }}"
-
-- name: Ensure teamviewer daemon enable alias not present in bashrc of existing users
-  lineinfile:
-    path: "/home/{{ item }}/.bashrc"
-    regexp: '^alias twstart=(.*)$'
-    line: alias twstart="sudo killall /opt/teamviewer/tv_bin/TeamViewer; sudo teamviewer daemon enable"
-    owner: "{{ item }}"
-    group: "{{ item }}"
-    state: absent
-  with_items: "{{ ubuntu_users.stdout_lines }}"
-
-- name: Ensure reinstall alias not present in bashrc of existing users
-  lineinfile:
-    path: "/home/{{ item }}/.bashrc"
-    regexp: '^alias reinstall=(.*)$'
-    line: alias reinstall="wget -qO setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh  && sudo bash setup.sh && rm setup.sh"
-    owner: "{{ item }}"
-    group: "{{ item }}"
-    state: absent
-  with_items: "{{ ubuntu_users.stdout_lines }}"
-
-- name: Ensure repair alias not present in bashrc of existing users
-  lineinfile:
-    path: "/home/{{ item }}/.bashrc"
-    regexp: '^alias repair=(.*)$'
-    line: alias repair="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/main.yml --tags repair"
-    owner: "{{ item }}"
-    group: "{{ item }}"
-    state: absent
-  with_items: "{{ ubuntu_users.stdout_lines }}"
 
 - name: Ensure .wegrc integrated in .bashrc of existing users
   lineinfile:
@@ -124,6 +52,12 @@
     owner: root
     group: root
     mode: 0644
+
+- name: Ensure update alias in bashrc of new create user
+  lineinfile:
+    path: "/etc/skel/.bashrc"
+    regexp: '^alias update=(.*)$'
+    line: alias update="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/main.yml -t setup"
 
 - name: Ensure update desktop entry
   template:

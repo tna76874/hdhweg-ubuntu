@@ -7,13 +7,22 @@
   ignore_errors: yes
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int <= 20
 
-- name: running ansible playbook at reboot to make sure settings are as they should be
+- name: cleanup cron entry
   cron:
     name: "running ansible playbook at reboot"
     special_time: reboot
     job: "(sleep 15m; cd /root/hdhweg-ubuntu; ansible-playbook main.yml > /dev/null 2>&1)&"
     user: root
+    state: absent
+
+- name: Ensuring cron file - running base script 15min after reboot
+  cron:
+    name: "running ansible playbook at reboot"
+    special_time: reboot
+    job: "(sleep 15m; cd /root/hdhweg-ubuntu; ansible-playbook main.yml -t base > /dev/null 2>&1)&"
+    user: root
     state: present
+    cron_file: hdhweg_maintenance
 
 - name: Ensure anaconda install script
   template:

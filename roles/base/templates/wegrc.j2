@@ -1,14 +1,14 @@
 # run the main playbook to ensure updated packages and proper configs
-alias update="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml"
+alias update="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/main.yml -t setup"
 
 # run the main playbook + enhanced packages
-alias bigupdate="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/custom.yml"
+alias bigupdate="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/main.yml -t custom"
 
 # install docker
-alias install_docker="sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml -t docker"
+alias install_docker="sudo ansible-playbook /root/hdhweg-ubuntu/main.yml -t docker"
 
 # install webcam tools
-alias install_webcam="sudo ansible-playbook /root/hdhweg-ubuntu/setup.yml -t webcam"
+alias install_webcam="sudo ansible-playbook /root/hdhweg-ubuntu/main.yml -t webcam"
 
 # build fakecam docker image
 alias build_fakecam="docker-compose -f /srv/webcam/fakecam/docker-compose.yml --env-file /srv/webcam/fakecam/docker_defaults.env build --no-cache --pull"

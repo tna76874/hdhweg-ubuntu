@@ -1,8 +1,14 @@
 ---
+- hosts: localhost
+  collections:
+    - community.general
+
 - name: Repair system
   hosts: localhost
   become: yes
-  tags: [ 'never', 'repair' ]
+  tags: 
+    - never
+    - repair
   roles:
     - repair
 
@@ -14,3 +20,67 @@
   roles:
     - base
 
+- name: Initial setup and update routine
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - setup
+  roles:
+    - repair
+    - base
+    - setup
+    - security
+
+- name: Custom Setup
+  hosts: localhost
+  become: yes
+  tags:
+    - custom
+    - never
+  roles:
+    - repair
+    - base
+    - setup
+    - security
+    - custom
+    - docker
+    - webcam
+
+- name: Install Docker
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - docker
+  roles:
+    - docker
+
+- name: Install Webcam Tools
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - webcam
+  roles:
+    - repair
+    - docker
+    - webcam
+
+- name: Enable automatic pulls from the git repository
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - au_enable
+  roles:
+    - autoupdate_enable
+
+- name: Disable automatic pulls from the git repository
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - au_disable
+  roles:
+    - autoupdate_disable
