@@ -67,7 +67,6 @@
     state: present
   with_items:
      - org.zotero.Zotero
-     - com.github.tchx84.Flatseal
      - io.github.Soundux
      - org.darktable.Darktable
      - org.freecadweb.FreeCAD

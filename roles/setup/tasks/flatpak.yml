@@ -46,6 +46,7 @@
      - fr.romainvigier.MetadataCleaner
      - org.gimp.GIMP
      - org.inkscape.Inkscape
+     - com.github.tchx84.Flatseal
 
 - name: Ensure verify flatpaks
   shell: "flatpak repair"
