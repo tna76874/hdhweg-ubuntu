@@ -150,6 +150,7 @@
       - inkscape
       - chromium-browser
       - chromium-codecs-ffmpeg-extra
+      - firefox
     state: absent
 
 - name: Ensure packages for ubuntu => 20

@@ -17,6 +17,8 @@
       - mumble
       - code
       - rambox
+      - firefox
+      - chromium
     state: absent
   ignore_errors: yes
 
