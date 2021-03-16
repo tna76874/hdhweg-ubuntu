@@ -36,7 +36,7 @@ wget -qO- https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/instal
 when you want to install [additional software packages](roles/custom/tasks/main.yml):
 
 ```bash
-wget -qO setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh && sudo bash setup.sh custom.yml && rm setup.sh
+wget -qO setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh && sudo bash setup.sh custom && rm setup.sh
 ```
 
 #### Custom commands
@@ -48,26 +48,12 @@ With this configuration a few custom console commands are defined. These will be
 By default automatic pulls from this git repository gets triggered 10 minutes after each system startup. To switch off this feature, type in terminal:
 
 ```bash
-sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/autoupdate.yml --tags disable
+sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/main.yml -t au_disable
 ```
 
 #### Package management
 
 This repository uses `apt`, `snap` and `flatpak` as package management systems. If possible, a flatpak version is preferred. 
-
-#### Extra: manual TeamSpeak install
-
-TeamSpeak is included in the flatpak packages. If you want, you can also install TeamSpeak manually. Type in a terminal after the setup playbook completed:
-
-```bash
-/srv/install_ts.sh
-```
-
-If you want to prepare a Ubuntu image you can also install TeamSpeak into /srv.
-
-```bash
-sudo /srv/install_ts.sh /srv
-```
 
 ## Updates and maintenance
 
