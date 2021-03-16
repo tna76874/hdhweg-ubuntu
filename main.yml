@@ -20,6 +20,16 @@
   roles:
     - base
 
+- name: Packages to deploy as installation image
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - deploy
+  roles:
+    - base
+    - deploy
+
 - name: Initial setup and update routine
   hosts: localhost
   become: yes
