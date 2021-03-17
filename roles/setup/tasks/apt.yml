@@ -179,6 +179,9 @@
     deb: "{{ duplicati_deb[0]['browser_download_url'] }}"
   ignore_errors: yes
 
+- name: Update all dist packages to the latest version
+  apt:
+    upgrade: dist
 
 - name: Remove dependencies that are no longer required
   apt:
