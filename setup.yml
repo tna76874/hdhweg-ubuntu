@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  collections:
+    - community.general
+
+- name: Initial setup and update routine
+  hosts: localhost
+  become: yes
+  tags:
+    - setup
+  roles:
+    - repair
+    - base
+    - setup
+    - security
