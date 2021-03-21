@@ -129,6 +129,7 @@
       - veracrypt
       - simple-scan
       - nautilus-wipe
+      - usb-creator-gtk
     state: latest
     install_recommends: yes
 
