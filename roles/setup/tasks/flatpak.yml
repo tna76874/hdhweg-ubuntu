@@ -48,6 +48,7 @@
      - org.inkscape.Inkscape
      - com.github.tchx84.Flatseal
      - org.mozilla.firefox
+     - org.audacityteam.Audacity
 
 - name: Ensure verify flatpaks
   shell: "flatpak repair"
