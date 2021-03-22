@@ -37,9 +37,15 @@
       - python3-pip
     state: present
 
-- name: Ensure pip is up-to-date
-  shell: "pip3 install --upgrade pip"
-  become: yes
+- name: Ensure pip packages
+  pip:
+    name: "{{ item.name }}"
+    executable: "{{ item.executable }}"
+    state: "{{ item.state }}"
+  become: true
+  loop:
+    - { name: "pip", executable: "pip3", state: "latest"}
+    - { name: "requests", executable: "pip3", state: "latest"}
 
 - name: Ensure docker-compose installed
   pip:

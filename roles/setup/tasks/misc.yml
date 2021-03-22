@@ -16,4 +16,5 @@
     state: "{{ item.state }}"
   become: true
   loop:
-    - { name: "mat2", executable: "pip3", state: "present"}
+    - { name: "mat2", executable: "pip3", state: "latest"}
+    - { name: "requests", executable: "pip3", state: "latest"}
