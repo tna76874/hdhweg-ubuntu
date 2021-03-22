@@ -1,10 +1,11 @@
 ---
-- name: Ensure python3 and pip3
+- name: Ensure apt packages
   apt:
     name:
       - python3
       - python3-pip
       - gir1.2-poppler-0.18
+      - libimage-exiftool-perl
     state: latest
     install_recommends: yes
 

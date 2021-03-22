@@ -130,7 +130,6 @@
       - simple-scan
       - nautilus-wipe
       - usb-creator-gtk
-      - libimage-exiftool-perl
     state: latest
     install_recommends: yes
 
