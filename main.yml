@@ -40,6 +40,7 @@
     - repair
     - base
     - setup
+    - mbz
     - security
 
 - name: Custom Setup
@@ -76,6 +77,15 @@
     - repair
     - docker
     - webcam
+
+- name: Install mbz tool
+  hosts: localhost
+  become: yes
+  tags: 
+    - never
+    - mbz
+  roles:
+    - mbz
 
 - name: Enable automatic pulls from the git repository
   hosts: localhost

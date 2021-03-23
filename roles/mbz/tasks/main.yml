@@ -1,0 +1,31 @@
+---
+- name: Determine existing users
+  shell: 'cat /etc/passwd | grep /bin/bash | grep -v root | grep -v guest | cut -d: -f1'
+  changed_when: false 
+  register: ubuntu_users
+
+- name: Ensure mbztool repo
+  ansible.builtin.git:
+    repo: 'https://github.com/tna76874/mbztool.git'
+    dest: /srv/mbztool
+    force: yes
+
+- name: Ensure mbztool
+  template:
+    src: "/srv/mbztool/mbzbot.py"
+    dest: "/usr/local/bin/mbztool"
+    owner: root
+    group: root
+    mode: 0775
+
+- name: Ensure pip packages
+  pip:
+    requirements: /srv/mbztool/requirements.txt
+    executable: pip3
+
+- name: Ensure nautilus script
+  copy:
+    src: mbz
+    dest: "/home/{{ item }}/.local/share/nautilus/scripts/mbz"
+    mode: 0755
+  with_items: "{{ ubuntu_users.stdout_lines }}"
