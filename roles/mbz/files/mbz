@@ -1,2 +1,2 @@
 #!/bin/bash
-mbztool -f "$1" -c && rm "$1"
+mbztool -f "$1" -c
