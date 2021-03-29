@@ -159,6 +159,7 @@
   apt:
     name:
       - python-is-python3
+      - heif-gdk-pixbuf
     state: latest
     install_recommends: yes
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int == 20
