@@ -91,6 +91,7 @@
   hosts: localhost
   become: yes
   tags:
+    - never
     - fritzbox
   roles:
     - fritzbox
