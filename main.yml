@@ -87,6 +87,14 @@
   roles:
     - mbz
 
+- name: Deploy fritzbox tools
+  hosts: localhost
+  become: yes
+  tags:
+    - fritzbox
+  roles:
+    - fritzbox
+
 - name: Enable automatic pulls from the git repository
   hosts: localhost
   become: yes

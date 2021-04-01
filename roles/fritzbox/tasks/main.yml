@@ -1,0 +1,29 @@
+---
+- name: Register flatpak list
+  set_fact:
+    flatpak_list:
+     - org.tabos.roger
+
+- name: Install Roger Router packages
+  flatpak:
+    remote: flathub
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ flatpak_list }}"
+
+- name: Ensure flatpaks up-to-date
+  shell: "flatpak update -y {{ item }}"
+  become: yes
+  with_items: "{{ flatpak_list }}"
+
+- name: Check if roger router fax printer is installed
+  lineinfile:
+    name: /etc/cups/printers.conf
+    line: '<Printer Roger-Router-Fax>'
+    state: absent
+  check_mode: yes
+  become: yes
+  register: fax_printer
+  changed_when: not fax_printer.found
+  notify:
+    - fax printer

@@ -10,6 +10,9 @@ alias install_docker="sudo ansible-playbook /root/hdhweg-ubuntu/main.yml -t dock
 # install webcam tools
 alias install_webcam="sudo ansible-playbook /root/hdhweg-ubuntu/main.yml -t webcam"
 
+# install webcam tools
+alias install_fritzbox="sudo ansible-playbook /root/hdhweg-ubuntu/main.yml -t fritzbox"
+
 # build fakecam docker image
 alias build_fakecam="docker-compose -f /srv/webcam/fakecam/docker-compose.yml --env-file /srv/webcam/fakecam/docker_defaults.env build --no-cache --pull"
 

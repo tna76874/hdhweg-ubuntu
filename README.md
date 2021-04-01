@@ -119,3 +119,16 @@ sudo killall /opt/teamviewer/tv_bin/TeamViewer; sudo teamviewer daemon enable
 ```
 
 An alias for this command is `twstart`.
+
+#### Fritzbox
+
+[Roger Router](https://flathub.org/apps/details/org.tabos.roger) is an excellent addition if you already run a Fritzbox.
+
+```bash
+install_fritzbox
+```
+
+Check the documentation on [wiki.ubuntuusers.de](https://wiki.ubuntuusers.de/Fritzbox/Roger_Router/).
+
+* Dial with your DECT Phone: \#96\*3\*
+* Dial with your DECT Phone: \#96\*5\*

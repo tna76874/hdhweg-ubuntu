@@ -1,0 +1,4 @@
+---
+- name: fax printer
+  shell: "lpadmin -p Roger-Router-Fax -m drv:///sample.drv/generic.ppd -v socket://localhost:9100/ -E -o PageSize=A4"
+  become: yes
