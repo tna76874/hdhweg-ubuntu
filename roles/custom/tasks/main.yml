@@ -70,3 +70,9 @@
      - io.github.Soundux
      - org.darktable.Darktable
      - org.freecadweb.FreeCAD
+     - ink.scribl.Scribl
+     - ch.openboard.OpenBoard
+     - org.audacityteam.Audacity
+     - io.typora.Typora
+     - org.js.nuclear.Nuclear
+  

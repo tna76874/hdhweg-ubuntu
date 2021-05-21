@@ -26,29 +26,31 @@
 - name: Register flatpak list
   set_fact:
     flatpak_list:
+     # Media
      - io.freetubeapp.FreeTube
-     - io.typora.Typora
+     - fr.handbrake.ghb
+     - com.github.unrud.VideoDownloader
+     # Voice chat / communication
+     - org.signal.Signal
      - com.teamspeak.TeamSpeak
+     - info.mumble.Mumble
+     # Documants
      - net.codeindustry.MasterPDFEditor
+     - com.github.xournalpp.xournalpp
+     - com.github.jeromerobert.pdfarranger
+     - org.libreoffice.LibreOffice
+     - com.wps.Office
+     # Browser
      - com.github.Eloston.UngoogledChromium
      - org.chromium.Chromium
-     - com.github.xournalpp.xournalpp
+     - org.mozilla.firefox
+     # Miscellaneous
+     - com.github.tchx84.Flatseal
      - com.belmoussaoui.Decoder
-     - info.mumble.Mumble
-     - com.github.jeromerobert.pdfarranger
-     - ink.scribl.Scribl
      - org.geogebra.GeoGebra
-     - org.libreoffice.LibreOffice
-     - org.js.nuclear.Nuclear
-     - org.signal.Signal
-     - fr.handbrake.ghb
-     - ch.openboard.OpenBoard
      - fr.romainvigier.MetadataCleaner
      - org.gimp.GIMP
      - org.inkscape.Inkscape
-     - com.github.tchx84.Flatseal
-     - org.mozilla.firefox
-     - org.audacityteam.Audacity
 
 - name: Ensure verify flatpaks
   shell: "flatpak repair"
