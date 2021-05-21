@@ -56,6 +56,15 @@
   apt:
     autoremove: yes
 
+- name: Ensure flathub flatpak repository remotes
+  flatpak_remote:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+    flatpakrepo_url: "{{ item.repo }}"
+  loop:
+    - { repo: "https://dl.flathub.org/repo/flathub.flatpakrepo", name: "flathub", state: "present" }
+    - { repo: "https://flathub.org/beta-repo/flathub-beta.flatpakrepo", name: "flathub-beta", state: "present" }
+
 - name: Install flatpak packages
   flatpak:
     remote: flathub
@@ -73,3 +82,11 @@
      - org.js.nuclear.Nuclear
      - org.kde.kdenlive
      - net.scribus.Scribus
+
+- name: Install flatpak beta packages
+  flatpak:
+    remote: flathub-beta
+    name: "{{ item }}"
+    state: present
+  with_items:
+     - com.google.Chrome

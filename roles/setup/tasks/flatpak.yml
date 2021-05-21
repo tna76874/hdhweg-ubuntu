@@ -17,11 +17,13 @@
     state: latest
     install_recommends: yes
 
-- name: Add the flathub flatpak repository remote to the system installation
+- name: Ensure flathub flatpak repository remotes
   flatpak_remote:
-    name: flathub
-    state: present
-    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+    flatpakrepo_url: "{{ item.repo }}"
+  loop:
+    - { repo: "https://dl.flathub.org/repo/flathub.flatpakrepo", name: "flathub", state: "present" }
 
 - name: Register flatpak list
   set_fact:
