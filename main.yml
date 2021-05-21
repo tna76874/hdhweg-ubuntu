@@ -56,7 +56,6 @@
     - security
     - custom
     - docker
-    - webcam
 
 - name: Install Docker
   hosts: localhost
