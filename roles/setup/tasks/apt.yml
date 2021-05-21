@@ -153,6 +153,10 @@
       - chromium-browser
       - chromium-codecs-ffmpeg-extra
       - firefox
+      - kdenlive
+      - scribus
+      - scribus-doc
+      - scribus-template
     state: absent
 
 - name: Ensure packages for ubuntu => 20

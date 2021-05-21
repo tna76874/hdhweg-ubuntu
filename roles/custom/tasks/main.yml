@@ -28,16 +28,12 @@
       - texlive-full
       - texlive-extra-utils
       - texlive-latex-recommended
-      - kdenlive
       - libmp3lame-dev
       - libfaac-dev
       - libfaad-dev
       - libxvidcore4
       - swh-plugins
       - cubic
-      - scribus
-      - scribus-doc
-      - scribus-template
       - icc-profiles
       - liblocale-codes-perl
       - gscan2pdf
@@ -75,4 +71,5 @@
      - org.audacityteam.Audacity
      - io.typora.Typora
      - org.js.nuclear.Nuclear
-  
+     - org.kde.kdenlive
+     - net.scribus.Scribus
