@@ -1,0 +1,3 @@
+---
+# ensure teamviewer deamon is disabled at every startup
+disable_teamviewer: true
