@@ -1,4 +1,11 @@
 ---
+- name: Include vars file if present
+  include_vars: "{{ item }}"
+  with_first_found:
+    - files:
+        - vars.yml
+      skip: true
+
 - name: disable TeamViewer daemon
   systemd:
     name: teamviewerd.service
