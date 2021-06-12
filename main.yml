@@ -3,6 +3,19 @@
   collections:
     - community.general
 
+- name: Import local configs
+  hosts: localhost
+  become: yes
+  tags:
+    - always
+  tasks:
+    - name: Include vars file if present
+      include_vars: "{{ item }}"
+      with_first_found:
+        - files:
+            - vars.yml
+          skip: true
+
 - name: Repair system
   hosts: localhost
   become: yes
