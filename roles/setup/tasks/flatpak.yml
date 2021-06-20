@@ -24,6 +24,7 @@
     flatpakrepo_url: "{{ item.repo }}"
   loop:
     - { repo: "https://dl.flathub.org/repo/flathub.flatpakrepo", name: "flathub", state: "present" }
+    - { repo: "https://flathub.org/beta-repo/flathub-beta.flatpakrepo", name: "flathub-beta", state: "present" }
 
 - name: Register flatpak list
   set_fact:
@@ -53,6 +54,14 @@
      - fr.romainvigier.MetadataCleaner
      - org.gimp.GIMP
      - org.inkscape.Inkscape
+
+- name: Install flatpak beta packages
+  flatpak:
+    remote: flathub-beta
+    name: "{{ item }}"
+    state: present
+  with_items:
+     - com.google.Chrome
 
 - name: Ensure verify flatpaks
   shell: "flatpak repair"
