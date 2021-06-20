@@ -55,14 +55,6 @@
      - org.gimp.GIMP
      - org.inkscape.Inkscape
 
-- name: Install flatpak beta packages
-  flatpak:
-    remote: flathub-beta
-    name: "{{ item }}"
-    state: present
-  with_items:
-     - com.google.Chrome
-
 - name: Ensure verify flatpaks
   shell: "flatpak repair"
   become: yes
@@ -73,6 +65,14 @@
     name: "{{ item }}"
     state: present
   with_items: "{{ flatpak_list }}"
+
+- name: Install flatpak beta packages
+  flatpak:
+    remote: flathub-beta
+    name: "{{ item }}"
+    state: present
+  with_items:
+     - com.google.Chrome
 
 - name: Ensure flatpaks up-to-date
   shell: "flatpak update -y {{ item }}"
