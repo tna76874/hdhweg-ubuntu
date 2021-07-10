@@ -33,11 +33,12 @@
      - io.freetubeapp.FreeTube
      - fr.handbrake.ghb
      - com.github.unrud.VideoDownloader
+     - org.flameshot.Flameshot
      # Voice chat / communication
      - org.signal.Signal
      - com.teamspeak.TeamSpeak
      - info.mumble.Mumble
-     # Documants
+     # Documents
      - net.codeindustry.MasterPDFEditor
      - com.github.xournalpp.xournalpp
      - com.github.jeromerobert.pdfarranger
