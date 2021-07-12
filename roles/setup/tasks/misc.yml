@@ -18,3 +18,4 @@
   loop:
     - { name: "mat2", executable: "pip3", state: "latest"}
     - { name: "requests", executable: "pip3", state: "latest"}
+    - { name: "virtualenv", executable: "pip3", state: "latest"}
