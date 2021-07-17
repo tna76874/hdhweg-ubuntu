@@ -67,6 +67,14 @@ The update process for the bigger software bundle gets tiggered with `bigupdate`
 
 >**TL;DR**  --> Follow the ubuntu pop-ups to upgrade your system or type `update` in command line to trigger a system upgrade including latest update of this repo manually.
 
+## Uninstall
+
+To remove the playbook from the system, just execute `uninstall`. Please note, that this command will not remove installed programms and apt-sources but only the playbook and the cronjobs.
+
+```bash
+uninstall
+```
+
 
 
 ## Documentation of hardware components
