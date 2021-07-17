@@ -25,3 +25,4 @@
 - name: Ensure snaps are refreshed
   shell: "snap refresh"
   become: yes
+  changed_when: false

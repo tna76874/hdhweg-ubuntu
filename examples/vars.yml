@@ -11,3 +11,8 @@ config_autopull_repo_time: "10m"
 # run basic role aftre after given time after startup
 config_autorun_base: true
 config_autorun_base_time: "15m"
+
+# define custom flatpaks to install
+config_custom_flatpak:
+  # - { package: "org.gimp.GIMP", repo: "flathub", state: present }
+  # - { package: "org.inkscape.Inkscape", repo: "flathub", state: present }

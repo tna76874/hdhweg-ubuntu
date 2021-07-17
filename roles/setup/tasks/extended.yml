@@ -56,29 +56,10 @@
   apt:
     autoremove: yes
 
-- name: Ensure flathub flatpak repository remotes
-  flatpak_remote:
-    name: "{{ item.name }}"
-    state: "{{ item.state }}"
-    flatpakrepo_url: "{{ item.repo }}"
-  loop:
-    - { repo: "https://dl.flathub.org/repo/flathub.flatpakrepo", name: "flathub", state: "present" }
-    - { repo: "https://flathub.org/beta-repo/flathub-beta.flatpakrepo", name: "flathub-beta", state: "present" }
-
-- name: Install flatpak packages
+- name: Install extended flatpak packages
   flatpak:
-    remote: flathub
-    name: "{{ item }}"
-    state: present
-  with_items:
-     - org.zotero.Zotero
-     - io.github.Soundux
-     - org.darktable.Darktable
-     - org.freecadweb.FreeCAD
-     - ink.scribl.Scribl
-     - ch.openboard.OpenBoard
-     - org.audacityteam.Audacity
-     - io.typora.Typora
-     - org.js.nuclear.Nuclear
-     - org.kde.kdenlive
-     - net.scribus.Scribus
+    remote: "{{ item.repo }}"
+    name: "{{ item.package }}"
+    state: "{{ item.state }}"
+  with_items: "{{ config_flatpak_list_extended }}"
+  when: config_flatpak_list_extended != None

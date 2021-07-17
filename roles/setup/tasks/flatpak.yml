@@ -26,56 +26,27 @@
     - { repo: "https://dl.flathub.org/repo/flathub.flatpakrepo", name: "flathub", state: "present" }
     - { repo: "https://flathub.org/beta-repo/flathub-beta.flatpakrepo", name: "flathub-beta", state: "present" }
 
-- name: Register flatpak list
-  set_fact:
-    flatpak_list:
-     # Media
-     - io.freetubeapp.FreeTube
-     - fr.handbrake.ghb
-     - com.github.unrud.VideoDownloader
-     - org.flameshot.Flameshot
-     # Voice chat / communication
-     - org.signal.Signal
-     - com.teamspeak.TeamSpeak
-     - info.mumble.Mumble
-     # Documents
-     - net.codeindustry.MasterPDFEditor
-     - com.github.xournalpp.xournalpp
-     - com.github.jeromerobert.pdfarranger
-     - org.libreoffice.LibreOffice
-     - com.wps.Office
-     # Browser
-     - com.github.Eloston.UngoogledChromium
-     - org.chromium.Chromium
-     - org.mozilla.firefox
-     # Miscellaneous
-     - com.github.tchx84.Flatseal
-     - com.belmoussaoui.Decoder
-     - org.geogebra.GeoGebra
-     - fr.romainvigier.MetadataCleaner
-     - org.gimp.GIMP
-     - org.inkscape.Inkscape
-
 - name: Ensure verify flatpaks
   shell: "flatpak repair"
   become: yes
 
 - name: Install flatpak packages
   flatpak:
-    remote: flathub
-    name: "{{ item }}"
-    state: present
-  with_items: "{{ flatpak_list }}"
+    remote: "{{ item.repo }}"
+    name: "{{ item.package }}"
+    state: "{{ item.state }}"
+  with_items: "{{ config_flatpak_list }}"
+  when: config_flatpak_list != None
 
-- name: Install flatpak beta packages
+- name: Install custom flatpak packages
   flatpak:
-    remote: flathub-beta
-    name: "{{ item }}"
-    state: present
-  with_items:
-     - com.google.Chrome
+    remote: "{{ item.repo }}"
+    name: "{{ item.package }}"
+    state: "{{ item.state }}"
+  with_items: "{{ config_custom_flatpak }}"
+  when: config_custom_flatpak != None
 
 - name: Ensure flatpaks up-to-date
-  shell: "flatpak update -y {{ item }}"
+  shell: "flatpak update -y {{ item.package }}"
   become: yes
-  with_items: "{{ flatpak_list }}"
+  with_items: "{{ config_flatpak_list }}"
