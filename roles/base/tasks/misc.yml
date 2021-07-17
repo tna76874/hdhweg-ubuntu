@@ -7,6 +7,15 @@
     update: yes
   changed_when: false
 
+- name: Ensure vars.yml
+  ansible.builtin.copy:
+    src: "{{ config_repo_folder }}/examples/vars.yml"
+    dest: "{{ config_repo_folder }}/vars.yml"
+    owner: root
+    group: root
+    force: no
+  ignore_errors: yes
+
 - name: Include vars file if present
   include_vars: "{{ item }}"
   with_first_found:
