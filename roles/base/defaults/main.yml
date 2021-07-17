@@ -1,3 +1,10 @@
 ---
 # ensure teamviewer deamon is disabled at every startup
 disable_teamviewer: true
+# repo details
+config_repo_name: "tna76874/hdhweg-ubuntu"
+config_repo_url: "https://github.com/{{ config_repo_name }}.git"
+config_repo_branch: "master"
+config_repo_setup: "https://raw.githubusercontent.com/{{ config_repo_name }}/{{ config_repo_branch }}/setup.sh"
+# repo folder
+config_repo_folder: "/root/hdhweg-ubuntu"

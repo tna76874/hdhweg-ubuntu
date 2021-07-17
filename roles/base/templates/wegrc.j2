@@ -1,17 +1,17 @@
 # run the main playbook to ensure updated packages and proper configs
-alias update="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/main.yml -t setup"
+alias update="sudo git -C {{ config_repo_folder }} pull && sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup"
 
 # run the main playbook + enhanced packages
-alias bigupdate="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/main.yml -t custom"
+alias bigupdate="sudo git -C {{ config_repo_folder }} pull && sudo ansible-playbook {{ config_repo_folder }}/main.yml -t custom"
 
 # install docker
-alias install_docker="sudo ansible-playbook /root/hdhweg-ubuntu/main.yml -t docker"
+alias install_docker="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t docker"
 
 # install webcam tools
-alias install_webcam="sudo ansible-playbook /root/hdhweg-ubuntu/main.yml -t webcam"
+alias install_webcam="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t webcam"
 
 # install webcam tools
-alias install_fritzbox="sudo ansible-playbook /root/hdhweg-ubuntu/main.yml -t fritzbox"
+alias install_fritzbox="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t fritzbox"
 
 # build fakecam docker image
 alias build_fakecam="docker-compose -f /srv/webcam/fakecam/docker-compose.yml --env-file /srv/webcam/fakecam/docker_defaults.env build --no-cache --pull"
@@ -20,10 +20,10 @@ alias build_fakecam="docker-compose -f /srv/webcam/fakecam/docker-compose.yml --
 alias twstart="sudo killall /opt/teamviewer/tv_bin/TeamViewer; sudo teamviewer daemon enable"
 
 # if the git repos got somehow broken, with this command it gets deleted and cloned again.
-alias reinstall="wget -qO setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh  && sudo bash setup.sh && rm setup.sh"
+alias reinstall="wget -qO setup.sh {{ config_repo_setup }} && chmod +x setup.sh  && sudo bash setup.sh && rm setup.sh"
 
 # running some repair roles if the system got somehow busted
-alias repair="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/main.yml --tags repair"
+alias repair="sudo git -C {{ config_repo_folder }} pull && sudo ansible-playbook {{ config_repo_folder }}/main.yml --tags repair"
 
 # creating a pdf that contains hardware informations
 hwpdf() {
