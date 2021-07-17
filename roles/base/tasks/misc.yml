@@ -6,6 +6,8 @@
     clone: yes
     update: yes
   changed_when: false
+  ignore_errors: yes
+  when: config_ensure_repo|bool
 
 - name: Ensure vars.yml
   ansible.builtin.copy:

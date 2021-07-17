@@ -1,6 +1,9 @@
 # disable teamviewer daemon at startup
 disable_teamviewer: true
 
+# pulling latest changes of the git repo when running base role
+config_ensure_repo: true
+
 # pull all latest changes from the repo after given time after startup
 config_autopull_repo: true
 config_autopull_repo_time: "10m"
