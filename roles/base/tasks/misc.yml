@@ -18,7 +18,7 @@
   cron:
     name: "running ansible playbook at reboot"
     special_time: reboot
-    job: "(sleep 15m; cd /root/hdhweg-ubuntu; ansible-playbook main.yml > /dev/null 2>&1)&"
+    job: "(sleep 15m; cd {{ config_repo_folder }}; ansible-playbook main.yml > /dev/null 2>&1)&"
     user: root
     state: absent
 
@@ -26,7 +26,7 @@
   cron:
     name: "running ansible playbook at reboot"
     special_time: reboot
-    job: "(sleep 15m; cd /root/hdhweg-ubuntu; ansible-playbook main.yml -t base > /dev/null 2>&1)&"
+    job: "(sleep 15m; cd {{ config_repo_folder }}; ansible-playbook main.yml -t base > /dev/null 2>&1)&"
     user: root
     state: present
     cron_file: hdhweg_maintenance

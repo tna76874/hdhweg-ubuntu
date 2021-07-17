@@ -57,7 +57,7 @@
   lineinfile:
     path: "/etc/skel/.bashrc"
     regexp: '^alias update=(.*)$'
-    line: alias update="sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/main.yml -t setup"
+    line: alias update="sudo git -C {{ config_repo_folder }} pull && sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup"
 
 - name: Ensure update desktop entry
   template:
