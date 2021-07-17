@@ -56,20 +56,6 @@
     - mbz
     - security
 
-- name: Custom Setup
-  hosts: localhost
-  become: yes
-  tags:
-    - custom
-    - never
-  roles:
-    - repair
-    - base
-    - setup
-    - security
-    - custom
-    - docker
-
 - name: Install Docker
   hosts: localhost
   become: yes

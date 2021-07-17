@@ -6,3 +6,6 @@
 - import_tasks: snap.yml
 
 - import_tasks: misc.yml
+
+- import_tasks: extended.yml
+  when: config_extended_software|bool

@@ -1,8 +1,11 @@
 # run the main playbook to ensure updated packages and proper configs
 alias update="sudo git -C {{ config_repo_folder }} pull && sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup"
 
+# run the base playbook to ensure proper configs
+alias update_config="sudo git -C {{ config_repo_folder }} pull && sudo ansible-playbook {{ config_repo_folder }}/main.yml -t base"
+
 # run the main playbook + enhanced packages
-alias bigupdate="sudo git -C {{ config_repo_folder }} pull && sudo ansible-playbook {{ config_repo_folder }}/main.yml -t custom"
+alias bigupdate="sudo git -C {{ config_repo_folder }} pull && sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup -e config_extended_software=yes"
 
 # install docker
 alias install_docker="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t docker"
