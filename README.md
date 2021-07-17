@@ -43,13 +43,9 @@ wget -qO setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/maste
 
 With this configuration a few custom console commands are defined. These will be initialized within the `.bashrc` of every user. Check the details [here](roles/base/templates/wegrc.j2) .
 
-#### Automatic pulls
+#### Automatic pulls and updates
 
-By default automatic pulls from this git repository gets triggered 10 minutes after each system startup. To switch off this feature, type in terminal:
-
-```bash
-sudo git -C /root/hdhweg-ubuntu pull && sudo ansible-playbook /root/hdhweg-ubuntu/main.yml -t au_disable
-```
+By default automatic pulls from this git repository gets triggered 10 minutes after each system startup. 15 minutes after every reboot, the base role will be run once. To customize this behavior just copy `vars.yml` from the example folder to root level and adjust the values to your needs. 
 
 #### Package management
 

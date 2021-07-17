@@ -8,3 +8,11 @@ config_repo_branch: "master"
 config_repo_setup: "https://raw.githubusercontent.com/{{ config_repo_name }}/{{ config_repo_branch }}/setup.sh"
 # repo folder
 config_repo_folder: "/root/hdhweg-ubuntu"
+# cron options
+config_autopull_repo: true
+config_autopull_repo_time: "10m"
+config_autopull_repo_file: "autoupdate"
+
+config_autorun_base: true
+config_autorun_base_time: "15m"
+config_autorun_base_file: "hdhweg_maintenance"

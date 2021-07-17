@@ -23,6 +23,13 @@
     mode: 0644
   with_items: "{{ ubuntu_users.stdout_lines }}"
 
+- name: Ensure no update alias in bashrc of already present users
+  lineinfile:
+    path: "/home/{{ item }}/.bashrc"
+    regexp: '^alias update=(.*)$'
+    state: absent
+  with_items: "{{ ubuntu_users.stdout_lines }}"
+
 - name: Ensure .wegrc integrated in .bashrc of root user
   lineinfile:
     path: "/root/.bashrc"
@@ -74,3 +81,5 @@
   become_user: "{{ item }}"
   with_items: "{{ ubuntu_users.stdout_lines }}"
   ignore_errors: yes
+  changed_when: false
+

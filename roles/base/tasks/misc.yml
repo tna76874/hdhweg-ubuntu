@@ -1,10 +1,27 @@
 ---
+- name: Ensure git repo
+  ansible.builtin.git:
+    repo: "{{ config_repo_url }}"
+    dest: "{{ config_repo_folder }}"
+    clone: yes
+    update: yes
+  changed_when: false
+
 - name: Include vars file if present
   include_vars: "{{ item }}"
   with_first_found:
     - files:
         - vars.yml
       skip: true
+
+- name: Ensure autopull state
+  cron:
+    name: "pulling ansible playbook at reboot"
+    cron_file: "{{ config_autopull_repo_file }}"
+    special_time: reboot
+    job: "(sleep {{ config_autopull_repo_time }}; sudo git -C {{ config_repo_folder }} pull > /dev/null 2>&1)&"
+    user: root
+    state: "{% if config_autopull_repo|bool %}present{% else %}absent{% endif %}"
 
 - name: disable TeamViewer daemon
   systemd:
@@ -14,22 +31,22 @@
   ignore_errors: yes
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int <= 20 and disable_teamviewer
 
-- name: cleanup cron entry
-  cron:
-    name: "running ansible playbook at reboot"
-    special_time: reboot
-    job: "(sleep 15m; cd {{ config_repo_folder }}; ansible-playbook main.yml > /dev/null 2>&1)&"
-    user: root
-    state: absent
-
 - name: Ensuring cron file - running base script 15min after reboot
   cron:
     name: "running ansible playbook at reboot"
     special_time: reboot
-    job: "(sleep 15m; cd {{ config_repo_folder }}; ansible-playbook main.yml -t base > /dev/null 2>&1)&"
+    job: "(sleep {{ config_autorun_base_time }}; cd {{ config_repo_folder }}; ansible-playbook main.yml -t base > /dev/null 2>&1)&"
     user: root
-    state: present
-    cron_file: hdhweg_maintenance
+    state: "{% if config_autorun_base|bool %}present{% else %}absent{% endif %}"
+    cron_file: "{{ config_autorun_base_file }}"
+
+- name: Ensure cron file states
+  ansible.builtin.file:
+    path: "{{ item.file }}"
+    state: "{{ item.state }}"
+  loop:
+    - { file: "/etc/cron.d/{{ config_autopull_repo_file }}", state: "{% if config_autopull_repo|bool %}file{% else %}absent{% endif %}" }
+    - { file: "/etc/cron.d/{{ config_autorun_base_file }}", state: "{% if config_autorun_base|bool %}file{% else %}absent{% endif %}" }
 
 - name: Ensure anaconda install script
   template:
