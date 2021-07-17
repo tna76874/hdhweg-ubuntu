@@ -1,0 +1,70 @@
+---
+- name: Determine existing users
+  shell: 'cat /etc/passwd | grep /bin/bash | grep -v root | grep -v guest | cut -d: -f1'
+  changed_when: false 
+  register: ubuntu_users
+
+- name: Ensure .wegrc absent in .bashrc of existing users
+  lineinfile:
+    path: "/home/{{ item }}/.bashrc"
+    regexp: '^source "(.*)/.wegrc"$'
+    line: source "/home/{{ item }}/.wegrc"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    state: absent
+  with_items: "{{ ubuntu_users.stdout_lines }}"
+
+- name: Ensure .wegrc absent homefolders
+  ansible.builtin.file:
+    path: "/home/{{ item }}/.wegrc"
+    state: absent
+  with_items: "{{ ubuntu_users.stdout_lines }}"
+
+- name: Ensure .wegrc absent in .bashrc of root user
+  lineinfile:
+    path: "/root/.bashrc"
+    regexp: '^source "(.*)/.wegrc"$'
+    line: source "/root/.wegrc"
+    state: absent
+
+- name: Ensure .wegrc absent in root homefolder
+  ansible.builtin.file:
+    path: "/root/.wegrc"
+    state: absent
+
+- name: Ensure .wegrc absent in .bashrc of new create user
+  lineinfile:
+    path: "/etc/skel/.bashrc"
+    regexp: '^source "(.*)/.wegrc"$'
+    line: source "$HOME/.wegrc"
+    state: absent
+
+- name: Ensure .wegrc absent in skel folder
+  ansible.builtin.file:
+    path: "/etc/skel/.wegrc"
+    state: absent
+
+- name: Ensure update alias absent in bashrc of new create user
+  lineinfile:
+    path: "/etc/skel/.bashrc"
+    regexp: '^alias update=(.*)$'
+    line: alias update="sudo git -C {{ config_repo_folder }} pull && sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup"
+    state: absent
+
+- name: Ensure absent update desktop entry
+  ansible.builtin.file:
+    path: "/home/{{ item }}/Schreibtisch/update.desktop"
+    state: absent
+  with_items: "{{ ubuntu_users.stdout_lines }}"
+  ignore_errors: yes
+
+- name: Ensure absent files
+  ansible.builtin.file:
+    path: "{{ item.file }}"
+    state: absent
+  loop:
+    - { file: "/etc/cron.d/{{ config_autopull_repo_file }}" }
+    - { file: "/etc/cron.d/{{ config_autorun_base_file }}" }
+    - { file: "{{ config_repo_folder }}" }
+
+

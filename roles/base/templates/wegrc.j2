@@ -25,6 +25,9 @@ alias twstart="sudo killall /opt/teamviewer/tv_bin/TeamViewer; sudo teamviewer d
 # if the git repos got somehow broken, with this command it gets deleted and cloned again.
 alias reinstall="wget -qO setup.sh {{ config_repo_setup }} && chmod +x setup.sh  && sudo bash setup.sh && rm setup.sh"
 
+# uninstall this playbook from system
+alias uninstall="sudo git -C {{ config_repo_folder }} pull && sudo ansible-playbook {{ config_repo_folder }}/main.yml -t base -e config_uninstall_playbook=yes"
+
 # running some repair roles if the system got somehow busted
 alias repair="sudo git -C {{ config_repo_folder }} pull && sudo ansible-playbook {{ config_repo_folder }}/main.yml --tags repair"
 

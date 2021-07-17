@@ -1,8 +1,15 @@
 ---
 - import_tasks: misc.yml
+  when: not config_uninstall_playbook|bool
 
 - import_tasks: alias.yml
+  when: not config_uninstall_playbook|bool
 
 - import_tasks: firewall.yml
+  when: not config_uninstall_playbook|bool
 
 - import_tasks: nautilus.yml
+  when: not config_uninstall_playbook|bool
+
+- import_tasks: uninstall.yml
+  when: config_uninstall_playbook|bool
