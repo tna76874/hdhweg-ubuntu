@@ -14,6 +14,7 @@
       with_first_found:
         - files:
             - vars.yml
+            - /root/.config/vars_sysconfig.yml
           skip: true
 
 - name: Repair system

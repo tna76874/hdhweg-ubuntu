@@ -1,8 +1,8 @@
-# ubuntu homeschooling configuration
+# ubuntu desktop configuration
 
 ## Aim
 
-Sometimes there are PCs/Notebooks available but without an up-to-date operating system. The aim of this notebook is to find the balance between data protection and a “somehow managed" device running a free-of-charge open-source system.  With this playbook an Ubuntu system can be configured to the basic needs of homeschooling.
+Sometimes there are PCs/Notebooks available but without an up-to-date operating system. The aim of this notebook is to find the balance between data protection and a “somehow managed" device running a free-of-charge open-source system. 
 
 This repository is the counterpart to the [homeschooling server stack](https://github.com/tna76874/hdhweg-homeschooling-stack), that allows to easily set up a server with different collaborative open-source tools.
 
@@ -33,7 +33,7 @@ wget -qO- https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/instal
 
 **or**
 
-when you want to install [additional software packages](roles/custom/tasks/main.yml):
+when you want to install [additional software packages](roles/setup/tasks/extended.yml):
 
 ```bash
 wget -qO setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh && sudo bash setup.sh custom && rm setup.sh
@@ -48,7 +48,7 @@ With this configuration a few custom console commands are defined. These will be
 By default automatic pulls from this git repository gets triggered 10 minutes after each system startup. 15 minutes after every reboot, the base role will be run once. To customize this behavior just edit `vars.yml` to your needs. 
 
 ```bash
-sudo nano /root/hdhweg-ubuntu/vars.yml
+sudo nano /root/.config/vars_sysconfig.yml
 ```
 
 #### Package management

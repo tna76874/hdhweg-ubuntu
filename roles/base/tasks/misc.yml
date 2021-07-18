@@ -1,4 +1,12 @@
 ---
+- name: Include vars file if present
+  include_vars: "{{ item }}"
+  with_first_found:
+    - files:
+        - vars.yml
+        - /root/.config/vars_sysconfig.yml
+      skip: true
+
 - name: Ensure git repo
   ansible.builtin.git:
     repo: "{{ config_repo_url }}"
@@ -11,19 +19,12 @@
 
 - name: Ensure vars.yml
   ansible.builtin.copy:
-    src: "{{ config_repo_folder }}/examples/vars.yml"
-    dest: "{{ config_repo_folder }}/vars.yml"
+    src: "{{ playbook_dir }}/examples/vars.yml"
+    dest: "/root/.config/vars_sysconfig.yml"
     owner: root
     group: root
     force: no
   ignore_errors: yes
-
-- name: Include vars file if present
-  include_vars: "{{ item }}"
-  with_first_found:
-    - files:
-        - vars.yml
-      skip: true
 
 - name: Ensure autopull state
   cron:

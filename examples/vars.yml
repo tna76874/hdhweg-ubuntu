@@ -8,7 +8,7 @@ config_ensure_repo: true
 config_autopull_repo: true
 config_autopull_repo_time: "10m"
 
-# run basic role aftre after given time after startup
+# run basic role after given time after startup
 config_autorun_base: true
 config_autorun_base_time: "15m"
 
@@ -16,3 +16,52 @@ config_autorun_base_time: "15m"
 config_custom_flatpak:
   # - { package: "org.gimp.GIMP", repo: "flathub", state: present }
   # - { package: "org.inkscape.Inkscape", repo: "flathub", state: present }
+
+# # configure flatpaks
+# config_flatpak_list:
+#   # Media
+#   - { package: "io.freetubeapp.FreeTube", repo: "flathub", state: present }
+#   - { package: "com.github.unrud.VideoDownloader", repo: "flathub", state: present }
+#   - { package: "org.flameshot.Flameshot", repo: "flathub", state: present }
+#   - { package: "org.gimp.GIMP", repo: "flathub", state: present }
+#   - { package: "org.inkscape.Inkscape", repo: "flathub", state: present }
+#   # Voice chat / communication
+#   - { package: "com.teamspeak.TeamSpeak", repo: "flathub", state: present }
+#   # Documents
+#   - { package: "net.codeindustry.MasterPDFEditor", repo: "flathub", state: present }
+#   - { package: "com.github.xournalpp.xournalpp", repo: "flathub", state: present }
+#   - { package: "com.github.jeromerobert.pdfarranger", repo: "flathub", state: present }
+#   - { package: "org.libreoffice.LibreOffice", repo: "flathub", state: present }
+#   # Browser
+#   - { package: "org.chromium.Chromium", repo: "flathub", state: present }
+#   - { package: "org.mozilla.firefox", repo: "flathub", state: present }
+#   - { package: "com.google.Chrome", repo: "flathub-beta", state: present }
+#   # Miscellaneous
+#   - { package: "com.github.tchx84.Flatseal", repo: "flathub", state: present }
+#   - { package: "com.belmoussaoui.Decoder", repo: "flathub", state: present }
+#   - { package: "org.geogebra.GeoGebra", repo: "flathub", state: present }
+#   - { package: "org.keepassxc.KeePassXC", repo: "flathub", state: present }
+
+# config_flatpak_list_extended:
+#   # Media
+#   - { package: "org.darktable.Darktable", repo: "flathub", state: present }
+#   - { package: "org.freecadweb.FreeCAD", repo: "flathub", state: present }
+#   - { package: "ink.scribl.Scribl", repo: "flathub", state: present }
+#   - { package: "org.audacityteam.Audacity", repo: "flathub", state: present }
+#   - { package: "org.js.nuclear.Nuclear", repo: "flathub", state: present }
+#   - { package: "org.kde.kdenlive", repo: "flathub", state: present }
+#   - { package: "fr.handbrake.ghb", repo: "flathub", state: present }
+#   # Voice chat / communication
+#   - { package: "io.github.Soundux", repo: "flathub", state: present }
+#   - { package: "info.mumble.Mumble", repo: "flathub", state: present }
+#   - { package: "org.signal.Signal", repo: "flathub", state: present }
+#   # Documents
+#   - { package: "ch.openboard.OpenBoard", repo: "flathub", state: present }
+#   - { package: "io.typora.Typora", repo: "flathub", state: present }
+#   - { package: "net.scribus.Scribus", repo: "flathub", state: present }
+#   - { package: "com.wps.Office", repo: "flathub", state: present }
+#   # Browser
+#   - { package: "com.github.Eloston.UngoogledChromium", repo: "flathub", state: present }
+#   # Miscellaneous
+#   - { package: "org.zotero.Zotero", repo: "flathub", state: present }
+#   - { package: "fr.romainvigier.MetadataCleaner", repo: "flathub", state: present }
