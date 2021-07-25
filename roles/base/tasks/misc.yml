@@ -12,9 +12,6 @@
   set_fact:
     ubuntu_users_reg: "{{ ubuntu_users }}"
 
-- debug:
-    var: ubuntu_users
-
 - name: Include vars file if present
   include_vars: "{{ item }}"
   with_first_found:
