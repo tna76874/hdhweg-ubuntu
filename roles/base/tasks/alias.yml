@@ -1,10 +1,4 @@
 ---
-- name: Determine existing users
-  shell: 'cat /etc/passwd | grep /bin/bash | grep -v root | grep -v guest | cut -d: -f1'
-  changed_when: false 
-  register: ubuntu_users
-
-
 - name: Ensure .wegrc integrated in .bashrc of existing users
   lineinfile:
     path: "/home/{{ item }}/.bashrc"

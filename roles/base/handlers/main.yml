@@ -13,3 +13,21 @@
   service:
     name: fail2ban
     state: restarted
+
+- name: notification start apt
+  shell: DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/`id -u {{ item }}`/bus notify-send 'UPDATE STARTED' 'Do not shut down PC - update in progess.' -i important 
+  become_user: "{{ item }}"
+  with_items: "{{ ubuntu_users_reg.stdout_lines }}"
+  ignore_errors: yes
+
+- name: upgrade apt
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    upgrade: 'yes'
+
+- name: notification stop apt
+  shell: DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/`id -u {{ item }}`/bus notify-send 'UPDATE FINISHED' 'Update progess finished.' -i emblem-default
+  become_user: "{{ item }}"
+  with_items: "{{ ubuntu_users_reg.stdout_lines }}"
+  ignore_errors: yes
