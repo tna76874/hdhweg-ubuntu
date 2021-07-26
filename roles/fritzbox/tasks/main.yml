@@ -24,6 +24,6 @@
   check_mode: yes
   become: yes
   register: fax_printer
-  changed_when: not fax_printer.found
+  changed_when: fax_printer.msg == "file not present"
   notify:
     - fax printer
