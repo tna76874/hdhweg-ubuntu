@@ -20,11 +20,21 @@
   with_items: "{{ ubuntu_users_reg.stdout_lines }}"
   ignore_errors: yes
 
-- name: upgrade apt
+- name: update apt
   apt:
     update_cache: yes
-    cache_valid_time: 3600
-    upgrade: 'yes'
+  ignore_errors: yes
+
+- name: upgrade apt
+  apt:
+    name: "*"
+    state: latest
+  ignore_errors: yes
+
+- name: dist-upgrade
+  apt:
+    upgrade: dist
+  ignore_errors: yes
 
 - name: notification stop apt
   shell: DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/`id -u {{ item }}`/bus notify-send 'UPDATE FINISHED' 'Update progess finished.' -i emblem-default

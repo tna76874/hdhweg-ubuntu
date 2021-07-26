@@ -3,11 +3,9 @@
   apt_repository:
     repo: ppa:alexlarsson/flatpak
 
-- name: Update apt
+- name: update apt
   apt:
     update_cache: yes
-    cache_valid_time: 3600
-    upgrade: safe
 
 - name: Ensure flatpak package
   apt:

@@ -91,11 +91,12 @@
     dest: "/usr/share/applications/update.desktop"
     mode: 0644
 
-- name: Triggering apt upgrate handler
+- name: Triggering apt upgrade handler
   assert: { that: true, quiet: true }
   changed_when: true
   notify:
     - notification start apt
+    - update apt
     - upgrade apt
     - notification stop apt
   when: config_perform_apt_upgrade|bool

@@ -37,12 +37,18 @@
     - { repo: "deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main", state: "present", filename: "vscodium"}
     - { repo: "deb http://linux.teamviewer.com/deb stable main", state: "present", filename: "teamviewer"}
 
+- name: Triggering apt upgrade handler
+  assert: { that: true, quiet: true }
+  changed_when: true
+  notify:
+    - notification start apt
+    - update apt
+    - upgrade apt
+    - dist-upgrade
+    - notification stop apt
 
-- name: Update apt (this might take a long time)
-  apt:
-    update_cache: yes
-    cache_valid_time: 3600
-    upgrade: safe
+- name: Flush handlers
+  meta: flush_handlers
 
 - name: Ensure packages (this might take a looooong time)
   apt:
