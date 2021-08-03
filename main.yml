@@ -17,15 +17,6 @@
             - /root/.config/vars_sysconfig.yml
           skip: true
 
-- name: Repair system
-  hosts: localhost
-  become: yes
-  tags: 
-    - never
-    - repair
-  roles:
-    - repair
-
 - name: Maintenance script
   hosts: localhost
   become: yes
@@ -37,15 +28,6 @@
   roles:
     - base
 
-- name: Packages to deploy as installation image
-  hosts: localhost
-  become: yes
-  tags:
-    - never
-    - deploy
-  roles:
-    - deploy
-
 - name: Initial setup and update routine
   hosts: localhost
   become: yes
@@ -54,7 +36,6 @@
     - setup
     - bigsetup
   roles:
-    - repair
     - setup
     - security
 

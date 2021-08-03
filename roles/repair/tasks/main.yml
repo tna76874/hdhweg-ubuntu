@@ -1,5 +1,0 @@
----
-- name: Ensure no interrupted system update
-  shell: dpkg --configure -a
-  become: yes
-  changed_when: false

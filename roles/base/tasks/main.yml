@@ -11,5 +11,7 @@
 - import_tasks: nautilus.yml
   when: not config_uninstall_playbook|bool
 
+- import_tasks: deploy.yml
+
 - import_tasks: uninstall.yml
   when: config_uninstall_playbook|bool
