@@ -17,16 +17,6 @@
             - /root/.config/vars_sysconfig.yml
           skip: true
 
-- name: Packages to deploy as installation image
-  hosts: localhost
-  become: yes
-  tags:
-    - never
-    - deploy
-  roles:
-    - base
-    - deploy
-
 - name: Repair system
   hosts: localhost
   become: yes
@@ -41,10 +31,20 @@
   become: yes
   tags:
     - base
+    - deploy
     - setup
     - bigsetup
   roles:
     - base
+
+- name: Packages to deploy as installation image
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - deploy
+  roles:
+    - deploy
 
 - name: Initial setup and update routine
   hosts: localhost
@@ -55,7 +55,6 @@
     - bigsetup
   roles:
     - repair
-    - base
     - setup
     - security
 
