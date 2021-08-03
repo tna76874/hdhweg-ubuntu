@@ -23,7 +23,7 @@
     install_state_tasks: "{% if config_install_state|bool %}present{% else %}absent{% endif %}"
     install_file_resolv: "{% if config_install_state|bool %}resolv.conf{% else %}stub-resolv.conf{% endif %}"
     install_file_netplan: "{% if config_install_state|bool %}netplan.j2{% else %}netplan_default.j2{% endif %}"
-    install_network_interface: "{{ ansible_interfaces | select('match', '^(en|w)(.*)') | list }}"
+    install_network_interface: "{{ ansible_interfaces | select('match', '^(en|wl)(.*)') | list }}"
     install_docker_state: "{% if config_install_state|bool %}compose up{% else %}compose down{% endif %}"
     pihole_password: "{{lookup('file', pihole_password_file_path) }}"
     pihole_env: "{{ pihole_env | default([]) +  [{ 'var':'WEBPASSWORD', 'val': lookup('file', pihole_password_file_path) }]  }}"
