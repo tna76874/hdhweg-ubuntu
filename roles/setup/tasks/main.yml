@@ -1,4 +1,24 @@
 ---
+- name: Triggering apt upgrade handler
+  assert: { that: true, quiet: true }
+  changed_when: true
+  notify:
+    - notification start apt
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Ensure custom list not None
+  set_fact:
+    config_custom_flatpak: []
+  when: config_custom_flatpak == None
+
+- name: Set facts
+  set_fact:
+    config_flatpak_list: "{% if config_extended_software|bool %}{{ config_custom_flatpak + config_flatpak_list_1 + config_flatpak_list_2 }}{% else %}{{ config_custom_flatpak + config_flatpak_list_1 }}{% endif %}"
+    config_apt_ppa_list: "{% if config_extended_software|bool %}{{ config_apt_ppa_list_1 + config_apt_ppa_list_2 }}{% else %}{{ config_apt_ppa_list_1 }}{% endif %}"
+    config_apt_list: "{% if config_extended_software|bool %}{{ config_apt_list_1 + config_apt_list_2 }}{% else %}{{ config_apt_list_1 }}{% endif %}"
+
 - import_tasks: apt.yml
 
 - import_tasks: flatpak.yml
@@ -7,5 +27,9 @@
 
 - import_tasks: misc.yml
 
-- import_tasks: extended.yml
-  when: config_extended_software|bool
+- name: Triggering handlers
+  assert: { that: true, quiet: true }
+  changed_when: true
+  notify:
+    - autoremove apt
+    - notification stop apt

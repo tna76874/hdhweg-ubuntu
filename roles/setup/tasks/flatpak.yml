@@ -1,20 +1,4 @@
 ---
-- name: Ensure flatpak ppa
-  apt_repository:
-    repo: ppa:alexlarsson/flatpak
-
-- name: update apt
-  apt:
-    update_cache: yes
-
-- name: Ensure flatpak package
-  apt:
-    name:
-      - flatpak
-      - gnome-software-plugin-flatpak
-    state: latest
-    install_recommends: yes
-
 - name: Ensure flathub flatpak repository remotes
   flatpak_remote:
     name: "{{ item.name }}"
@@ -34,15 +18,6 @@
     name: "{{ item.package }}"
     state: "{{ item.state }}"
   with_items: "{{ config_flatpak_list }}"
-  when: config_flatpak_list != None
-
-- name: Install custom flatpak packages
-  flatpak:
-    remote: "{{ item.repo }}"
-    name: "{{ item.package }}"
-    state: "{{ item.state }}"
-  with_items: "{{ config_custom_flatpak }}"
-  when: config_custom_flatpak != None
 
 - name: Ensure flatpaks up-to-date
   shell: "flatpak update -y {{ item.package }}"

@@ -1,13 +1,144 @@
 ---
 # extended software package
 config_extended_software: false
-# custom flatpak's
 
-config_custom_flatpak:
+config_apt_ppa_list_1:
+  # Present
+  - { ppa: "ppa:nextcloud-devs/client", state: "present"}
+  - { ppa: "ppa:ubuntu-mozilla-security/ppa", state: "present"}
+  - { ppa: "ppa:unit193/encryption", state: "present"}
+  - { ppa: "ppa:alexlarsson/flatpak", state: "present"}
+  # Absent
+  - { ppa: "ppa:andreasbutti/xournalpp-master", state: "absent"}
+  - { ppa: "ppa:apandada1/xournalpp-stable", state: "absent"}
+  - { ppa: "ppa:smathot/cogscinl", state: "absent"}
+
+config_apt_ppa_list_2:
+  - { ppa: "ppa:tomtomtom/woeusb", state: "present"}
+  - { ppa: "ppa:cubic-wizard/release", state: "present"}
+
+config_apt_list_1:
+  - curl
+  - openssh-server
+  - gparted
+  - byobu
+  - snapd
+  - zsh
+  - wget
+  - dnsutils
+  - git
+  - git-gui
+  - sudo
+  - htop
+  - bmon
+  - vim
+  - nano
+  - nautilus
+  - vlc
+  - libxvidcore4
+  - vlc-plugin-fluidsynth
+  - vlc-plugin-jack
+  - libdvdnav4
+  - gstreamer1.0-plugins-bad
+  - gstreamer1.0-plugins-ugly
+  - ubuntu-restricted-extras
+  - software-properties-common
+  - audacious
+  - audacious-plugins
+  - poppler-utils
+  - ocrmypdf
+  - tesseract-ocr
+  - tesseract-ocr-deu
+  - libfaac0
+  - rclone
+  - restic
+  - clamav
+  - clamav-freshclam
+  - clamtk
+  - gcc
+  - wipe
+  - unzip
+  - p7zip
+  - p7zip-full
+  - p7zip-rar
+  - tar
+  - htop
+  - screen
+  - ncdu
+  - dos2unix
+  - speedtest-cli
+  - net-tools
+  - imagemagick
+  - gnuplot
+  - gnuplot-x11
+  - gnuplot-doc
+  - recoll
+  - poppler-utils
+  - gnome-shell-extensions
+  - gnome-clocks
+  - mupdf-tools
+  - pdfposter
+  - pdfsam
+  - img2pdf
+  - inxi
+  - txt2html
+  - wkhtmltopdf
+  - nextcloud-client
+  - qtqr
+  - macchanger
+  - youtube-dl
+  - teamviewer
+  - autossh
+  - zbar-tools
+  - texlive-extra-utils
+  - ca-certificates
+  - codium
+  - hplip
+  - libreoffice-common
+  - python3
+  - python3-pip
+  - veracrypt
+  - simple-scan
+  - nautilus-wipe
+  - usb-creator-gtk
+  # flatpak packages
+  - flatpak
+  - gnome-software-plugin-flatpak
+  #
+
+config_apt_list_2:
+  - texstudio
+  - texlive-full
+  - texlive-extra-utils
+  - texlive-latex-recommended
+  - libmp3lame-dev
+  - libfaac-dev
+  - libfaad-dev
+  - libxvidcore4
+  - swh-plugins
+  - cubic
+  - icc-profiles
+  - liblocale-codes-perl
+  - gscan2pdf
+  - octave
+  - octave-doc
+  - gnuplot 
+  - virtualbox
+  - virtualbox-qt
+  - virtualbox-dkms
+  - virtualbox-guest-additions-iso
+  - woeusb
+  - build-essential
+  - git-lfs
+  - android-tools-adb
+  - autossh
+
+# custom flatpak's
+# config_custom_flatpak:
   # - { package: "org.gimp.GIMP", repo: "flathub", state: present }
   # - { package: "org.inkscape.Inkscape", repo: "flathub", state: present }
 
-config_flatpak_list:
+config_flatpak_list_1:
   # Media
   - { package: "io.freetubeapp.FreeTube", repo: "flathub", state: present }
   - { package: "com.github.unrud.VideoDownloader", repo: "flathub", state: present }
@@ -31,7 +162,7 @@ config_flatpak_list:
   - { package: "org.geogebra.GeoGebra", repo: "flathub", state: present }
   - { package: "org.keepassxc.KeePassXC", repo: "flathub", state: present }
 
-config_flatpak_list_extended:
+config_flatpak_list_2:
   # Media
   - { package: "org.darktable.Darktable", repo: "flathub", state: present }
   - { package: "org.freecadweb.FreeCAD", repo: "flathub", state: present }
@@ -54,4 +185,3 @@ config_flatpak_list_extended:
   # Miscellaneous
   - { package: "org.zotero.Zotero", repo: "flathub", state: present }
   - { package: "fr.romainvigier.MetadataCleaner", repo: "flathub", state: present }
-

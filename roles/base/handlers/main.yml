@@ -36,6 +36,10 @@
     upgrade: dist
   ignore_errors: yes
 
+- name: autoremove apt
+  apt:
+    autoremove: yes
+
 - name: notification stop apt
   shell: DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/`id -u {{ item }}`/bus notify-send 'UPDATE FINISHED' 'Update progess finished.' -i emblem-default
   become_user: "{{ item }}"

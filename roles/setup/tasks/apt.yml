@@ -3,13 +3,7 @@
   apt_repository:
     repo: "{{ item.ppa }}"
     state: "{{ item.state }}"
-  loop:
-    - { ppa: "ppa:nextcloud-devs/client", state: "present"}
-    - { ppa: "ppa:ubuntu-mozilla-security/ppa", state: "present"}
-    - { ppa: "ppa:unit193/encryption", state: "present"}
-    - { ppa: "ppa:andreasbutti/xournalpp-master", state: "absent"}
-    - { ppa: "ppa:apandada1/xournalpp-stable", state: "absent"}
-    - { ppa: "ppa:smathot/cogscinl", state: "absent"}
+  with_items: "{{ config_apt_ppa_list }}"
 
 - name: Ensure ppa's states (< Ubuntu 20)
   apt_repository:
@@ -41,101 +35,16 @@
   assert: { that: true, quiet: true }
   changed_when: true
   notify:
-    - notification start apt
     - update apt
     - upgrade apt
     - dist-upgrade
-    - notification stop apt
 
 - name: Flush handlers
   meta: flush_handlers
 
 - name: Ensure packages (this might take a looooong time)
   apt:
-    name:
-      - curl
-      - openssh-server
-      - gparted
-      - byobu
-      - snapd
-      - zsh
-      - wget
-      - dnsutils
-      - git
-      - git-gui
-      - sudo
-      - htop
-      - bmon
-      - vim
-      - nano
-      - nautilus
-      - vlc
-      - libxvidcore4
-      - vlc-plugin-fluidsynth
-      - vlc-plugin-jack
-      - libdvdnav4
-      - gstreamer1.0-plugins-bad
-      - gstreamer1.0-plugins-ugly
-      - ubuntu-restricted-extras
-      - software-properties-common
-      - audacious
-      - audacious-plugins
-      - poppler-utils
-      - ocrmypdf
-      - tesseract-ocr
-      - tesseract-ocr-deu
-      - libfaac0
-      - rclone
-      - restic
-      - clamav
-      - clamav-freshclam
-      - clamtk
-      - gcc
-      - wipe
-      - unzip
-      - p7zip
-      - p7zip-full
-      - p7zip-rar
-      - tar
-      - htop
-      - screen
-      - ncdu
-      - dos2unix
-      - speedtest-cli
-      - net-tools
-      - imagemagick
-      - gnuplot
-      - gnuplot-x11
-      - gnuplot-doc
-      - recoll
-      - poppler-utils
-      - gnome-shell-extensions
-      - gnome-clocks
-      - mupdf-tools
-      - pdfposter
-      - pdfsam
-      - img2pdf
-      - inxi
-      - txt2html
-      - wkhtmltopdf
-      - nextcloud-client
-      - qtqr
-      - macchanger
-      - youtube-dl
-      - teamviewer
-      - autossh
-      - zbar-tools
-      - texlive-extra-utils
-      - ca-certificates
-      - codium
-      - hplip
-      - libreoffice-common
-      - python3
-      - python3-pip
-      - veracrypt
-      - simple-scan
-      - nautilus-wipe
-      - usb-creator-gtk
+    name: "{{ config_apt_list }}"
     state: latest
     install_recommends: yes
 
@@ -190,11 +99,3 @@
   apt:
     deb: "{{ duplicati_deb[0]['browser_download_url'] }}"
   ignore_errors: yes
-
-- name: Update all dist packages to the latest version
-  apt:
-    upgrade: dist
-
-- name: Remove dependencies that are no longer required
-  apt:
-    autoremove: yes
