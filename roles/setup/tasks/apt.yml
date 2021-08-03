@@ -1,4 +1,9 @@
 ---
+- name: Ensure no interrupted system update
+  shell: dpkg --configure -a
+  become: yes
+  changed_when: false
+
 - name: Ensure ppa's states
   apt_repository:
     repo: "{{ item.ppa }}"
