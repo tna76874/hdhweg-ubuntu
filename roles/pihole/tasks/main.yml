@@ -1,0 +1,81 @@
+---
+- name: Check if PW file exists
+  stat: 
+    path: "{{ pihole_password_file_path }}"
+  register: pihole_password_file
+
+- name: Ensure random password
+  shell: "( tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c 6 ) > {{ pihole_password_file_path }}"
+  become: yes
+  when: pihole_password_file.stat.exists == False
+
+- name: Set facts
+  set_fact:
+    install_state_tasks: "{% if config_install_state|bool %}present{% else %}absent{% endif %}"
+    install_file_resolv: "{% if config_install_state|bool %}resolv.conf{% else %}stub-resolv.conf{% endif %}"
+    install_file_netplan: "{% if config_install_state|bool %}netplan.j2{% else %}netplan_default.j2{% endif %}"
+    install_network_interface: "{{ ansible_interfaces | select('match', '^(en|w)(.*)') | list }}"
+    install_docker_state: "{% if config_install_state|bool %}compose up{% else %}compose down{% endif %}"
+    pihole_password: "{{lookup('file', pihole_password_file_path) }}"
+    pihole_env: "{{ pihole_env | default([]) +  [{ 'var':'WEBPASSWORD', 'val': lookup('file', pihole_password_file_path) }]  }}"
+
+- name: Ensure directories
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    mode: "{{ item.mode }}"
+    state: directory
+  loop:
+    - { path: "{{ project_root }}", owner: "{{ server_user }}", mode: "0700" }
+
+- name: Ensure templates
+  template:
+    src: "{{ item.file }}"
+    dest: "{{ item.destination }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "{{ item.mode }}"
+  become: yes
+  loop:
+    - { file: "docker-compose.j2", destination: "{{ project_root }}/docker-compose.yml", owner: "{{ server_user }}", mode: "0755" }
+  notify:
+    - compose down
+    - compose pull
+    - compose up
+
+- name: Ensure netplan template
+  template:
+    src: "{{ item.file }}"
+    dest: "{{ item.destination }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "{{ item.mode }}"
+  become: yes
+  loop:
+    - { file: "{{ install_file_netplan }}", destination: "/etc/netplan/01-network-manager-all.yaml", owner: "root", mode: "0644" }
+  notify:
+    - apply netplan
+
+- name: Ensure stub state
+  lineinfile:
+    path: "/etc/systemd/resolved.conf"
+    regexp: '^DNSStubListener=(.*)'
+    line: "DNSStubListener=no"
+    owner: systemd-resolve
+    group: systemd-resolve
+    mode: 0644
+    state: "{{ install_state_tasks }}"
+  notify:
+    - remove symlink
+    - create symlink
+    - restart resolved
+    - restart network
+
+- name: Triggering handlers
+  assert: { that: true, quiet: true }
+  changed_when: true
+  notify:
+    - "{{ install_docker_state }}"
+    - ensure password
+    - print password
+...

@@ -1,0 +1,20 @@
+---
+pihole_docker_image: "pihole/pihole:latest"
+pihole_web_port: '8008'
+pihole_ports:
+  - "127.0.0.1:53:53/tcp"
+  - "127.0.0.1:53:53/udp"
+  - "127.0.0.1:67:67/udp"
+  - "127.0.0.1:{{ pihole_web_port }}:80/tcp"
+pihole_env:
+  # QUAD 9 DNS SERVER
+  - { var: "PIHOLE_DNS_", val: "9.9.9.9;149.112.112.112" }
+  - { var: "TZ", val: "Europe/Berlin"}
+# running user
+server_user: root
+# project root
+project_root: /srv/pihole
+pihole_password_file_path: "{{ project_root }}/pihole_admin_pw"
+# install state
+config_install_state: true
+...

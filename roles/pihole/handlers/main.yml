@@ -1,0 +1,64 @@
+---
+- name: compose pull
+  docker_compose:
+    project_src: "{{ project_root }}"
+    state: present
+    pull: yes
+  ignore_errors: true
+
+- name: remove symlink
+  file:
+   path: "/etc/resolve.conf"
+   state: absent
+  notify:
+    - create symlink
+
+- name: create symlink
+  file:
+    src: "/run/systemd/resolve/{{ install_file_resolv }}"
+    dest: /etc/resolv.conf
+    owner: systemd-resolve
+    group: systemd-resolve
+    mode: 0644
+    state: link
+  notify:
+    - restart resolved
+
+- name: restart resolved
+  service:
+    name: systemd-resolved
+    state: restarted
+
+- name: apply netplan
+  shell: "netplan apply"
+  become: yes
+
+- name: restart network
+  service:
+    name: network-manager
+    state: restarted
+
+- name: compose down
+  docker_compose:
+    project_src: "{{ project_root }}"
+    state: absent
+  ignore_errors: yes
+
+- name: compose up
+  docker_compose:
+    project_src: "{{ project_root }}"
+    state: present
+
+- name: ensure password
+  shell: "docker-compose exec -T pihole pihole -a -p {{ pihole_password }}"
+  become: yes
+  args:
+    chdir: "{{ project_root }}"
+  when: config_install_state|bool
+
+- name: print password
+  debug:
+    msg: 
+      - "Admin Password: {{ pihole_password }}"
+      - "Pihole webinterface: http://localhost:{{ pihole_web_port }}/admin/index.php"
+  when: config_install_state|bool

@@ -86,6 +86,16 @@
   roles:
     - mbz
 
+- name: Install pihole
+  hosts: localhost
+  become: yes
+  tags: 
+    - never
+    - pihole
+  roles:
+    - docker
+    - pihole
+
 - name: Deploy fritzbox tools
   hosts: localhost
   become: yes

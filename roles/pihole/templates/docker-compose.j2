@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:    
+{% for port in pihole_ports %}
+      - "{{ port }}"
+{% endfor %}
+    environment:
+{% for envs in pihole_env %}
+      {{ envs.var }}: '{{ envs.val }}'
+{% endfor %}
+    volumes:
+      - './etc-pihole/:/etc/pihole/'
+      - './etc-dnsmasq.d/:/etc/dnsmasq.d/'
+    cap_add:
+      - NET_ADMIN
+    restart: always

@@ -16,6 +16,12 @@ alias install_webcam="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t
 # install fritzbox tools
 alias install_fritzbox="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t fritzbox"
 
+# install adblocking pihole
+alias install_pihole="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t pihole -e config_install_state=1"
+
+# uninstall adblocking pihole
+alias uninstall_pihole="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t pihole -e config_install_state=0"
+
 # build fakecam docker image
 alias build_fakecam="docker-compose -f /srv/webcam/fakecam/docker-compose.yml --env-file /srv/webcam/fakecam/docker_defaults.env build --no-cache --pull"
 
