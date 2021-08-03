@@ -17,6 +17,16 @@
             - /root/.config/vars_sysconfig.yml
           skip: true
 
+- name: Packages to deploy as installation image
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - deploy
+  roles:
+    - base
+    - deploy
+
 - name: Repair system
   hosts: localhost
   become: yes
@@ -31,18 +41,10 @@
   become: yes
   tags:
     - base
+    - setup
+    - bigsetup
   roles:
     - base
-
-- name: Packages to deploy as installation image
-  hosts: localhost
-  become: yes
-  tags:
-    - never
-    - deploy
-  roles:
-    - base
-    - deploy
 
 - name: Initial setup and update routine
   hosts: localhost
@@ -50,11 +52,11 @@
   tags:
     - never
     - setup
+    - bigsetup
   roles:
     - repair
     - base
     - setup
-    - mbz
     - security
 
 - name: Install Docker
@@ -63,19 +65,11 @@
   tags:
     - never
     - docker
+    - bigsetup
+    - install_pihole
+    - install_webcam
   roles:
     - docker
-
-- name: Install Webcam Tools
-  hosts: localhost
-  become: yes
-  tags:
-    - never
-    - webcam
-  roles:
-    - repair
-    - docker
-    - webcam
 
 - name: Install mbz tool
   hosts: localhost
@@ -83,18 +77,9 @@
   tags: 
     - never
     - mbz
+    - bigsetup
   roles:
     - mbz
-
-- name: Install pihole
-  hosts: localhost
-  become: yes
-  tags: 
-    - never
-    - pihole
-  roles:
-    - docker
-    - pihole
 
 - name: Deploy fritzbox tools
   hosts: localhost
@@ -102,5 +87,28 @@
   tags:
     - never
     - fritzbox
+    - bigsetup
   roles:
     - fritzbox
+
+- name: Install Webcam Tools
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - webcam
+    - install_webcam
+    - bigsetup
+  roles:
+    - webcam
+
+- name: Install pihole
+  hosts: localhost
+  become: yes
+  tags: 
+    - never
+    - pihole
+    - install_pihole
+    - uninstall_pihole
+  roles:
+    - pihole

@@ -5,22 +5,22 @@ alias update="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {
 alias update_config="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t base"
 
 # run the main playbook + enhanced packages
-alias bigupdate="sudo git -C {{ config_repo_folder }} pull && sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup -e config_extended_software=yes"
+alias bigupdate="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t bigsetup -e config_extended_software=yes"
 
 # install docker
 alias install_docker="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t docker"
 
 # install webcam tools
-alias install_webcam="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t webcam"
+alias install_webcam="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t install_webcam"
 
 # install fritzbox tools
 alias install_fritzbox="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t fritzbox"
 
 # install adblocking pihole
-alias install_pihole="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t pihole -e config_install_state=1"
+alias install_pihole="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t install_pihole -e config_install_state=1"
 
 # uninstall adblocking pihole
-alias uninstall_pihole="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t pihole -e config_install_state=0"
+alias uninstall_pihole="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t uninstall_pihole -e config_install_state=0"
 
 # build fakecam docker image
 alias build_fakecam="docker-compose -f /srv/webcam/fakecam/docker-compose.yml --env-file /srv/webcam/fakecam/docker_defaults.env build --no-cache --pull"
@@ -33,9 +33,6 @@ alias reinstall="wget -qO setup.sh {{ config_repo_setup }} && chmod +x setup.sh 
 
 # uninstall this playbook from system
 alias uninstall="sudo git -C {{ config_repo_folder }} pull && sudo ansible-playbook {{ config_repo_folder }}/main.yml -t base -e config_uninstall_playbook=yes"
-
-# running some repair roles if the system got somehow busted
-alias repair="sudo git -C {{ config_repo_folder }} pull && sudo ansible-playbook {{ config_repo_folder }}/main.yml --tags repair"
 
 # creating a pdf that contains hardware informations
 hwpdf() {
