@@ -140,3 +140,13 @@ Check the documentation on [wiki.ubuntuusers.de](https://wiki.ubuntuusers.de/Fri
 
 * Dial with your DECT Phone: \#96\*3\*
 * Dial with your DECT Phone: \#96\*5\*
+
+#### pi-hole
+
+If you care about your privacy using pi-hole as an local DNS-server is recommended. A pi-hole Docker-container will handle and filter all DNS-requests. 
+
+```bash
+install_pihole
+```
+
+The pi-hole server can be customized and administrated via the web interface http://localhost:8008/admin/index.php  . To remove pi-hole execute `uninstall_pihole` .
