@@ -4,6 +4,15 @@
     path: "{{ pihole_password_file_path }}"
   register: pihole_password_file
 
+- name: Ensure directories
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    mode: "{{ item.mode }}"
+    state: directory
+  loop:
+    - { path: "{{ project_root }}", owner: "{{ server_user }}", mode: "0700" }
+
 - name: Ensure random password
   shell: "( tr -dc 'a-zA-Z0-9' < /dev/urandom | head -c 6 ) > {{ pihole_password_file_path }}"
   become: yes
@@ -18,15 +27,6 @@
     install_docker_state: "{% if config_install_state|bool %}compose up{% else %}compose down{% endif %}"
     pihole_password: "{{lookup('file', pihole_password_file_path) }}"
     pihole_env: "{{ pihole_env | default([]) +  [{ 'var':'WEBPASSWORD', 'val': lookup('file', pihole_password_file_path) }]  }}"
-
-- name: Ensure directories
-  file:
-    path: "{{ item.path }}"
-    owner: "{{ item.owner }}"
-    mode: "{{ item.mode }}"
-    state: directory
-  loop:
-    - { path: "{{ project_root }}", owner: "{{ server_user }}", mode: "0700" }
 
 - name: Ensure templates
   template:
