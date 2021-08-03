@@ -10,6 +10,7 @@ pihole_env:
   # QUAD 9 DNS SERVER
   - { var: "PIHOLE_DNS_", val: "9.9.9.9;149.112.112.112" }
   - { var: "TZ", val: "Europe/Berlin"}
+  - { var: "DNSSEC", val: "\"true\""}
 # running user
 server_user: root
 # project root
