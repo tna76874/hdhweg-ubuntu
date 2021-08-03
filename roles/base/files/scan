@@ -1,0 +1,117 @@
+#!/bin/bash
+
+# https://github.com/tna76874
+
+# define some pahts
+SCRIPT=$(readlink -f "$0")
+DIR=$(dirname "$SCRIPT")
+FIRSTDIR=${PWD}
+
+DATE=$(date '+%Y%m%d_%H%M%S')
+
+FILENAME=${1:-"scan_$DATE"}
+QUAL=${2:-"50"}
+THRES=${3:-"85"}
+DPI=${4:-"150"}
+
+## A4 pagesize
+SIZE_X=210
+SIZE_Y=297
+
+
+TMP_DIR=/tmp/${DATE}_${FILENAME}
+
+# defining functions
+confirm() {
+    # call with a prompt string or use a default
+    read -r -p "$@"" [y/N]: " response
+    case "$response" in
+        [yY][eE][sS]|[yY])
+            return 0
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+processpages_duplex() {
+        convert even_"$1"*.tiff -channel R,G,B -density 300 -quality "$QUAL" -white-threshold "$THRES"% even_"$1"_%04d.jpg
+        convert odd_"$1"*.tiff -channel R,G,B -density 300 -quality "$QUAL" -white-threshold "$THRES"% odd_"$1"_%04d.jpg
+
+        pdfjam --a4paper even_"$1"*.jpg --outfile even.pdf >/dev/null 2>&1
+        pdfjam --a4paper odd_"$1"*.jpg --outfile odd.pdf >/dev/null 2>&1
+
+        pdftk A=even.pdf B=odd.pdf shuffle A Bend-1 output unite.pdf
+
+        gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=unite_"$1".pdf unite.pdf
+
+        rm *"$1"*.tiff
+        rm *"$1"*.jpg
+}
+
+processpages_simplex() {
+        convert simplex_"$1"*.tiff -channel R,G,B -density 300 -quality "$QUAL" -white-threshold "$THRES"% simplex_"$1"_%04d.jpg
+
+        pdfjam --a4paper simplex_"$1"*.jpg --outfile simplex.pdf >/dev/null 2>&1
+
+        gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=unite_"$1".pdf simplex.pdf
+
+        rm *"$1"*.tiff
+        rm *"$1"*.jpg
+}
+
+scanpages() {
+while true; do
+    read -r -p "$@""Scan [s]implex | Scan [d]uplex | Save scans [ENTER]: " response
+    case "$response" in
+        "s")
+            TMPDATE=$(date '+%Y%m%d%H%M%S')
+            echo "   scanning simplex"
+            scanimage --format=tiff -x ${SIZE_X} -y ${SIZE_Y} --resolution ${DPI} --batch=simplex_${TMPDATE}_p%04d.tiff --batch-start 0 >/dev/null 2>&1
+
+            processpages_simplex "${TMPDATE}"
+            ;;
+        "d")
+            TMPDATE=$(date '+%Y%m%d%H%M%S')
+            echo "   scanning duplex: front side"
+            scanimage --format=tiff -x ${SIZE_X} -y ${SIZE_Y} --resolution ${DPI} --batch=even_${TMPDATE}_p%04d.tiff --batch-start 0 >/dev/null 2>&1
+            read -p "   ... now turn to back side and press [ENTER] to resume ..."
+            echo "   scanning duplex: back side"
+            scanimage --format=tiff -x ${SIZE_X} -y ${SIZE_Y} --resolution ${DPI} --batch=odd_${TMPDATE}_p%04d.tiff --batch-start 0 >/dev/null 2>&1
+
+            processpages_duplex "${TMPDATE}"
+            ;;
+        *)
+            break
+            ;;
+    esac
+done
+}
+
+main() {
+    mkdir -p  ${TMP_DIR}
+    cd ${TMP_DIR}
+
+    scanpages
+
+    pdfjam unite_*.pdf --outfile unite_c.pdf >/dev/null 2>&1
+
+    if $(confirm "OCR pdf?") ; then
+            ocrmypdf unite_c.pdf ${FILENAME}.pdf >/dev/null 2>&1
+    else
+            mv unite_c.pdf ${FILENAME}.pdf
+    fi
+
+    rm -f even*
+    rm -f odd*
+    rm -f unite*
+    rm -f simplex*
+
+    mv ${FILENAME}.pdf ${FIRSTDIR}
+}
+
+# Run scan
+
+main
+rmdir ${TMP_DIR}

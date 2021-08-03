@@ -1,0 +1,7 @@
+#!/bin/bash
+ARGPASS=""
+for arg in "$@"; do
+    ARGPASS+=" "\"${arg}\"
+done
+
+while true; do eval "$ARGPASS" && break || (echo -e "Error. Wait 5 seconds and repeat ....." && sleep 5); done

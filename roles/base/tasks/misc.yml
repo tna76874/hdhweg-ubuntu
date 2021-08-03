@@ -91,6 +91,16 @@
     dest: "/usr/share/applications/update.desktop"
     mode: 0644
 
+- name: Ensure scripts
+  copy:
+    src: "{{ item }}"
+    dest: "/usr/local/bin"
+    owner: "root"
+    group: "root"
+    mode: 0755
+  with_items:
+    - "scan"
+
 - name: Triggering apt upgrade handler
   assert: { that: true, quiet: true }
   changed_when: true
