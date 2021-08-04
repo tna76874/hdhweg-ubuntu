@@ -28,6 +28,14 @@
   roles:
     - base
 
+- name: Deploy script
+  hosts: localhost
+  become: yes
+  tags:
+    - deploy
+  roles:
+    - deploy
+
 - name: Initial setup and update routine
   hosts: localhost
   become: yes
