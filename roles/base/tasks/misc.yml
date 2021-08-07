@@ -30,6 +30,14 @@
   ignore_errors: yes
   when: config_ensure_repo|bool
 
+- name: Ensure root .config dir
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    state: directory
+  loop:
+    - { path: "/root/.config", owner: "root" }
+
 - name: Ensure vars.yml
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/examples/vars.yml"
