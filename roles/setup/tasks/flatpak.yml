@@ -19,7 +19,13 @@
     state: "{{ item.state }}"
   with_items: "{{ config_flatpak_list }}"
 
-- name: Ensure flatpaks up-to-date
+- name: Registering installed flatpaks
+  shell: flatpak list --columns=application
+  become: yes
+  changed_when: false
+  register: installed_flatpaks
+
+- name: Ensure all flatpaks are up-to-date
   shell: "flatpak update -y {{ item.package }}"
   become: yes
-  with_items: "{{ config_flatpak_list }}"
+  with_items: "{{ installed_flatpaks.stdout_lines }}"
