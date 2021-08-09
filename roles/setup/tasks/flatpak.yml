@@ -26,6 +26,6 @@
   register: installed_flatpaks
 
 - name: Ensure all flatpaks are up-to-date
-  shell: "flatpak update -y {{ item.package }}"
+  shell: "flatpak update -y {{ item }}"
   become: yes
   with_items: "{{ installed_flatpaks.stdout_lines }}"
