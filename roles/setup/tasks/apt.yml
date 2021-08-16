@@ -36,13 +36,24 @@
     - { repo: "deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main", state: "present", filename: "vscodium"}
     - { repo: "deb http://linux.teamviewer.com/deb stable main", state: "present", filename: "teamviewer"}
 
-- name: Triggering apt upgrade handler
+- name: Triggering upgrade handler
+  assert: { that: true, quiet: true }
+  changed_when: true
+  when: not config_perform_apt_upgrade|bool
+  notify:
+    - notification start apt
+    - update apt
+    - upgrade apt
+    - notification stop apt
+
+- name: Triggering dist upgrade and autoremove handler
   assert: { that: true, quiet: true }
   changed_when: true
   notify:
-    - update apt
-    - upgrade apt
+    - notification start apt
     - dist-upgrade
+    - autoremove apt
+    - notification stop apt
 
 - name: Flush handlers
   meta: flush_handlers

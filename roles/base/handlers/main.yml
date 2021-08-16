@@ -39,6 +39,22 @@
 - name: autoremove apt
   apt:
     autoremove: yes
+  ignore_errors: yes
+
+- name: grab flatpaks
+  shell: flatpak list --columns=application
+  become: yes
+  changed_when: true
+  register: installed_flatpaks
+  ignore_errors: yes
+  notify:
+   - update flatpaks
+
+- name: update flatpaks
+  shell: "flatpak update -y {{ item }}"
+  become: yes
+  ignore_errors: yes
+  with_items: "{{ installed_flatpaks.stdout_lines }}"
 
 - name: notification stop apt
   shell: DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/`id -u {{ item }}`/bus notify-send 'UPDATE FINISHED' 'Update progess finished.' -i emblem-default

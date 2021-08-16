@@ -19,13 +19,12 @@
     state: "{{ item.state }}"
   with_items: "{{ config_flatpak_list }}"
 
-- name: Registering installed flatpaks
-  shell: flatpak list --columns=application
-  become: yes
-  changed_when: false
-  register: installed_flatpaks
-
-- name: Ensure all flatpaks are up-to-date
-  shell: "flatpak update -y {{ item }}"
-  become: yes
-  with_items: "{{ installed_flatpaks.stdout_lines }}"
+- name: Triggering flatpak upgrade handler
+  assert: { that: true, quiet: true }
+  changed_when: true
+  when: not config_perform_apt_upgrade|bool
+  notify:
+    - notification start apt
+    - grab flatpaks
+    - update flatpaks
+    - notification stop apt

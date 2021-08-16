@@ -109,12 +109,14 @@
   with_items:
     - "scan"
 
-- name: Triggering apt upgrade handler
+- name: Triggering upgrade handler
   assert: { that: true, quiet: true }
   changed_when: true
   notify:
     - notification start apt
     - update apt
     - upgrade apt
+    - grab flatpaks
+    - update flatpaks
     - notification stop apt
   when: config_perform_apt_upgrade|bool
