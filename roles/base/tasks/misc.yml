@@ -112,6 +112,7 @@
 - name: Triggering upgrade handler
   assert: { that: true, quiet: true }
   changed_when: true
+  when: config_perform_apt_upgrade|bool
   notify:
     - notification start apt
     - update apt
@@ -119,4 +120,4 @@
     - grab flatpaks
     - update flatpaks
     - notification stop apt
-  when: config_perform_apt_upgrade|bool
+  

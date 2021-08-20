@@ -39,21 +39,17 @@
 - name: Triggering upgrade handler
   assert: { that: true, quiet: true }
   changed_when: true
-  when: not config_perform_apt_upgrade|bool
+  when: not config_perform_apt_upgrade|default(false)
   notify:
-    - notification start apt
     - update apt
     - upgrade apt
-    - notification stop apt
 
 - name: Triggering dist upgrade and autoremove handler
   assert: { that: true, quiet: true }
   changed_when: true
   notify:
-    - notification start apt
     - dist-upgrade
     - autoremove apt
-    - notification stop apt
 
 - name: Flush handlers
   meta: flush_handlers
