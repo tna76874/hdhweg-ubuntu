@@ -68,6 +68,7 @@ config_apt_list_1:
   - dos2unix
   - speedtest-cli
   - net-tools
+  - traceroute
   - imagemagick
   - gnuplot
   - gnuplot-x11
