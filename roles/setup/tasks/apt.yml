@@ -84,6 +84,7 @@
       - scribus
       - scribus-doc
       - scribus-template
+      - shotwell
     state: absent
 
 - name: Ensure packages for ubuntu => 20

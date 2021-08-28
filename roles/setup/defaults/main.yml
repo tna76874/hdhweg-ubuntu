@@ -146,6 +146,7 @@ config_flatpak_list_1:
   - { package: "org.flameshot.Flameshot", repo: "flathub", state: present }
   - { package: "org.gimp.GIMP", repo: "flathub", state: present }
   - { package: "org.inkscape.Inkscape", repo: "flathub", state: present }
+  - { package: "org.gnome.Shotwell", repo: "flathub", state: present }
   # Voice chat / communication
   - { package: "com.teamspeak.TeamSpeak", repo: "flathub", state: present }
   # Documents
