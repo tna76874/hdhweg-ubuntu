@@ -12,6 +12,7 @@ config_apt_ppa_list_1:
   - { ppa: "ppa:andreasbutti/xournalpp-master", state: "absent"}
   - { ppa: "ppa:apandada1/xournalpp-stable", state: "absent"}
   - { ppa: "ppa:smathot/cogscinl", state: "absent"}
+  - { ppa: "ppa:marko-preuss/hibiscus", state: "absent"}
 
 config_apt_ppa_list_2:
   - { ppa: "ppa:tomtomtom/woeusb", state: "present"}

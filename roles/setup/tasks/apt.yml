@@ -85,6 +85,7 @@
       - scribus-doc
       - scribus-template
       - shotwell
+      - hibiscus-ppa
     state: absent
 
 - name: Ensure packages for ubuntu => 20
