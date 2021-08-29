@@ -187,3 +187,4 @@ config_flatpak_list_2:
   # Miscellaneous
   - { package: "org.zotero.Zotero", repo: "flathub", state: present }
   - { package: "fr.romainvigier.MetadataCleaner", repo: "flathub", state: present }
+  - { package: "de.willuhn.Jameica", repo: "flathub", state: present }
