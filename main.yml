@@ -86,7 +86,6 @@
     - never
     - webcam
     - install_webcam
-    - bigsetup
   roles:
     - webcam
 
