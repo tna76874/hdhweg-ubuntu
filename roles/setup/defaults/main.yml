@@ -164,6 +164,7 @@ config_flatpak_list_1:
   - { package: "com.belmoussaoui.Decoder", repo: "flathub", state: present }
   - { package: "org.geogebra.GeoGebra", repo: "flathub", state: present }
   - { package: "org.keepassxc.KeePassXC", repo: "flathub", state: present }
+  - { package: "org.gnome.Gnote", repo: "flathub", state: present }
 
 config_flatpak_list_2:
   # Media
