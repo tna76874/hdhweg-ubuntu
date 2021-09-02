@@ -19,6 +19,9 @@ alias install_fritzbox="sudo ansible-playbook {{ config_repo_folder }}/main.yml 
 # install themes
 alias install_themes="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t themes"
 
+# uninstall whitesur gdm and theme
+alias uninstall_themes="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t themes -e uninstall=True"
+
 # install adblocking pihole
 alias install_pihole="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t install_pihole -e config_install_state=1"
 
