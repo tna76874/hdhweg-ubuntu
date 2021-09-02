@@ -1,4 +1,1 @@
 ---
-- name: restart shell
-  shell: "killall -3 gnome-shell"
-  become: yes

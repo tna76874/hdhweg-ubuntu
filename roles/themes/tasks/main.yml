@@ -49,5 +49,3 @@
       owner: root
       group: root
   with_items: "{{ config_widgets }}"
-  notify:
-    - restart shell
