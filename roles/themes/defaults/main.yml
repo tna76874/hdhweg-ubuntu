@@ -1,0 +1,8 @@
+---
+config_themes:
+  - {url: "https://github.com/vinceliuice/Orchis-theme.git", folder: "orchis", install: "install.sh"}
+  - {url: "https://github.com/vinceliuice/WhiteSur-gtk-theme.git", folder: "whitesur", install: "install.sh"}
+  - {url: "https://github.com/vinceliuice/WhiteSur-icon-theme.git", folder: "whitesur_icon", install: "install.sh"}
+
+config_widgets:
+  - {url: "https://github.com/ewlsh/dash-to-dock.git", folder: "dash", install: "make && make install"}

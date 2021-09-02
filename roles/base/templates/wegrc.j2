@@ -16,6 +16,9 @@ alias install_webcam="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t
 # install fritzbox tools
 alias install_fritzbox="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t fritzbox"
 
+# install themes
+alias install_themes="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t themes"
+
 # install adblocking pihole
 alias install_pihole="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t install_pihole -e config_install_state=1"
 

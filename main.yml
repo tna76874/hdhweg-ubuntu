@@ -59,6 +59,15 @@
   roles:
     - docker
 
+- name: Install themes
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - themes
+  roles:
+    - themes
+
 - name: Install mbz tool
   hosts: localhost
   become: yes

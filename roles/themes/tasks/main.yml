@@ -1,0 +1,46 @@
+---
+- name: Ensure packages
+  apt:
+    name:
+      - gettext
+      - sassc
+      - libglib2.0-dev-bin
+      - gnome-tweaks
+    state: latest
+    install_recommends: yes
+
+- name: Ensure git repos themes
+  ansible.builtin.git:
+    repo: "{{ item.url }}"
+    dest: "/srv/themes/{{ item.folder }}"
+    clone: yes
+    update: yes
+  with_items: "{{ config_themes }}"
+
+# - name: Ensure git repos widgets
+#   ansible.builtin.git:
+#     repo: "{{ item.url }}"
+#     dest: "/srv/widgets/{{ item.folder }}"
+#     clone: yes
+#     update: yes
+#   with_items: "{{ config_widgets }}"
+
+- name: Install themes
+  shell: "/srv/themes/{{ item.folder }}/{{ item.install }}"
+  become: yes
+  changed_when: false
+  with_items: "{{ config_themes }}"
+
+- name: Install themes
+  shell: "/srv/themes/{{ item.folder }}/{{ item.install }}"
+  become: yes
+  changed_when: false
+  with_items: "{{ config_themes }}"
+
+# - name: Install widgets
+#   shell: "{{ item.install }}"
+#   args:
+#     chdir: "/srv/widgets/{{ item.folder }}"
+#   become: yes
+#   changed_when: false
+#   with_items: "{{ config_widgets }}"
