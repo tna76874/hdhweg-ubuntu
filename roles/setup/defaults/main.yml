@@ -103,6 +103,7 @@ config_apt_list_1:
   - simple-scan
   - nautilus-wipe
   - usb-creator-gtk
+  - gnome-tweaks
   # flatpak packages
   - flatpak
   - gnome-software-plugin-flatpak
