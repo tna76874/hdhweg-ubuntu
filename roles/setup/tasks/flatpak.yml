@@ -24,5 +24,6 @@
   changed_when: true
   when: not config_perform_apt_upgrade|default(false)
   notify:
+    - autoremove flatpaks
     - grab flatpaks
     - update flatpaks

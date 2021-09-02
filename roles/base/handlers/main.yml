@@ -41,6 +41,11 @@
     autoremove: yes
   ignore_errors: yes
 
+- name: autoremove flatpaks
+  shell: flatpak uninstall --unused -y
+  become: yes
+  ignore_errors: yes
+
 - name: grab flatpaks
   shell: flatpak list --columns=application
   become: yes
