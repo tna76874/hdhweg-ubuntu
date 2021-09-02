@@ -6,8 +6,8 @@
       - sassc
       - libglib2.0-dev-bin
       - gnome-tweaks
+      - gnome-shell-extensions
     state: latest
-    install_recommends: yes
 
 - name: Ensure git repos themes
   ansible.builtin.git:
@@ -15,15 +15,17 @@
     dest: "/srv/themes/{{ item.folder }}"
     clone: yes
     update: yes
+    version: "{{ item.version }}"
   with_items: "{{ config_themes }}"
 
-# - name: Ensure git repos widgets
-#   ansible.builtin.git:
-#     repo: "{{ item.url }}"
-#     dest: "/srv/widgets/{{ item.folder }}"
-#     clone: yes
-#     update: yes
-#   with_items: "{{ config_widgets }}"
+- name: Ensure git repos gnome shell extensions
+  ansible.builtin.git:
+    repo: "{{ item.url }}"
+    dest: "/srv/widgets/{{ item.folder }}"
+    clone: yes
+    update: yes
+    version: "{{ item.version }}"
+  with_items: "{{ config_widgets }}"
 
 - name: Install themes
   shell: "/srv/themes/{{ item.folder }}/{{ item.install }}"
@@ -31,16 +33,21 @@
   changed_when: false
   with_items: "{{ config_themes }}"
 
-- name: Install themes
-  shell: "/srv/themes/{{ item.folder }}/{{ item.install }}"
+- name: Make gnome shell extensions
+  shell: "{{ item.install }}"
+  args:
+    chdir: "/srv/widgets/{{ item.folder }}"
   become: yes
   changed_when: false
-  with_items: "{{ config_themes }}"
+  with_items: "{{ config_widgets }}"
+  when: item.install is defined
 
-# - name: Install widgets
-#   shell: "{{ item.install }}"
-#   args:
-#     chdir: "/srv/widgets/{{ item.folder }}"
-#   become: yes
-#   changed_when: false
-#   with_items: "{{ config_widgets }}"
+- name: Ensure gnome shell extensions
+  copy:
+      src: "/srv/widgets/{{ item.folder }}/{{ item.ensure }}"
+      dest: /usr/share/gnome-shell/extensions
+      owner: root
+      group: root
+  with_items: "{{ config_widgets }}"
+  notify:
+    - restart shell

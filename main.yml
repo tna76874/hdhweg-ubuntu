@@ -65,6 +65,7 @@
   tags:
     - never
     - themes
+    - bigsetup
   roles:
     - themes
 
