@@ -3,6 +3,7 @@
   snap:
     name:
       - pdftk
+      - foobar2000
   ignore_errors: yes
 
 - name: Ensure classic snap packages present
