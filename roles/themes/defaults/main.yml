@@ -3,6 +3,6 @@ uninstall: False
 
 config_themes:
   - {url: "https://github.com/vinceliuice/Orchis-theme.git", folder: "orchis", install: "./install.sh", version: "eb279b5446e14710add8fcdbec735f4f9ce1dc6f"}
-  - {url: "https://github.com/vinceliuice/WhiteSur-gtk-theme.git", uninstall: "./install.sh -r; ./tweaks.sh -g -r", folder: "whitesur", install: "./install.sh; ./install.sh -i ubuntu; ./install.sh -N mojave; ./tweaks.sh -F -s; ./tweaks.sh -g", version: "ad63f0634c7011a897f4f1e13dc92ac5a39986c7"}
+  - {url: "https://github.com/vinceliuice/WhiteSur-gtk-theme.git", uninstall: "./install.sh -r; ./tweaks.sh -g -r", folder: "whitesur", install: "./install.sh; ./install.sh -N mojave; ./tweaks.sh -F -s; ./tweaks.sh -g; ./install.sh -i ubuntu;", version: "ad63f0634c7011a897f4f1e13dc92ac5a39986c7"}
   - {url: "https://github.com/vinceliuice/WhiteSur-gtk-theme.git", folder: "whitesur_wallpaper", install: "./install-gnome-backgrounds.sh", version: "c9dcf70d66a23bb639c0a2d7c36ddd88ab0e0883"}
   - {url: "https://github.com/vinceliuice/WhiteSur-icon-theme.git", folder: "whitesur_icon", install: "./install.sh", version: "8fd881099dccc776fa594fbe5ca5c1b5ad4c4e2e"}
