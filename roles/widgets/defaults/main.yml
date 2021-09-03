@@ -1,0 +1,7 @@
+---
+uninstall: False
+
+config_widgets:
+  - {url: "https://github.com/eonpatapon/gnome-shell-extension-caffeine.git", ensure: "caffeine@patapon.info" ,folder: "caffeine", install: "./update-locale.sh; glib-compile-schemas --strict --targetdir=caffeine@patapon.info/schemas/ caffeine@patapon.info/schemas", version: "511a515bdb93a52dc06c9f94255a38146d8df794"}
+  - {url: "https://github.com/hedayaty/NetSpeed.git" , ensure: "netspeed@hedayaty.gmail.com" ,folder: "netspeed", install: "make; mkdir -p netspeed@hedayaty.gmail.com; rm -rf netspeed@hedayaty.gmail.com; unzip netspeed@hedayaty.gmail.com.zip -d netspeed@hedayaty.gmail.com", version: "1598dc3bf767b30e273e5206af4d0331b95cb2e7"}
+  - {url: "https://github.com/kgshank/gse-sound-output-device-chooser.git" , ensure: "sound-output-device-chooser@kgshank.net" , folder: "sound", version: "8c90ed01bcc8a843c4388ce6b66c8b3624f6e191"}

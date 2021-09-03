@@ -1,0 +1,37 @@
+---
+- name: Ensure packages
+  apt:
+    name:
+      - gettext
+      - sassc
+      - libglib2.0-dev-bin
+      - gnome-tweaks
+      - gnome-shell-extensions
+    state: latest
+  when: not uninstall | bool
+
+- name: Ensure git repos gnome shell extensions
+  ansible.builtin.git:
+    repo: "{{ item.url }}"
+    dest: "/srv/widgets/{{ item.folder }}"
+    clone: yes
+    update: yes
+    version: "{{ item.version }}"
+  with_items: "{{ config_widgets }}"
+
+- name: Make gnome shell extensions
+  shell: "{{ item.install }}"
+  args:
+    chdir: "/srv/widgets/{{ item.folder }}"
+  become: yes
+  changed_when: false
+  with_items: "{{ config_widgets }}"
+  when: item.install is defined
+
+- name: Ensure gnome shell extensions
+  copy:
+      src: "/srv/widgets/{{ item.folder }}/{{ item.ensure }}"
+      dest: /usr/share/gnome-shell/extensions
+      owner: root
+      group: root
+  with_items: "{{ config_widgets }}"

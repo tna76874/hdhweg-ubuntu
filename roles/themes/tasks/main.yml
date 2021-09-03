@@ -1,4 +1,9 @@
 ---
+- name: Checking OS
+  fail:
+    msg: Please use Ubuntu 20
+  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
+
 - name: Ensure packages
   apt:
     name:
@@ -20,16 +25,6 @@
   with_items: "{{ config_themes }}"
   when: not uninstall | bool
 
-- name: Ensure git repos gnome shell extensions
-  ansible.builtin.git:
-    repo: "{{ item.url }}"
-    dest: "/srv/widgets/{{ item.folder }}"
-    clone: yes
-    update: yes
-    version: "{{ item.version }}"
-  with_items: "{{ config_widgets }}"
-  when: not uninstall | bool
-
 - name: Install themes
   shell: "{{ item.install }}"
   args:
@@ -47,21 +42,3 @@
   changed_when: false
   with_items: "{{ config_themes }}"
   when: item.uninstall is defined and uninstall | bool
-
-- name: Make gnome shell extensions
-  shell: "{{ item.install }}"
-  args:
-    chdir: "/srv/widgets/{{ item.folder }}"
-  become: yes
-  changed_when: false
-  with_items: "{{ config_widgets }}"
-  when: item.install is defined and not uninstall | bool
-
-- name: Ensure gnome shell extensions
-  copy:
-      src: "/srv/widgets/{{ item.folder }}/{{ item.ensure }}"
-      dest: /usr/share/gnome-shell/extensions
-      owner: root
-      group: root
-  with_items: "{{ config_widgets }}"
-  when: not uninstall | bool

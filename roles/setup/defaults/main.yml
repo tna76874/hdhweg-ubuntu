@@ -104,6 +104,10 @@ config_apt_list_1:
   - nautilus-wipe
   - usb-creator-gtk
   - gnome-tweaks
+  - gnome-shell-extensions
+  - gettext
+  - sassc
+  - libglib2.0-dev-bin
   # flatpak packages
   - flatpak
   - gnome-software-plugin-flatpak

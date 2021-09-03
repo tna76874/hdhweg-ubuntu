@@ -59,13 +59,23 @@
   roles:
     - docker
 
+- name: Install widgets
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - widgets
+    - setup
+    - bigsetup
+  roles:
+    - widgets
+
 - name: Install themes
   hosts: localhost
   become: yes
   tags:
     - never
     - themes
-    - bigsetup
   roles:
     - themes
 
