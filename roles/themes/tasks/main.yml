@@ -4,6 +4,18 @@
     msg: Please use Ubuntu 20
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
 
+- name: Determine existing users
+  shell: 'cat /etc/passwd | grep /bin/bash | grep -v root | grep -v guest | cut -d: -f1'
+  changed_when: false 
+  register: ubuntu_users
+
+- name: Ensure user theme state
+  shell: "gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com"
+  become_user: "{{ item }}"
+  changed_when: false
+  with_items: "{{ ubuntu_users.stdout_lines }}"
+  when: not uninstall | bool
+
 - name: Ensure packages
   apt:
     name:
