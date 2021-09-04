@@ -3,6 +3,8 @@
   snap:
     name:
       - pdftk
+      - bing-wall
+      - wonderwall
   ignore_errors: yes
 
 - name: Ensure classic snap packages present
