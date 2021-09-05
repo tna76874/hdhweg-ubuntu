@@ -58,3 +58,4 @@
   become_user: "{{ user_item }}"
   changed_when: false
   with_items: "{{ config_extension_states }}" 
+  ignore_errors: yes

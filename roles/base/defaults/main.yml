@@ -33,3 +33,4 @@ config_uninstall_playbook: false
 config_extension_states:
     - {ext: "extensions@abteil.org", state: "enable"}
     - {ext: "caffeine@patapon.info", state: "enable"}
+    - {ext: "sound-output-device-chooser@kgshank.net", state: "enable"}
