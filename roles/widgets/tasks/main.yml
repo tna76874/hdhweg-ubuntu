@@ -10,11 +10,6 @@
     state: latest
   when: not uninstall | bool
 
-- name: Determine existing users
-  shell: 'cat /etc/passwd | grep /bin/bash | grep -v root | grep -v guest | cut -d: -f1'
-  changed_when: false 
-  register: ubuntu_users
-
 - name: Ensure git repos gnome shell extensions
   ansible.builtin.git:
     repo: "{{ item.url }}"
@@ -41,9 +36,3 @@
       owner: root
       group: root
   with_items: "{{ config_widgets }}"
-
-- name: Ensure user widget state
-  shell: "gnome-extensions enable extensions@abteil.org"
-  become_user: "{{ item }}"
-  changed_when: false
-  with_items: "{{ ubuntu_users.stdout_lines }}"

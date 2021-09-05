@@ -50,3 +50,11 @@
     - {src: "pdf_zusammenfassen", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/pdf_zusammenfassen", mode: "0755"}
     - {src: "img2pdf.sh", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/img2pdf", mode: "0755"}
     - {src: "anonymisieren", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/anonymisieren", mode: "0755"}
+
+# Ensure gnome extension states
+
+- name: Ensure gnome extension states
+  shell: "gnome-extensions {{ item.state }} {{ item.ext }} "
+  become_user: "{{ user_item }}"
+  changed_when: false
+  with_items: "{{ config_extension_states }}" 

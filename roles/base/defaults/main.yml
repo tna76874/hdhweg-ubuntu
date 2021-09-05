@@ -27,3 +27,9 @@ config_ensure_repo: "{{ config_autopull_repo }}"
 
 # remove playbook from system
 config_uninstall_playbook: false
+
+# extensions states
+
+config_extension_states:
+    - {ext: "extensions@abteil.org", state: "enable"}
+    - {ext: "caffeine@patapon.info", state: "enable"}
