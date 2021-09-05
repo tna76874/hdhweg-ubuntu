@@ -10,6 +10,11 @@
     state: latest
   when: not uninstall | bool
 
+- name: Getting CPU information
+  shell: cat /proc/cpuinfo | grep "model name"
+  register: cpu_info
+  changed_when: false
+
 - name: Ensure git repos gnome shell extensions
   ansible.builtin.git:
     repo: "{{ item.url }}"
@@ -27,7 +32,7 @@
   become: yes
   changed_when: false
   with_items: "{{ config_widgets }}"
-  when: item.install is defined
+  when: item.install is defined and item.preq in cpu_info.stdout
 
 - name: Ensure gnome shell extensions
   copy:
@@ -36,3 +41,4 @@
       owner: root
       group: root
   with_items: "{{ config_widgets }}"
+  when: item.ensure is defined and item.preq in cpu_info.stdout
