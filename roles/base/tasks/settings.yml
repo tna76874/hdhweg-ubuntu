@@ -1,0 +1,41 @@
+---
+- name: Ensure .wegrc integrated in .bashrc of root user
+  lineinfile:
+    path: "/root/.bashrc"
+    regexp: '^source "(.*)/.wegrc"$'
+    line: source "/root/.wegrc"
+    owner: root
+    group: root
+
+- name: Ensure .wegrc in root homefolder
+  template:
+    src: "wegrc.j2"
+    dest: "/root/.wegrc"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Ensure .wegrc integrated in .bashrc of new create user
+  lineinfile:
+    path: "/etc/skel/.bashrc"
+    regexp: '^source "(.*)/.wegrc"$'
+    line: source "$HOME/.wegrc"
+
+- name: Ensure .wegrc in skel folder
+  template:
+    src: "wegrc.j2"
+    dest: "/etc/skel/.wegrc"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Ensure update alias in bashrc of new create user
+  lineinfile:
+    path: "/etc/skel/.bashrc"
+    regexp: '^alias update=(.*)$'
+    line: alias update="sudo git -C {{ config_repo_folder }} pull && sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup"
+
+- include_tasks: user_operations.yml
+  loop: "{{ ubuntu_users.stdout_lines }}"
+  loop_control:
+    loop_var: user_item

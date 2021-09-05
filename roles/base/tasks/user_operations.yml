@@ -1,0 +1,52 @@
+---
+# Ensure settings and alias
+
+- name: Ensure templates
+  template:
+    src: "{{ item.file }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ user_item }}"
+    group: "{{ user_item }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - {file: "wegrc.j2", dest: "/home/{{ user_item }}/.wegrc", mode: "0644"}
+    - {file: "update.desktop", dest: "/home/{{ user_item }}/Schreibtisch/update.desktop", mode: "0755"}
+  ignore_errors: yes
+
+- name: Ensure files contents
+  lineinfile:
+    path: "{{ item.path }}"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: "{{ item.state }}"
+    owner: "{{ user_item }}"
+    group: "{{ user_item }}"
+  loop:
+    - {path: "/home/{{ user_item }}/.bashrc", regexp: '^alias update=(.*)$', state: "absent", line: ""}
+    - {path: "/home/{{ user_item }}/.bashrc", regexp: '^source "(.*)/.wegrc"$', state: "absent", line: 'source "/home/{{ user_item }}/.wegrc"'}
+
+- name: Ensure trusted update launcher
+  shell: dbus-launch gio set /home/{{ user_item }}/Schreibtisch/update.desktop "metadata::trusted" true
+  become_user: "{{ user_item }}"
+  ignore_errors: yes
+  changed_when: false
+
+# Ensure scripts
+
+- name: Ensure nautilus scripts directory
+  file:
+    path: "/home/{{ user_item }}/.local/share/nautilus/scripts"
+    owner: "{{ user_item }}"
+    state: directory
+
+- name: Ensure nautilus scripts
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - {src: "pdf_verkleinern", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/pdf_verkleinern", mode: "0755"}
+    - {src: "scans_verbessern", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/scans_verbessern", mode: "0755"}
+    - {src: "pdf_zusammenfassen", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/pdf_zusammenfassen", mode: "0755"}
+    - {src: "img2pdf.sh", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/img2pdf", mode: "0755"}
+    - {src: "anonymisieren", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/anonymisieren", mode: "0755"}
