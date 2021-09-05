@@ -17,6 +17,17 @@
             - /root/.config/vars_sysconfig.yml
           skip: true
 
+- name: Install widgets
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - widgets
+    - setup
+    - bigsetup
+  roles:
+    - widgets
+
 - name: Maintenance script
   hosts: localhost
   become: yes
@@ -58,17 +69,6 @@
     - install_webcam
   roles:
     - docker
-
-- name: Install widgets
-  hosts: localhost
-  become: yes
-  tags:
-    - never
-    - widgets
-    - setup
-    - bigsetup
-  roles:
-    - widgets
 
 - name: Install themes
   hosts: localhost

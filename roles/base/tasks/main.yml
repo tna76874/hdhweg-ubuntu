@@ -2,7 +2,7 @@
 - import_tasks: misc.yml
   when: not config_uninstall_playbook|bool
 
-- import_tasks: alias.yml
+- import_tasks: settings.yml
   when: not config_uninstall_playbook|bool
 
 - import_tasks: firewall.yml
