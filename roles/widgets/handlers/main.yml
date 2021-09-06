@@ -1,1 +1,31 @@
 ---
+- name: make extensions
+  shell: "{{ item.install }}"
+  args:
+    chdir: "/srv/widgets/{{ item.folder }}"
+  become: yes
+  changed_when: true
+  with_items: "{{ config_widgets }}"
+  when: item.install is defined and item.preq in cpu_info.stdout
+  notify:
+    - ensure extensions
+    - ensure git repos
+
+- name: ensure extensions
+  copy:
+      src: "/srv/widgets/{{ item.folder }}/{{ item.ensure }}"
+      dest: /usr/share/gnome-shell/extensions
+      owner: root
+      group: root
+  with_items: "{{ config_widgets }}"
+  when: item.ensure is defined and item.preq in cpu_info.stdout
+
+- name: ensure git repos
+  ansible.builtin.git:
+    repo: "{{ item.url }}"
+    dest: "/srv/widgets/{{ item.folder }}"
+    clone: yes
+    update: yes
+    force: yes
+    version: "{{ item.version }}"
+  with_items: "{{ config_widgets }}"
