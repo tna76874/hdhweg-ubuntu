@@ -23,7 +23,7 @@
     group: "{{ user_item }}"
   loop:
     - {path: "/home/{{ user_item }}/.bashrc", regexp: '^alias update=(.*)$', state: "absent", line: ""}
-    - {path: "/home/{{ user_item }}/.bashrc", regexp: '^source "(.*)/.wegrc"$', state: "absent", line: 'source "/home/{{ user_item }}/.wegrc"'}
+    - {path: "/home/{{ user_item }}/.bashrc", regexp: '^source "(.*)/.wegrc"$', state: "present", line: 'source "/home/{{ user_item }}/.wegrc"'}
 
 - name: Ensure trusted update launcher
   shell: dbus-launch gio set /home/{{ user_item }}/Schreibtisch/update.desktop "metadata::trusted" true
