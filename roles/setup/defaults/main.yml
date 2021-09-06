@@ -185,6 +185,8 @@ config_flatpak_list_2:
   - { package: "io.github.Soundux", repo: "flathub", state: present }
   - { package: "info.mumble.Mumble", repo: "flathub", state: present }
   - { package: "org.signal.Signal", repo: "flathub", state: present }
+  - { package: "im.riot.Riot", repo: "flathub", state: present }
+  
   # Documents
   - { package: "ch.openboard.OpenBoard", repo: "flathub", state: present }
   - { package: "io.typora.Typora", repo: "flathub", state: present }
