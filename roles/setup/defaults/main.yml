@@ -181,12 +181,12 @@ config_flatpak_list_2:
   - { package: "org.js.nuclear.Nuclear", repo: "flathub", state: present }
   - { package: "org.kde.kdenlive", repo: "flathub", state: present }
   - { package: "fr.handbrake.ghb", repo: "flathub", state: present }
+  - { package: "com.calibre_ebook.calibre", repo: "flathub", state: present }
   # Voice chat / communication
   - { package: "io.github.Soundux", repo: "flathub", state: present }
   - { package: "info.mumble.Mumble", repo: "flathub", state: present }
   - { package: "org.signal.Signal", repo: "flathub", state: present }
   - { package: "im.riot.Riot", repo: "flathub", state: present }
-  
   # Documents
   - { package: "ch.openboard.OpenBoard", repo: "flathub", state: present }
   - { package: "io.typora.Typora", repo: "flathub", state: present }
