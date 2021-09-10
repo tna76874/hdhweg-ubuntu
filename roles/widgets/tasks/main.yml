@@ -7,6 +7,7 @@
       - libglib2.0-dev-bin
       - gnome-tweaks
       - gnome-shell-extensions
+      - make
     state: latest
   when: not uninstall | bool
 
