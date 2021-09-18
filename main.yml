@@ -17,7 +17,7 @@
             - /root/.config/vars_sysconfig.yml
           skip: true
 
-- name: Install widgets
+- name: Ensure widgets
   hosts: localhost
   become: yes
   tags:
@@ -47,6 +47,7 @@
   roles:
     - deploy
 
+
 - name: Initial setup and update routine
   hosts: localhost
   become: yes
@@ -57,6 +58,18 @@
   roles:
     - setup
     - security
+
+- name: Ensure unattended-upgrades
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - deploy
+    - unattended-upgrades
+    - setup
+    - bigsetup
+  roles:
+    - ubuntu-unattended-upgrades
 
 - name: Install Docker
   hosts: localhost
