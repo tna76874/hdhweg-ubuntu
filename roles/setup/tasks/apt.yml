@@ -23,7 +23,7 @@
     url: "{{ item.url }}"
     state: "{{ item.state }}"
   loop:
-    - { url: "https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg", state: "present"}
+    - { url: "https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg", state: "absent"}
     - { url: "https://download.teamviewer.com/download/linux/signature/TeamViewer2017.asc", state: "present"}
 
 - name: Ensure source states
@@ -33,7 +33,7 @@
     filename: "{{ item.filename }}"
   loop:
     - { repo: "deb http://www.geogebra.net/linux/ stable main", state: "absent", filename: "geogebra"}
-    - { repo: "deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main", state: "present", filename: "vscodium"}
+    - { repo: "deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main", state: "absent", filename: "vscodium"}
     - { repo: "deb http://linux.teamviewer.com/deb stable main", state: "present", filename: "teamviewer"}
 
 - name: Triggering upgrade handler
@@ -87,6 +87,7 @@
       - shotwell
       - hibiscus-ppa
       - speedtest-cli
+      - codium
     state: absent
 
 - name: Ensure packages for ubuntu => 20
