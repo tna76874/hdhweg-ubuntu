@@ -35,6 +35,7 @@ config_apt_list_1:
   - bmon
   - vim
   - nano
+  - pwgen
   - nautilus
   - vlc
   - libxvidcore4

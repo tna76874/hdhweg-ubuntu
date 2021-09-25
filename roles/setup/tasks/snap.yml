@@ -3,6 +3,7 @@
   snap:
     name:
       - pdftk
+      - speedtest-cli
       - bing-wall
       - wonderwall
   ignore_errors: yes

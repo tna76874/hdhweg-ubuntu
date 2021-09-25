@@ -86,6 +86,7 @@
       - scribus-template
       - shotwell
       - hibiscus-ppa
+      - speedtest-cli
     state: absent
 
 - name: Ensure packages for ubuntu => 20
