@@ -117,7 +117,6 @@
     - notification start apt
     - update apt
     - upgrade apt
-    - grab flatpaks
     - update flatpaks
     - notification stop apt
   
