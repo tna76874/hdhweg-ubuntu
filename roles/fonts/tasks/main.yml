@@ -1,0 +1,50 @@
+---
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: "{{ font_path }}"
+    state: directory
+
+- name: Glob files
+  command: "ls {{ font_path }}"
+  register: found_files
+  changed_when: false
+
+- name: Download fonts and extract (gz)
+  shell: "wget {{ item.url }} -O - | gunzip -c > {{ item.name }}"
+  args:
+    chdir: "{{ font_path }}"
+    warn: false
+  become: yes
+  loop: "{{ font_list }}"
+  when: item.name not in found_files.stdout_lines and item.type=="gz"
+  notify:
+    - update cache
+
+- name: Download fonts and extract (zip)
+  shell: "wget {{ item.url }} -O font.zip; unzip -o font.zip; rm font.zip; {{ item.cmd }}"
+  args:
+    chdir: "{{ font_path }}"
+    warn: false
+  become: yes
+  loop: "{{ font_list }}"
+  when: item.name not in found_files.stdout_lines and item.type=="zip"
+  notify:
+    - update cache
+
+- name: Download fonts
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ font_path }}/{{ item.name }}"
+  become: yes
+  loop: "{{ font_list }}"
+  when: item.name not in found_files.stdout_lines and item.type=="raw"
+  notify:
+    - update cache
+
+- name: Cleanup
+  shell: "rm -rf *.pdf *.txt"
+  args:
+    chdir: "{{ font_path }}"
+    warn: false
+  changed_when: false
+  become: yes

@@ -92,6 +92,17 @@
   roles:
     - themes
 
+- name: Install fonts
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - fonts
+    - setup
+    - bigsetup
+  roles:
+    - fonts
+
 - name: Install mbz tool
   hosts: localhost
   become: yes
