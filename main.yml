@@ -2,6 +2,7 @@
 - hosts: localhost
   collections:
     - community.general
+    - community.crypto
 
 - name: Import local configs
   hosts: localhost

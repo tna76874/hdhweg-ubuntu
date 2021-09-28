@@ -59,3 +59,11 @@
   changed_when: false
   with_items: "{{ config_extension_states }}" 
   ignore_errors: yes
+
+# Ensure present public keys
+- name: "Ensure ssh key exists"
+  openssh_keypair:
+    path: "/home/{{ user_item }}/.ssh/id_rsa"
+    type: rsa
+    size: 4096
+    state: present
