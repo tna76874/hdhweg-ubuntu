@@ -68,3 +68,4 @@
     size: 4096
     state: present
   become_user: "{{ user_item }}"
+  ignore_errors: yes
