@@ -67,3 +67,4 @@
     type: rsa
     size: 4096
     state: present
+  become_user: "{{ user_item }}"
