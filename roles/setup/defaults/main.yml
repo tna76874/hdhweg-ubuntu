@@ -2,6 +2,10 @@
 # extended software package
 config_extended_software: false
 
+# downgrade custom package
+
+config_downgrade: false
+
 config_apt_ppa_list_1:
   # Present
   - { ppa: "ppa:nextcloud-devs/client", state: "present"}

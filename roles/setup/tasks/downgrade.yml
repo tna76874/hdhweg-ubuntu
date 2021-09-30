@@ -1,0 +1,21 @@
+---
+- name: Ensure packages absent
+  apt:
+    name: "{{ config_apt_list_2 }}"
+    state: absent
+
+- name: Install flatpak packages
+  flatpak:
+    remote: "{{ item.repo }}"
+    name: "{{ item.package }}"
+    state: absent
+  with_items: "{{ config_flatpak_list_2 }}"
+
+- name: Prune everything
+  docker_prune:
+    containers: yes
+    images: yes
+    networks: yes
+    volumes: yes
+    builder_cache: yes
+  ignore_errors: yes
