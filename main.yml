@@ -111,7 +111,6 @@
   tags: 
     - never
     - mbz
-    - bigsetup
   roles:
     - mbz
 
@@ -121,7 +120,6 @@
   tags:
     - never
     - fritzbox
-    - bigsetup
   roles:
     - fritzbox
 
