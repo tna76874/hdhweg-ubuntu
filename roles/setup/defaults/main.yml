@@ -171,6 +171,7 @@ config_flatpak_list_1:
   - { package: "org.chromium.Chromium", repo: "flathub", state: present }
   - { package: "org.mozilla.firefox", repo: "flathub", state: present }
   - { package: "com.google.Chrome", repo: "flathub-beta", state: present }
+  - { package: "com.github.Eloston.UngoogledChromium", repo: "flathub", state: present }
   # Miscellaneous
   - { package: "com.github.tchx84.Flatseal", repo: "flathub", state: present }
   - { package: "com.belmoussaoui.Decoder", repo: "flathub", state: present }
@@ -197,8 +198,6 @@ config_flatpak_list_2:
   - { package: "io.typora.Typora", repo: "flathub", state: present }
   - { package: "net.scribus.Scribus", repo: "flathub", state: present }
   - { package: "com.wps.Office", repo: "flathub", state: present }
-  # Browser
-  - { package: "com.github.Eloston.UngoogledChromium", repo: "flathub", state: present }
   # Miscellaneous
   - { package: "org.zotero.Zotero", repo: "flathub", state: present }
   - { package: "fr.romainvigier.MetadataCleaner", repo: "flathub", state: present }
