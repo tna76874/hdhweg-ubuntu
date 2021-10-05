@@ -116,7 +116,6 @@ config_apt_list_1:
   # flatpak packages
   - flatpak
   - gnome-software-plugin-flatpak
-  #
 
 config_apt_list_2:
   - texstudio
@@ -143,6 +142,7 @@ config_apt_list_2:
   - build-essential
   - git-lfs
   - android-tools-adb
+  - esptool
   - autossh
 
 # custom flatpak's
