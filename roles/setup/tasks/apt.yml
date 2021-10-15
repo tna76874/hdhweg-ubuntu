@@ -23,7 +23,6 @@
     url: "{{ item.url }}"
     state: "{{ item.state }}"
   loop:
-    - { url: "https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg", state: "absent"}
     - { url: "https://download.teamviewer.com/download/linux/signature/TeamViewer2017.asc", state: "present"}
   ignore_errors: yes
 
