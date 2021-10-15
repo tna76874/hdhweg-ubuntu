@@ -61,6 +61,12 @@
   ignore_errors: yes
 
 # Ensure present public keys
+- name: Ensure .ssh directory
+  file:
+    path: "/home/{{ user_item }}/.ssh"
+    owner: "{{ user_item }}"
+    state: directory
+
 - name: Check key file
   stat: 
     path: "/home/{{ user_item }}/.ssh/id_rsa"
