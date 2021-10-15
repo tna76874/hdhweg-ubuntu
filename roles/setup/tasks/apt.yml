@@ -34,7 +34,6 @@
     filename: "{{ item.filename }}"
   loop:
     - { repo: "deb http://www.geogebra.net/linux/ stable main", state: "absent", filename: "geogebra"}
-    - { repo: "deb https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs/ vscodium main", state: "absent", filename: "vscodium"}
     - { repo: "deb http://linux.teamviewer.com/deb stable main", state: "present", filename: "teamviewer"}
 
 - name: Triggering upgrade handler
