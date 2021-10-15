@@ -61,6 +61,11 @@
   ignore_errors: yes
 
 # Ensure present public keys
+- name: Check key file
+  stat: 
+    path: "/home/{{ user_item }}/.ssh/id_rsa"
+  register: ssh_key_file
+
 - name: "Ensure ssh key exists"
   openssh_keypair:
     path: "/home/{{ user_item }}/.ssh/id_rsa"
@@ -69,3 +74,4 @@
     state: present
   become_user: "{{ user_item }}"
   ignore_errors: yes
+  when: not ssh_key_file.stat.exists
