@@ -72,3 +72,36 @@ search network" | tee /run/systemd/resolve/resolv.conf
 ln -sr /run/systemd/resolve/resolv.conf /run/systemd/resolve/stub-resolv.conf
 }
 export -f fixcubicdns
+
+# copy home dir from remote host
+alias get_network_ip="ifconfig -a | grep 'inet 192' | tr -s ' ' | cut -d ' ' -f 3"
+
+append_ssh_key(){
+if [ $# -ne 1 ]; then
+ echo -e "Please pass ssh PUBLIC key.\n\nappend_ssh_key id_rsa.pub"
+else
+ cat "$1" >> $HOME/.ssh/authorized_keys
+fi
+}
+
+copy_home() {
+if [ $# -ne 2 ]; then
+ echo -e "Please pass ssh host with user.\n\ncopy_home user host\n"
+ echo -e "copy .ssh/id_rsa.pub from this host on an USB drive. Plug into other host, open terminal on USB drive and run\n\nappend_ssh_key id_rsa.pub\n"
+ echo -e "run get_network_ip on other host to get the host ip adress"
+else
+ COPY_USER="$1"
+ COPY_SERVER="$2"
+ COPY_FROM="$1@$2:/home/$1"
+ COPY_TO="$HOME"
+ rsync -avzhs -P --partial --stats --timeout=30 -e ssh --delete-after --exclude ".ssh" "$COPY_FROM"/ "$COPY_TO"/
+ read -r -p "Copy .ssh [y/N]: " response
+ case "$response" in
+     [yY][eE][sS]|[yY])
+         rsync -avzhs -P --partial --stats --timeout=30 -e ssh --delete-after "$COPY_FROM"/.ssh "$COPY_TO"/
+         ;;
+     *)  return 1
+         ;;
+    esac
+fi
+}
