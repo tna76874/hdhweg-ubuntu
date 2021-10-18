@@ -84,6 +84,14 @@ else
 fi
 }
 
+copy_ssh_key(){
+if [ ! -f $HOME/.ssh/id_rsa.pub ]; then
+ echo -e "id_rsa.pub not found."
+else
+ cp $HOME/.ssh/id_rsa.pub .
+fi
+}
+
 copy_home() {
 if [ $# -ne 2 ]; then
  echo -e "Please pass ssh host with user.\n\ncopy_home user host\n"
