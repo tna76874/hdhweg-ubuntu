@@ -28,6 +28,9 @@ config_ensure_repo: "{{ config_autopull_repo }}"
 # remove playbook from system
 config_uninstall_playbook: false
 
+# disable tracker to reduce system load
+config_disable_tracker: false
+
 # extensions states
 
 config_extension_states:

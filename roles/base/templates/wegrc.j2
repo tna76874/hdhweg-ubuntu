@@ -43,6 +43,9 @@ alias reinstall="wget -qO setup.sh {{ config_repo_setup }} && chmod +x setup.sh 
 # uninstall this playbook from system
 alias uninstall="sudo git -C {{ config_repo_folder }} pull && sudo ansible-playbook {{ config_repo_folder }}/main.yml -t base -e config_uninstall_playbook=yes"
 
+# disable tracker to reduce system load
+alias disable_tracker="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t base -e config_disable_tracker=True"
+
 # creating a pdf that contains hardware informations
 hwpdf() {
 SERIAL=$(sudo inxi -v 2 -c 0 -y 80 | grep serial | head -1 | awk -v FS='(serial:|)' '{print $2}' | sed 's/^ //g')
