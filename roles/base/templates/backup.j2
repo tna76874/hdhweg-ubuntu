@@ -47,7 +47,7 @@ if [ ! -f "$ENVFILE" ]; then
 
     RESTIC_PASSWORD=$(generatePassword)
 
-    read -e -p "HOST: " -i "restic.hilberg.eu" CON_HOST
+    read -e -p "HOST: " -i "restic.example.xyz" CON_HOST
     read -e -p "RESTIC PW: " -i "$RESTIC_PASSWORD" RESTIC_PASSWORD
     if $(confirm "Use a REST server?") ; then
         BACKEND="rest"
