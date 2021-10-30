@@ -1,0 +1,145 @@
+#!/bin/bash
+SCRIPT=$(readlink -f "$0")
+DIR=$(dirname "$SCRIPT")
+RESTICDIR="$HOME/.restic"
+LOGDIR="$RESTICDIR/log"
+ENVFILE="$RESTICDIR/env"
+
+export RESTIC_EXE="/snap/bin/restic"
+
+mkdir -p "$RESTICDIR"
+mkdir -p "$LOGDIR"
+
+function generatePassword() {
+    cat /dev/urandom | tr -dc a-zA-Z0-9 | fold -w 32 | head -n 1
+}
+
+confirm() {
+    # call with a prompt string or use a default
+    read -r -p "$@"" [y/N]: " response
+    case "$response" in
+        [yY][eE][sS]|[yY])
+            return 0
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+write_env() {
+echo -e "
+CON_HOST=${CON_HOST}\n\
+CON_PORT=${CON_PORT}\n\
+CON_PROTOCOL=${CON_PROTOCOL}\n\
+CON_USER=${CON_USER}\n\
+CON_PW=${CON_PW}\n\
+CON_REPO=${CON_REPO}\n\
+RESTIC_PASSWORD=${RESTIC_PASSWORD}\n\
+BACKEND=${BACKEND}\n\
+" \
+> ${ENVFILE}
+echo "Created new restic env file: ${ENVFILE}"
+}
+
+init_env() {
+if [ ! -f "$ENVFILE" ]; then
+
+    RESTIC_PASSWORD=$(generatePassword)
+
+    read -e -p "HOST: " -i "restic.hilberg.eu" CON_HOST
+    read -e -p "RESTIC PW: " -i "$RESTIC_PASSWORD" RESTIC_PASSWORD
+    if $(confirm "Use a REST server?") ; then
+        BACKEND="rest"
+        read -e -p "PORT: " -i "8000" CON_PORT
+        read -e -p "PROTOCOL: " -i "https" CON_PROTOCOL
+        read -e -p "USER: " -i "admin" CON_USER
+        read -e -p "REST PW: " -i "" CON_PW
+        CON_REPO="$CON_USER"
+    else
+        BACKEND="local"
+        CON_REPO="local"
+    fi
+
+write_env
+fi
+
+source ${ENVFILE}
+
+if [ "$RESTIC_PASSWORD" == "" ]; then
+    RESTIC_PASSWORD=$(generatePassword)
+    write_env
+    source ${ENVFILE}
+fi
+
+export RESTIC_PASSWORD
+if [ "$BACKEND" == "rest" ]; then
+    export RESTIC_REPOSITORY="rest:${CON_PROTOCOL}://${CON_USER}:${CON_PW}@${CON_HOST}:${CON_PORT}/${CON_REPO}"
+else
+    export RESTIC_REPOSITORY="${CON_HOST}"
+fi
+
+export RESTIC_REPOSITORY2
+export RESTIC_PASSWORD2
+export LOGFILE="${RESTICDIR}/log/${CON_REPO}/restic.log"
+
+}
+
+# initalize env variables
+init_repo() {
+init_env
+mkdir -p $(dirname "$LOGFILE")
+echo $(date) 2>&1 | tee -a $LOGFILE
+{
+"$RESTIC_EXE" snapshots > /dev/null || "$RESTIC_EXE" init # initialize repository if not already exits
+} 2>&1 | tee -a $LOGFILE
+}
+
+restic_run() {
+init_env
+mkdir -p $(dirname "$LOGFILE")
+
+{
+echo $(date)
+"$RESTIC_EXE" $@
+while [[ "$?" -ne "0" ]]; do
+    echo $(date)
+    sleep 10
+    echo -e "SYNC INTERRUPTED. Waiting 10s and then repeat."
+    "$RESTIC_EXE" $@
+done
+} 2>&1 | tee -a $LOGFILE
+}
+
+
+# ###### Parsing arguments
+
+#Usage print
+usage() {
+    echo "Usage: $0 -[b|i|d|h] [RETSIC COMMANDS]" >&2
+    echo "
+   -b,    backend repository (default ~/.restic/env)
+   -i,    init repository
+   -h,    Print this help text
+
+    Any other arguments will directely be passed to restic.
+   ">&2
+    exit 1
+}
+while getopts ':ib:d' opt
+#putting : in the beginnnig suppresses the errors for invalid options
+do
+case "$opt" in
+   'b')export ENVFILE=$(readlink -f "$OPTARG");
+       ;;
+   'i')init_repo;
+       ;;
+    *) usage;
+       ;;
+esac
+done
+shift $((OPTIND-1))
+
+if [[ ! -z "$@" ]]; then
+    restic_run "$@" 
+fi

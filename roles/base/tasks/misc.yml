@@ -100,14 +100,16 @@
     mode: 0644
 
 - name: Ensure scripts
-  copy:
-    src: "{{ item }}"
-    dest: "/usr/local/bin"
-    owner: "root"
-    group: "root"
-    mode: 0755
-  with_items:
-    - "scan"
+  template:
+    src: "{{ item.file }}"
+    dest: "{{ item.destination }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "{{ item.mode }}"
+  become: yes
+  loop:
+    - { file: "backup.j2", destination: "/usr/local/bin/backup", owner: "root", mode: "0755" }
+    - { file: "scan.j2", destination: "/usr/local/bin/scan", owner: "root", mode: "0755" }
 
 - name: Triggering upgrade handler
   assert: { that: true, quiet: true }
