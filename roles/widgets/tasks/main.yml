@@ -25,5 +25,6 @@
     force: yes
     version: "{{ item.version }}"
   with_items: "{{ config_widgets }}"
+  ignore_errors: yes
   notify:
     - make extensions
