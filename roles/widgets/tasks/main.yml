@@ -24,6 +24,7 @@
     update: yes
     force: yes
     version: "{{ item.version }}"
+    refspec: '+refs/tags/*:refs/tags/*'
   with_items: "{{ config_widgets }}"
   ignore_errors: yes
   notify:
