@@ -33,6 +33,7 @@
     dest: "/srv/themes/{{ item.folder }}"
     clone: yes
     update: yes
+    force: yes
     version: "{{ item.version }}"
   with_items: "{{ config_themes }}"
   when: not uninstall | bool
