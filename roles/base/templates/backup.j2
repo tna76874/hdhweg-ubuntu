@@ -5,8 +5,6 @@ RESTICDIR="$HOME/.restic"
 LOGDIR="$RESTICDIR/log"
 ENVFILE="$RESTICDIR/env"
 
-export LOOPMAX=10
-export SLEEP_TIME=10
 export RESTIC_EXE="/snap/bin/restic"
 
 mkdir -p "$RESTICDIR"
@@ -103,18 +101,13 @@ init_env
 mkdir -p $(dirname "$LOGFILE")
 
 {
-loopnum=0
 echo $(date)
+"$RESTIC_EXE" unlock --cleanup-cache
 "$RESTIC_EXE" $@
 while [[ "$?" -ne "0" ]]; do
-    if [ $loopnum -eq $LOOPMAX ];then
-        break
-    fi
-    loopnum=$((loopnum+1))
-
     echo $(date)
-    sleep $SLEEP_TIME
-    echo -e "SYNC INTERRUPTED. Waiting $SLEEP_TIMEs and then repeat."
+    sleep 10
+    echo -e "SYNC INTERRUPTED. Waiting 10s and then repeat."
     "$RESTIC_EXE" $@
 done
 } 2>&1 | tee -a $LOGFILE
@@ -125,29 +118,23 @@ done
 
 #Usage print
 usage() {
-    echo "Usage: $0 -[b|i|l|s|h] [RETSIC COMMANDS]" >&2
+    echo "Usage: $0 -[b|i|d|h] [RETSIC COMMANDS]" >&2
     echo "
    -b,    backend repository (default ~/.restic/env)
    -i,    init repository
-   -l,    Maximum number of attempts to repeat backup job. DEFAULT: 10
-   -s,    Sleep time in seconds when backup job fails. DEFAULT: 10
    -h,    Print this help text
 
     Any other arguments will directely be passed to restic.
    ">&2
     exit 1
 }
-while getopts ':b:il:s:' opt
+while getopts ':b:id' opt
 #putting : in the beginnnig suppresses the errors for invalid options
 do
 case "$opt" in
    'b')export ENVFILE=$(readlink -f "$OPTARG");
        ;;
    'i')init_repo;
-       ;;
-   'l')export LOOPMAX=$OPTARG;
-       ;;
-   's')export SLEEP_TIME=$OPTARG;
        ;;
     *) usage;
        ;;
