@@ -19,16 +19,6 @@
             - /root/.config/vars_sysconfig.yml
           skip: true
 
-- name: Ensure widgets
-  hosts: localhost
-  become: yes
-  tags:
-    - never
-    - widgets
-    - bigsetup
-  roles:
-    - widgets
-
 - name: Maintenance script
   hosts: localhost
   become: yes
@@ -60,6 +50,17 @@
   roles:
     - setup
     - security
+
+- name: Ensure widgets
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - widgets
+    - setup
+    - bigsetup
+  roles:
+    - widgets
 
 - name: Ensure unattended-upgrades
   hosts: localhost
