@@ -16,8 +16,11 @@ alias install_webcam="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t
 # install fritzbox tools
 alias install_fritzbox="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t fritzbox"
 
+# install widgets
+alias install_widgets="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t widgets -e widget_force_install=1"
+
 # install themes
-alias install_themes="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t themes"
+alias install_themes="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t themes,widgets -e widget_force_install=1"
 
 # uninstall whitesur gdm and theme
 alias uninstall_themes="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t themes -e uninstall=True"

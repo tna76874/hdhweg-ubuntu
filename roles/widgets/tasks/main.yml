@@ -16,16 +16,44 @@
   register: cpu_info
   changed_when: false
 
-- name: Ensure git repos gnome shell extensions
-  ansible.builtin.git:
-    repo: "{{ item.url }}"
-    dest: "/srv/widgets/{{ item.folder }}"
-    clone: yes
-    update: yes
-    force: yes
-    version: "{{ item.version }}"
-    refspec: '+refs/tags/*:refs/tags/*'
-  with_items: "{{ config_widgets }}"
-  ignore_errors: yes
+- name: Ensure git repos
+  block:
+  - name: Ensure git repos gnome shell extensions
+    ansible.builtin.git:
+      repo: "{{ item.url }}"
+      dest: "/srv/widgets/{{ item.folder }}"
+      clone: yes
+      update: yes
+      force: yes
+      version: "{{ item.version }}"
+      refspec: '+refs/tags/*:refs/tags/*'
+    with_items: "{{ config_widgets }}"
+    notify:
+      - make extensions
+
+  rescue:
+  - name: Delete git repos
+    file:
+      state: absent
+      path: "/srv/widgets/{{ item.folder }}"
+    loop: "{{ config_widgets }}"
+
+  - name: Ensure git repos gnome shell extensions
+    ansible.builtin.git:
+      repo: "{{ item.url }}"
+      dest: "/srv/widgets/{{ item.folder }}"
+      clone: yes
+      update: yes
+      force: yes
+      version: "{{ item.version }}"
+      refspec: '+refs/tags/*:refs/tags/*'
+    with_items: "{{ config_widgets }}"
+    notify:
+      - make extensions
+
+- name: Ensure Make state
+  assert: { that: true, quiet: true }
+  changed_when: true
   notify:
     - make extensions
+  when: widget_force_install|bool

@@ -63,7 +63,7 @@
 # ensure tracker disabled
 
 - name: Ensure tracker disabled
-  shell: "systemctl --user mask tracker-store.service tracker-miner-fs.service tracker-miner-rss.service tracker-extract.service tracker-miner-apps.service tracker-writeback.service; tracker reset --hard"
+  shell: "systemctl --user mask tracker-store.service tracker-miner-fs.service tracker-miner-rss.service tracker-extract.service tracker-miner-apps.service tracker-writeback.service; yes j | tracker reset --hard"
   become_user: "{{ user_item }}"
   changed_when: false
   when: config_disable_tracker|bool
