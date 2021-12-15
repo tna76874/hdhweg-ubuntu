@@ -26,3 +26,4 @@
   notify:
     - autoremove flatpaks
     - update flatpaks
+    - update flatpak versions

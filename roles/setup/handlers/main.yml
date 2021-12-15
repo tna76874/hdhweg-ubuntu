@@ -1,2 +1,12 @@
 ---
 - include: ../../base/handlers/main.yml
+
+- name: update flatpaks
+  shell: "flatpak update {{ item.package }} -y"
+  with_items: "{{ config_flatpak_list }}"
+  when: item.version is not defined
+
+- name: update flatpak versions
+  shell: "flatpak update {{ item.package }} --commit={{ item.version }} -y"
+  with_items: "{{ config_flatpak_list }}"
+  when: item.version is defined

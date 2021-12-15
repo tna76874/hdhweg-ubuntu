@@ -119,6 +119,5 @@
     - notification start apt
     - update apt
     - upgrade apt
-    - update flatpaks
     - notification stop apt
   
