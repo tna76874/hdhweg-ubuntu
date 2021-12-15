@@ -8,15 +8,15 @@ config_downgrade: false
 
 config_apt_ppa_list_1:
   # Present
-  - { ppa: "ppa:nextcloud-devs/client", state: "present"}
+  - { ppa: "ppa:marko-preuss/hibiscus", state: "present"}
   - { ppa: "ppa:ubuntu-mozilla-security/ppa", state: "present"}
   - { ppa: "ppa:unit193/encryption", state: "present"}
   - { ppa: "ppa:alexlarsson/flatpak", state: "present"}
   # Absent
+  - { ppa: "ppa:nextcloud-devs/client", state: "absent"}
   - { ppa: "ppa:andreasbutti/xournalpp-master", state: "absent"}
   - { ppa: "ppa:apandada1/xournalpp-stable", state: "absent"}
   - { ppa: "ppa:smathot/cogscinl", state: "absent"}
-  - { ppa: "ppa:marko-preuss/hibiscus", state: "absent"}
 
 config_apt_ppa_list_2:
   - { ppa: "ppa:tomtomtom/woeusb", state: "present"}
@@ -91,7 +91,6 @@ config_apt_list_1:
   - inxi
   - txt2html
   - wkhtmltopdf
-  - nextcloud-client
   - qtqr
   - macchanger
   - youtube-dl
@@ -180,6 +179,7 @@ config_flatpak_list_1:
   - { package: "org.keepassxc.KeePassXC", repo: "flathub", state: present }
   - { package: "org.gnome.Gnote", repo: "flathub", state: present }
   - { package: "com.gitlab.bitseater.meteo", repo: "flathub", state: present }
+  - { package: "com.nextcloud.desktopclient.nextcloud", repo: "flathub", state: present }
 
 config_flatpak_list_2:
   # Media
@@ -204,3 +204,5 @@ config_flatpak_list_2:
   - { package: "org.zotero.Zotero", repo: "flathub", state: present }
   - { package: "fr.romainvigier.MetadataCleaner", repo: "flathub", state: present }
   - { package: "de.willuhn.Jameica", repo: "flathub", state: present }
+
+breitbandmessung_deb: "https://download.breitbandmessung.de/bbm/Breitbandmessung-linux.deb"

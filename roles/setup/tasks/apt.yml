@@ -114,3 +114,8 @@
   apt:
     deb: "{{ duplicati_deb[0]['browser_download_url'] }}"
   ignore_errors: yes
+
+- name: Ensure Breitbandmessung
+  apt:
+    deb: "{{ breitbandmessung_deb }}"
+  ignore_errors: yes
