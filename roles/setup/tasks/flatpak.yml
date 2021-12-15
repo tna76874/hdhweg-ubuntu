@@ -22,14 +22,7 @@
 - name: Triggering flatpak upgrade handler
   assert: { that: true, quiet: true }
   changed_when: true
-  when: not config_perform_apt_upgrade|default(false)
   notify:
     - autoremove flatpaks
     - update flatpaks
-    - update flatpak versions
-
-- name: Triggering flatpak versions handler
-  assert: { that: true, quiet: true }
-  changed_when: true
-  notify:
     - update flatpak versions
