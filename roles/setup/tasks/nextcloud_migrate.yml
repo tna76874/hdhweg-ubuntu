@@ -24,3 +24,17 @@
     group: "{{ user_item }}"
     state: link
   when: not nextcloud_flatpak_config_dir.stat.exists and nextcloud_apt_config_dir.stat.exists
+
+- name: Ensure scripts
+  template:
+    src: "{{ item.file }}"
+    dest: "{{ item.destination }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "{{ item.mode }}"
+    force: "{{ item.force }}"
+  become: yes
+  loop:
+    - { file: "nextcloud_flatpak.j2", destination: "/home/{{ user_item }}/.config/autostart/nextcloud_flatpak.desktop", owner: "root", mode: "0664", force: "no" }
+  when: nextcloud_flatpak_config_dir.stat.exists or nextcloud_apt_config_dir.stat.exists
+  
