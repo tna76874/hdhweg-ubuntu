@@ -87,6 +87,7 @@
       - hibiscus-ppa
       - speedtest-cli
       - codium
+      - nextcloud-client
     state: absent
 
 - name: Ensure packages for ubuntu => 20

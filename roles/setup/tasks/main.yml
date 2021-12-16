@@ -1,4 +1,9 @@
 ---
+- name: Determine existing users
+  shell: 'cat /etc/passwd | grep /bin/bash | grep -v root | grep -v guest | cut -d: -f1'
+  changed_when: false 
+  register: ubuntu_users
+
 - name: Triggering apt upgrade handler
   assert: { that: true, quiet: true }
   changed_when: true
@@ -34,9 +39,15 @@
 - import_tasks: downgrade.yml
   when: config_downgrade|bool
 
+- include_tasks: nextcloud_migrate.yml
+  loop: "{{ ubuntu_users.stdout_lines }}"
+  loop_control:
+    loop_var: user_item
+
 - name: Triggering handlers
   assert: { that: true, quiet: true }
   changed_when: true
   notify:
     - autoremove apt
     - notification stop apt
+

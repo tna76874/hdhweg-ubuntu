@@ -1,0 +1,26 @@
+---
+- name: Check if config directory from nextcloud (flatpak) exist
+  stat:
+    path: "/home/{{ user_item }}/.var/app/com.nextcloud.desktopclient.nextcloud/config/Nextcloud"
+  register: nextcloud_flatpak_config_dir
+
+- name: Check if config directory from nextcloud (apt) exist
+  stat:
+    path: "/home/{{ user_item }}/.config/Nextcloud"
+  register: nextcloud_apt_config_dir
+
+- name: Ensure nautilus scripts directory
+  file:
+    path: "/home/{{ user_item }}/.var/app/com.nextcloud.desktopclient.nextcloud/config/"
+    owner: "{{ user_item }}"
+    state: directory
+  when: not nextcloud_flatpak_config_dir.stat.exists and nextcloud_apt_config_dir.stat.exists
+
+- name: Ensure linked Nextcloud config folders
+  ansible.builtin.file:
+    src: "/home/{{ user_item }}/.config/Nextcloud"
+    dest: "/home/{{ user_item }}/.var/app/com.nextcloud.desktopclient.nextcloud/config/Nextcloud"
+    owner: "{{ user_item }}"
+    group: "{{ user_item }}"
+    state: link
+  when: not nextcloud_flatpak_config_dir.stat.exists and nextcloud_apt_config_dir.stat.exists
