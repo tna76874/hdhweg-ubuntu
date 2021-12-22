@@ -1,4 +1,10 @@
 ---
+# custom wifi drivers
+
+rtw89_repo_url: { url: "https://github.com/lwfinger/rtw89.git", version: 'main' }
+rtw89_repo_dir: "/srv/rtw89"
+ensure_rtw89_module: false
+
 # extended software package
 config_extended_software: false
 

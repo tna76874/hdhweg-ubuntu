@@ -10,3 +10,15 @@
   shell: "flatpak update {{ item.package }} --commit={{ item.version }} -y"
   with_items: "{{ config_flatpak_list }}"
   when: item.version is defined
+
+- name: make rtw89 module
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ rtw89_repo_dir }}"
+  become: yes
+  changed_when: True
+  loop:
+    - "make"
+    - "sudo make install"
+    - "sudo modprobe -r rtw89pci"
+    - "sudo modprobe rtw89pci"
