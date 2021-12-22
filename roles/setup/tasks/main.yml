@@ -78,3 +78,10 @@
     - autoremove apt
     - notification stop apt
 
+- name: Disable rtw89 module
+  assert: { that: true, quiet: true }
+  changed_when: true
+  when: not ensure_rtw89_module|bool
+  notify:
+    - disable rtw89
+

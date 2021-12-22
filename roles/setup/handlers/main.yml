@@ -1,6 +1,4 @@
 ---
-- include: ../../base/handlers/main.yml
-
 - name: update flatpaks
   shell: "flatpak update {{ item.package }} -y"
   with_items: "{{ config_flatpak_list }}"
@@ -17,8 +15,24 @@
     chdir: "{{ rtw89_repo_dir }}"
   become: yes
   changed_when: True
+  ignore_errors: yes
   loop:
     - "make"
     - "sudo make install"
-    - "sudo modprobe -r rtw89pci"
-    - "sudo modprobe rtw89pci"
+  notify:
+    - disable rtw89
+    - enable rtw89
+
+- name: disable rtw89
+  modprobe:
+    name: rtw89pci
+    state: absent
+  ignore_errors: yes
+
+- name: enable rtw89
+  modprobe:
+    name: rtw89pci
+    state: present
+  ignore_errors: yes
+
+- include: ../../base/handlers/main.yml

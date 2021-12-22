@@ -31,4 +31,10 @@
     notify:
       - make rtw89 module
 
+- name: Enable rtw89 module
+  assert: { that: true, quiet: true }
+  changed_when: true
+  notify:
+    - enable rtw89
+
 
