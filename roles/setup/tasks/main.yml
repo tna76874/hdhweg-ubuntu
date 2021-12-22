@@ -13,6 +13,7 @@
     mode: "{{ item.mode }}"
   become: yes
   ignore_errors: yes
+  when: config_generate_config_file|bool
   loop:
     - { file: "vars.j2", destination: "/root/.config/vars_sysconfig.yml", owner: "root", mode: "0755" }
 

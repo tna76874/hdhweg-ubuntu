@@ -12,6 +12,12 @@ config_extended_software: false
 
 config_downgrade: false
 
+# generate config file
+
+config_generate_config_file: false
+
+# Software details
+
 config_apt_ppa_list_1:
   # Present
   - { ppa: "ppa:marko-preuss/hibiscus", state: "present"}
