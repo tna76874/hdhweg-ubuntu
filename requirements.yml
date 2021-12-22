@@ -1,3 +1,4 @@
 collections:
   # Install a collection from Ansible Galaxy.
   - name: community.general
+  - name: community.crypto

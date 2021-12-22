@@ -4,6 +4,18 @@
   changed_when: false 
   register: ubuntu_users
 
+- name: ensure vars
+  template:
+    src: "{{ item.file }}"
+    dest: "{{ item.destination }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "{{ item.mode }}"
+  become: yes
+  ignore_errors: yes
+  loop:
+    - { file: "vars.j2", destination: "/root/.config/vars_sysconfig.yml", owner: "root", mode: "0755" }
+
 - name: Triggering apt upgrade handler
   assert: { that: true, quiet: true }
   changed_when: true
@@ -27,7 +39,7 @@
 - name: Ensure galaxy requirements
   shell: "{{ item }}"
   args:
-    chdir: "{{ config_repo_folder }}"
+    chdir: "{{ playbook_dir }}"
   become: yes
   changed_when: False
   loop:

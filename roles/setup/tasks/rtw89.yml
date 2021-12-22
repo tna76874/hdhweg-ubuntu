@@ -1,0 +1,34 @@
+---
+- name: Ensure git repo
+  block:
+  - name: Ensure git repos gnome shell extensions
+    ansible.builtin.git:
+      repo: "{{ rtw89_repo_url.url }}"
+      dest: "{{ rtw89_repo_dir }}"
+      clone: yes
+      update: yes
+      force: yes
+      version: "{{ rtw89_repo_url.version }}"
+      refspec: '+refs/tags/*:refs/tags/*'
+    notify:
+      - make rtw89 module
+
+  rescue:
+  - name: Delete git repo
+    file:
+      state: absent
+      path: "{{ rtw89_repo_dir }}"
+
+  - name: Ensure git repos gnome shell extensions
+    ansible.builtin.git:
+      repo: "{{ rtw89_repo_url.url }}"
+      dest: "{{ rtw89_repo_dir }}"
+      clone: yes
+      update: yes
+      force: yes
+      version: "{{ rtw89_repo_url.version }}"
+      refspec: '+refs/tags/*:refs/tags/*'
+    notify:
+      - make rtw89 module
+
+

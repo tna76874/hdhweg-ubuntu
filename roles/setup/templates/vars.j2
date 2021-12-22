@@ -1,0 +1,26 @@
+# disable teamviewer daemon at startup
+disable_teamviewer: {{ disable_teamviewer }}
+# upgrade apt with basic role
+config_perform_apt_upgrade: {{ config_perform_apt_upgrade }}
+
+# pulling latest changes of the git repo when running base role
+config_ensure_repo: {{ config_ensure_repo }}
+
+# pull all latest changes from the repo after given time after startup
+config_autopull_repo: {{ config_autopull_repo }}
+config_autopull_repo_time: "{{ config_autopull_repo_time }}"
+
+# run basic role after given time after startup
+config_autorun_base: {{ config_autorun_base }}
+config_autorun_base_time: "{{ config_autorun_base_time }}"
+
+# ensure rtw89 wifi module for new chipsets
+ensure_rtw89_module: {{ ensure_rtw89_module }}
+
+# define custom flatpaks to install
+config_custom_flatpak:
+{% if (config_custom_flatpak != None) %}
+{% for flatpak in config_custom_flatpak %}
+    - {% raw %}{{% endraw %} package:{{ flatpak.package }}, repo: "{{ flatpak.repo }}", state: {{ flatpak.state }} {% raw %}}{% endraw %}
+{% endfor %}
+{% endif %}

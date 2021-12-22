@@ -38,15 +38,6 @@
   loop:
     - { path: "/root/.config", owner: "root" }
 
-- name: Ensure vars.yml
-  ansible.builtin.copy:
-    src: "{{ playbook_dir }}/examples/vars.yml"
-    dest: "/root/.config/vars_sysconfig.yml"
-    owner: root
-    group: root
-    force: no
-  ignore_errors: yes
-
 - name: Ensure autopull state
   cron:
     name: "pulling ansible playbook at reboot"
@@ -120,4 +111,3 @@
     - update apt
     - upgrade apt
     - notification stop apt
-  
