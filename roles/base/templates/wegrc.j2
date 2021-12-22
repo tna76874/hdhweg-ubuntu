@@ -1,6 +1,9 @@
 # run the main playbook to ensure updated packages and proper configs
 alias update="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup"
 
+# run the main playbook to ensure updated packages and proper configs including latest rtw89_module
+alias wifi_update="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup -e ensure_rtw89_module=True"
+
 # run the base playbook to ensure proper configs
 alias update_config="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t base"
 
@@ -51,9 +54,6 @@ alias disable_tracker="sudo ansible-playbook {{ config_repo_folder }}/main.yml -
 
 # get flatpak commit infos
 alias flatpakinfo="flatpak remote-info --log flathub"
-
-# update to latest rtw89_module
-alias wifi_update="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup -e ensure_rtw89_module=True"
 
 # creating a pdf that contains hardware informations
 hwpdf() {
