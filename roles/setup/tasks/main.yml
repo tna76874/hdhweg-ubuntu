@@ -68,7 +68,7 @@
   loop_control:
     loop_var: user_item
 
-- import_tasks: rtw89.yml
+- import_tasks: wifi.yml
   when: ensure_rtw89_module|bool
 
 - name: Triggering handlers

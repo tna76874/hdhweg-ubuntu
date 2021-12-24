@@ -1,4 +1,10 @@
 ---
+- name: Ensure r8168-dkms
+  apt:
+    name:
+      - r8168-dkms
+    state: latest
+
 - name: Ensure git repo
   block:
   - name: Ensure git repos gnome shell extensions
