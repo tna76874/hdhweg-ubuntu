@@ -36,3 +36,8 @@ config_disable_tracker: true
 config_extension_states:
     - {ext: "extensions@abteil.org", state: "enable"}
     - {ext: "caffeine@patapon.info", state: "enable"}
+
+# restic config
+config_restic_path: '/snap/bin/restic'
+
+config_restic_prune_policy: '--keep-daily 7 --keep-weekly 5 --keep-monthly 12 --keep-yearly 1'

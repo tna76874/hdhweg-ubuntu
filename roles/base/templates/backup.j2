@@ -7,7 +7,8 @@ ENVFILE="$RESTICDIR/env"
 
 export LOOPMAX=10
 export SLEEP_TIME=10
-export RESTIC_EXE="/snap/bin/restic"
+export RESTIC_EXE="{{ config_restic_path }}"
+export PRUNE_CONFIG="{{ config_restic_prune_policy }}"
 
 mkdir -p "$RESTICDIR"
 mkdir -p "$LOGDIR"
@@ -132,13 +133,14 @@ usage() {
    -i,    init repository
    -l,    Maximum number of attempts to repeat backup job. DEFAULT: 10
    -s,    Sleep time in seconds when backup job fails. DEFAULT: 10
+   -p,    Forget and prune snapshots with: $PRUNE_CONFIG
    -h,    Print this help text
 
     Any other arguments will directely be passed to restic.
    ">&2
     exit 1
 }
-while getopts ':b:il:s:' opt
+while getopts ':b:il:s:p' opt
 #putting : in the beginnnig suppresses the errors for invalid options
 do
 case "$opt" in
@@ -149,6 +151,8 @@ case "$opt" in
    'l')export LOOPMAX=$OPTARG;
        ;;
    's')export SLEEP_TIME=$OPTARG;
+       ;;
+   'p')restic_run forget "$PRUNE_CONFIG" --prune;
        ;;
     *) usage;
        ;;
