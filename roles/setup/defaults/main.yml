@@ -173,6 +173,7 @@ config_flatpak_list_1:
   # Voice chat / communication
   - { package: "com.teamspeak.TeamSpeak", repo: "flathub", state: present }
   - { package: "im.riot.Riot", repo: "flathub", state: present }
+  - { package: "org.jitsi.jitsi-meet", repo: "flathub", state: present }
   # Documents
   - { package: "net.codeindustry.MasterPDFEditor", repo: "flathub", state: present }
   - { package: "com.github.xournalpp.xournalpp", repo: "flathub", state: present }
