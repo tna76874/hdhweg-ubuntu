@@ -60,6 +60,9 @@
 - import_tasks: misc.yml
   when: not config_downgrade|bool
 
+- import_tasks: linuxrouter.yml
+  when: not config_downgrade|bool
+
 - import_tasks: downgrade.yml
   when: config_downgrade|bool
 

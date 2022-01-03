@@ -1,0 +1,21 @@
+---
+- name: Ensure apt packages
+  apt:
+    name:
+      - procps
+      - iproute2
+      - dnsmasq
+      - iptables
+      - hostapd
+      - iw
+      - haveged
+      - qrencode
+      - pwgen
+    state: latest
+    install_recommends: yes
+
+- name: Ensure linuxrouter executable
+  get_url:
+    url: "https://raw.githubusercontent.com/garywill/linux-router/{{ config_linuxrouter_commit }}/lnxrouter"
+    dest: /usr/local/bin/lnxrouter
+    mode: '0755'
