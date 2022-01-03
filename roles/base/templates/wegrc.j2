@@ -130,6 +130,8 @@ fi
 openap() {
 ssid=${1:-"wlan-hotspot"}
 pw=${2:-$(pwgen 8 1)}
+QRCODE="WIFI:S:$ssid;T:WPA;P:$pw;;"
+qrencode -t ANSIUTF8 "$QRCODE"
 echo -e "SSID:     $ssid \nPASSWORT: $pw\n"
 inetdev=$(route | grep '^default' | grep -o '[^ ]*$' | head -n 1)
 
