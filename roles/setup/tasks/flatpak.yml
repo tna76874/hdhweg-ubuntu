@@ -32,4 +32,5 @@
   changed_when: true
   notify:
     - update flatpaks
+    - unmask flatpaks
     - update flatpak versions

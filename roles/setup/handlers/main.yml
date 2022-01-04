@@ -4,8 +4,13 @@
   with_items: "{{ config_flatpak_list }}"
   when: item.version is not defined
 
+- name: unmask flatpaks
+  shell: "flatpak mask --remove {{ item.package }}"
+  with_items: "{{ config_flatpak_list }}"
+  when: item.package in flatpak_masked_list
+
 - name: update flatpak versions
-  shell: "flatpak update {{ item.package }} --commit={{ item.version }} -y"
+  shell: "flatpak update {{ item.package }} --commit={{ item.version }} -y; flatpak mask {{ item.package }}"
   with_items: "{{ config_flatpak_list }}"
   when: item.version is defined
 
