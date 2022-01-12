@@ -197,6 +197,7 @@ config_flatpak_list_1:
   - { package: "org.keepassxc.KeePassXC", repo: "flathub", state: present }
   - { package: "org.gnome.Gnote", repo: "flathub", state: present }
   - { package: "com.gitlab.bitseater.meteo", repo: "flathub", state: present }
+  - { package: "com.mattjakeman.ExtensionManager", repo: "flathub", state: present }
   - { package: "com.nextcloud.desktopclient.nextcloud", repo: "flathub", state: present , version: "5e9f197673b5e5d4d90dba0e6b6b0d8ce4d4c2a503dc061edc1c7c6e388113d9" }
 
 config_flatpak_list_2:
