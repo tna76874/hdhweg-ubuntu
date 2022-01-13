@@ -76,7 +76,10 @@
   loop_control:
     loop_var: user_item
 
-- import_tasks: wifi.yml
+- import_tasks: rembg.yml
+  when: enable_rembg|bool
+
+- import_tasks: wifi.yml  
   when: ensure_rtw89_module|bool
 
 - name: Triggering handlers

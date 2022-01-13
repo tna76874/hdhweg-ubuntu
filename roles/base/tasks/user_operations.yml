@@ -51,6 +51,15 @@
     - {src: "img2pdf.sh", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/img2pdf", mode: "0755"}
     - {src: "anonymisieren", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/anonymisieren", mode: "0755"}
 
+- name: Ensure rembg script
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - {src: "rembg.j2", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/remove-background", mode: "0755"}
+  when: enable_rembg|default(False)
+
 # Ensure gnome extension states
 
 - name: Ensure gnome extension states

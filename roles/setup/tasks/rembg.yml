@@ -1,0 +1,36 @@
+---
+- name: Ensure build repo
+  block:
+  - name: Ensure build repo
+    ansible.builtin.git:
+      repo: "{{ config_rembg_repo.url }}"
+      dest: "{{ config_rembg_repo.dir }}"
+      clone: yes
+      update: yes
+      force: yes
+      version: "{{ config_rembg_repo.version }}"
+      refspec: '+refs/tags/*:refs/tags/*'
+
+  rescue:
+  - name: Delete git repo
+    file:
+      state: absent
+      path: "{{ config_rembg_repo.dir }}"
+
+  - name: Ensure build repo
+    ansible.builtin.git:
+      repo: "{{ config_rembg_repo.url }}"
+      dest: "{{ config_rembg_repo.dir }}"
+      clone: yes
+      update: yes
+      force: yes
+      version: "{{ config_rembg_repo.version }}"
+      refspec: '+refs/tags/*:refs/tags/*'
+
+- name: docker build
+  docker_image:
+    name: "rembg"
+    build:
+      path: "{{ config_rembg_repo.dir }}"
+    source: build
+  ignore_errors: yes
