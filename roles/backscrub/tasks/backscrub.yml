@@ -10,6 +10,11 @@
     - make backscrub
     - ensure backscrub binary
 
+- name: Getting CPU information
+  shell: cat /proc/cpuinfo | grep processor | wc -l
+  register: cpu_info
+  changed_when: false
+
 - name: find model
   find:
     paths: "{{ backscrub_folders.backscrubrepo }}/models"
@@ -27,7 +32,7 @@
       #!/bin/bash
 
       BACKGROUND="-b {{ backscrub_background }}"
-      THREADS=4
+      THREADS={{ ((cpu_info.stdout | float) / 2) | round | int  }}
       BLUR=""
       FORMAT=""
       WIDTH=""
