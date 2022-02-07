@@ -1,0 +1,24 @@
+---
+uninstall: False
+
+backscrub_root_dir: "/srv/webcam"
+
+droidcam_tmp_dir: "/tmp/droidcam"
+droidcam_zip_file: "{{ backscrub_root_dir }}/droidcam.zip"
+
+droidcam_resoultion: { width: "960", height: "720"}
+
+backscrub_folders:
+  obs: "{{ backscrub_root_dir }}/obs-studio"
+  obsv4l2: "{{ backscrub_root_dir }}/obs-v4l2"
+  backscrubrepo: "{{ backscrub_root_dir }}/backscrub_repo"
+  backscrubbuild: "/tmp/backscrub_build"
+  backscrub: "{{ backscrub_root_dir }}/backscrub"
+
+backscrub_background: "{{ backscrub_folders.backscrub }}/blackboard.jpg"
+backscrub_binary: "{{ backscrub_folders.backscrub }}/backscrub"
+
+backscrub_repos:
+  - {url: "https://github.com/obsproject/obs-studio.git" , dest: "{{ backscrub_folders.obs }}", version: "master"}
+  - {url: "https://github.com/CatxFish/obs-v4l2sink", dest: "{{ backscrub_folders.obsv4l2 }}", version: "master"}
+  - {url: "https://github.com/floe/backscrub.git", dest: "{{ backscrub_folders.backscrubrepo }}", version: "main"}

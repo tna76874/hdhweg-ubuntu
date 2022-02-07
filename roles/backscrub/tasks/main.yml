@@ -1,0 +1,107 @@
+---
+- name: Determine existing users
+  shell: 'cat /etc/passwd | grep /bin/bash | grep -v root | grep -v guest | cut -d: -f1'
+  changed_when: false 
+  register: ubuntu_users
+
+- name: Ensure obs-studio ppa
+  apt_repository:
+    repo: ppa:obsproject/obs-studio
+    state: present
+    filename: obsstudio
+
+- name: Update apt
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Ensure packages
+  apt:
+    name:
+      - cmake
+      - qtbase5-dev
+      - v4l-utils
+      - libopencv-dev
+      - build-essential
+      - v4l2loopback-dkms
+      - curl
+      # dependencies for droidcam
+      - libavutil-dev
+      - libswscale-dev
+      - libasound2-dev
+      - libspeex-dev
+      - libusbmuxd-dev
+      - libplist-dev
+      - libappindicator3-dev
+    state: latest
+    install_recommends: yes
+
+- name: Ensure obs
+  apt:
+    name:
+      - obs-studio
+    state: latest
+    install_recommends: yes
+
+- name: Ensure git repos
+  block:
+  - name: Ensure git repos
+    ansible.builtin.git:
+      repo: "{{ item.url }}"
+      dest: "{{ item.dest }}"
+      clone: yes
+      update: yes
+      force: yes
+      version: "{{ item.version }}"
+      refspec: '+refs/tags/*:refs/tags/*'
+    with_items: "{{ backscrub_repos }}"
+    notify:
+      - cleanup backscrub tmpdir
+      - ensure backscrub tmpdir
+      - make backscrub
+      - ensure backscrub binary
+      - make obs loopback
+
+  rescue:
+  - name: Delete git repos
+    file:
+      state: absent
+      path: "{{ item.dest }}"
+    loop: "{{ backscrub_repos }}"
+
+  - name: Ensure git repos
+    ansible.builtin.git:
+      repo: "{{ item.url }}"
+      dest: "{{ item.dest }}"
+      clone: yes
+      update: yes
+      force: yes
+      version: "{{ item.version }}"
+      refspec: '+refs/tags/*:refs/tags/*'
+    with_items: "{{ backscrub_repos }}"
+    notify:
+      - make backscrub
+      - make obs loopback
+
+- name: Ensure directories
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    state: directory
+    recurse: "{{ item.r }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - { path: "{{ backscrub_folders.obsv4l2 }}/build", owner: "root", r: "no", mode: "0755" }
+    - { path: "{{ backscrub_folders.backscrub }}", owner: "root", r: "no", mode: "0755" }
+
+- name: Ensure loopback
+  include_tasks: loopback.yml
+
+- name: Ensure backscrub
+  include_tasks: backscrub.yml
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Ensure droidcam
+  include_tasks: droidcam.yml

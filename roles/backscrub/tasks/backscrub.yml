@@ -1,0 +1,64 @@
+---
+- name: Check if backscrub binary is present
+  stat: 
+    path: "{{ backscrub_binary }}"
+  register: check_if_binary_present
+  changed_when: not check_if_binary_present.stat.exists
+  notify:
+    - cleanup backscrub tmpdir
+    - ensure backscrub tmpdir
+    - make backscrub
+    - ensure backscrub binary
+
+- name: find model
+  find:
+    paths: "{{ backscrub_folders.backscrubrepo }}/models"
+    recurse: no
+    pattern: "selfiesegmentation*.tflite"
+  register: fakecam_models
+
+- name: Ensure script
+  copy:
+    dest: /usr/local/bin/fakecam
+    owner: root
+    group: root
+    mode: 0755
+    content: |
+      #!/bin/bash
+
+      BACKGROUND="-b {{ backscrub_background }}"
+      THREADS=4
+      BLUR=""
+      FORMAT=""
+      WIDTH=""
+      HEIGHT=""
+
+      v4l2-ctl --list-devices
+      read -e -p "Source-Camera: " -i "0" CAMERA
+
+      v4l2-ctl -d /dev/video"$CAMERA" --list-formats-ext
+
+      while getopts ':b:u:t:f:w:h:gz' opt
+      do
+      case "$opt" in
+        'b')  BACKGROUND="-b $OPTARG";;
+        'u')  BLUR="-p bgblur:$OPTARG";;
+        't')  THREADS="$OPTARG";;
+        'f')  FORMAT="-f $OPTARG";;
+        'w')  WIDTH="-w $OPTARG";;
+        'h')  HEIGHT="-h $OPTARG";;
+        'g')  BACKGROUND="";;
+        'z')  BACKGROUND="-b 0"
+              BLUR="-p bgblur:0.9";;
+      esac
+      done
+
+      COMMAND="-t ${{ '{' }}THREADS{{ '}' }} -m {{ fakecam_models.files[0].path }} -c /dev/video${{ '{' }}CAMERA{{ '}' }}  -v /dev/video9  ${{ '{' }}BACKGROUND{{ '}' }} ${{ '{' }}FORMAT{{ '}' }} ${{ '{' }}BLUR{{ '}' }} ${{ '{' }}WIDTH{{ '}' }} ${{ '{' }}HEIGHT{{ '}' }}"
+
+      {{ backscrub_binary }} ${{ '{' }}COMMAND{{ '}' }}
+      
+- name: Ensure wallpaper
+  copy:
+    src: "blackboard.jpg"
+    dest: "{{ backscrub_background }}"
+    mode: 0755

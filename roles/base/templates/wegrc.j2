@@ -14,7 +14,7 @@ alias bigupdate="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playboo
 alias install_docker="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t docker"
 
 # install webcam tools
-alias install_webcam="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t install_webcam"
+alias install_webcam="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t webcam"
 
 # install fritzbox tools
 alias install_fritzbox="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t fritzbox"

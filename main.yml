@@ -82,7 +82,6 @@
     - docker
     - bigsetup
     - install_pihole
-    - install_webcam
   roles:
     - docker
 
@@ -129,9 +128,8 @@
   tags:
     - never
     - webcam
-    - install_webcam
   roles:
-    - webcam
+    - backscrub
 
 - name: Install pihole
   hosts: localhost

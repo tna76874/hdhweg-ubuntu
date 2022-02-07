@@ -1,0 +1,41 @@
+---
+- name: Ensure /etc/modprobe.d/v4l2loopback.conf
+  copy:
+    dest: /etc/modprobe.d/v4l2loopback.conf
+    owner: root
+    group: root
+    mode: 0755
+    content: |
+      options v4l2loopback exclusive_caps=1,1 max_buffer=10,10 video_nr=8,9 card_label="obs,fakecam"
+  notify:
+    - reload v4l2loopback
+
+- name: Ensure /etc/modules-load.d/v4l2loopback.conf
+  copy:
+    dest: /etc/modules-load.d/v4l2loopback.conf
+    owner: root
+    group: root
+    mode: 0755
+    content: |
+      v4l2loopback
+  notify:
+    - reload v4l2loopback
+
+- name: Ensure obs v4l2sink plugin directory
+  ansible.builtin.file:
+    path: "/home/{{ item }}/.config/obs-studio/plugins/v4l2sink/bin/64bit/"
+    state: directory
+    owner: "{{ item }}"
+    group: "{{ item }}"
+  become: yes
+  with_items: "{{ ubuntu_users.stdout_lines }}"
+
+- name: Ensure obs v4l2sink.so softlink
+  ansible.builtin.file:
+    src: /usr/lib/x86_64-linux-gnu/obs-plugins/v4l2sink.so
+    dest: "/home/{{ item }}/.config/obs-studio/plugins/v4l2sink/bin/64bit/v4l2sink.so"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    state: link
+  become: yes
+  with_items: "{{ ubuntu_users.stdout_lines }}"

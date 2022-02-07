@@ -1,0 +1,113 @@
+---
+- name: make obs loopback
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ backscrub_folders.obsv4l2 }}"
+  become: yes
+  changed_when: True
+  ignore_errors: yes
+  loop:
+    - "git clean -xdf"
+    - "cmake -DLIBOBS_INCLUDE_DIR={{ backscrub_folders.obs }}/libobs -DCMAKE_INSTALL_PREFIX=/usr {{ backscrub_folders.obsv4l2 }}"
+    - "make -j4"
+    - "make install"
+
+- name: cleanup backscrub tmpdir
+  file:
+    state: absent
+    path: "{{ backscrub_folders.backscrubbuild }}"
+
+- name: ensure backscrub tmpdir
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    state: directory
+    recurse: "{{ item.r }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - { path: "{{ backscrub_folders.backscrubbuild }}", owner: "root", r: "no", mode: "0755" }
+
+- name: make backscrub
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ backscrub_folders.backscrubbuild }}"
+  become: yes
+  changed_when: True
+  ignore_errors: yes
+  loop:
+    - "cmake {{ backscrub_folders.backscrubrepo }}"
+    - "make -j $(nproc || echo 4)"
+
+- name: ensure backscrub binary
+  copy:
+    src: "{{ backscrub_folders.backscrubbuild }}/backscrub"
+    dest: "{{ backscrub_binary }}"
+    mode: 0755
+
+######################################################################
+
+- name: cleanup droidcam tmpdir
+  file:
+    state: absent
+    path: "{{ droidcam_tmp_dir }}"
+
+- name: ensure droidcam tmpdir
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    state: directory
+    recurse: "{{ item.r }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - { path: "{{ droidcam_tmp_dir }}", owner: "root", r: "no", mode: "0755" }
+
+- name: extract droidcam 
+  ansible.builtin.unarchive:
+    src: "{{ droidcam_zip_file }}"
+    dest: "{{ droidcam_tmp_dir }}"
+
+- name: ensure v4l2loopback_dc not loaded
+  modprobe:
+    name: v4l2loopback_dc
+    state: absent
+  ignore_errors: yes
+
+- name: ensure droidcam resolution
+  lineinfile:
+    path: "{{ droidcam_tmp_dir }}/install.common"
+    state: "{{ item.state }}"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    insertafter: EOF
+  become: yes
+  loop:
+    - { regexp: '^WIDTH=(.*)', line: "WIDTH={{ droidcam_resoultion.width }}", state: "present" }
+    - { regexp: '^HEIGHT=(.*)', line: "HEIGHT={{ droidcam_resoultion.height }}", state: "present" }
+
+- name: install droidcam
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ droidcam_tmp_dir }}"
+  become: yes
+  changed_when: True
+  ignore_errors: yes
+  loop:
+    - "make droidcam-cli"
+    - "apt install linux-headers-`uname -r` gcc make"
+    - "./install-video"
+    - "./install-sound"
+
+- name: ensure v4l2loopback_dc is loaded
+  modprobe:
+    name: v4l2loopback_dc
+    state: present
+  ignore_errors: yes
+
+- name: reload v4l2loopback
+  modprobe:
+    name: v4l2loopback
+    state: "{{ item }}"
+  ignore_errors: yes
+  loop:
+    - "absent"
+    - "present"

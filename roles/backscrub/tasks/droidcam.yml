@@ -1,0 +1,21 @@
+---
+- name: Query droidcam releases from github
+  uri:                                                               
+    url: https://api.github.com/repos/dev47apps/droidcam/releases/latest
+    return_content: true                                             
+  register: droidcam_release_query   
+  ignore_errors: yes  
+
+- name: Get latest droicam release
+  get_url:
+    url: "{{ (droidcam_release_query.json['assets'] | selectattr('browser_download_url', 'contains', '.zip') | list)[0]['browser_download_url'] }}"
+    dest: "{{ droidcam_zip_file }}"
+  notify:
+    - cleanup droidcam tmpdir
+    - ensure droidcam tmpdir
+    - extract droidcam
+    - ensure v4l2loopback_dc not loaded
+    # - ensure droidcam resolution
+    - install droidcam
+    - ensure v4l2loopback_dc is loaded
+    - reload v4l2loopback
