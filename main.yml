@@ -67,10 +67,7 @@
   become: yes
   tags:
     - never
-    - deploy
     - unattended-upgrades
-    - setup
-    - bigsetup
   roles:
     - ubuntu-unattended-upgrades
 
