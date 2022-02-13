@@ -24,10 +24,10 @@
   template:
     src: droidcam.desktop
     dest: "/usr/share/applications/droidcam.desktop"
-    mode: 0644
+    mode: 0755
 
 - name: Ensure droidcam logo
   copy:
     src: droidcam.png
     dest: "/usr/share/icons/droidcam.png"
-    mode: 0644
+    mode: 0755

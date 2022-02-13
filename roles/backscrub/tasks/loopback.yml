@@ -46,10 +46,10 @@
   template:
     src: fakecam.desktop
     dest: "/usr/share/applications/fakecam.desktop"
-    mode: 0644
+    mode: 0755
 
 - name: Ensure fakecam logo
   copy:
     src: fakecamlogo.svg
     dest: "/usr/share/icons/fakecamlogo.svg"
-    mode: 0644
+    mode: 0755
