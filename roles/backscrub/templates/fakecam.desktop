@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Fakecam
+GenericName=Fakecam
+Comment=Fakecam
+Comment[de]=Fakecam
+Exec=gnome-terminal --tab -e "/bin/bash -c '/usr/local/bin/fakecam'"
+Icon=/usr/share/icons/fakecamlogo.svg
+Terminal=true
+X-MultipleArgs=false
+Type=Application
+Categories=Network;
+StartupWMClass=Fakecam
+StartupNotify=true
