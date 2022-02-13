@@ -19,3 +19,15 @@
     - install droidcam
     - ensure v4l2loopback_dc is loaded
     - reload v4l2loopback
+
+- name: Ensure droidcam desktop entry
+  template:
+    src: droidcam.desktop
+    dest: "/usr/share/applications/droidcam.desktop"
+    mode: 0644
+
+- name: Ensure droidcam logo
+  copy:
+    src: droidcam.png
+    dest: "/usr/share/icons/droidcam.png"
+    mode: 0644
