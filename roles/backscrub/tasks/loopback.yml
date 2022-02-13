@@ -39,3 +39,15 @@
     state: link
   become: yes
   with_items: "{{ ubuntu_users.stdout_lines }}"
+
+- name: Ensure fakecam desktop entry
+  template:
+    src: fakecam.desktop
+    dest: "/usr/share/applications/fakecam.desktop"
+    mode: 0644
+
+- name: Ensure fakecam logo
+  copy:
+    src: fakecamlogo.svg
+    dest: "/usr/share/icons/fakecamlogo.svg"
+    mode: 0644
