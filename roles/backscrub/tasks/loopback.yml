@@ -29,6 +29,7 @@
     group: "{{ item }}"
   become: yes
   with_items: "{{ ubuntu_users.stdout_lines }}"
+  ignore_errors: yes  
 
 - name: Ensure obs v4l2sink.so softlink
   ansible.builtin.file:
@@ -39,6 +40,7 @@
     state: link
   become: yes
   with_items: "{{ ubuntu_users.stdout_lines }}"
+  ignore_errors: yes  
 
 - name: Ensure fakecam desktop entry
   template:
