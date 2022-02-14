@@ -105,3 +105,17 @@
 
 - name: Ensure droidcam
   include_tasks: droidcam.yml
+
+- name: Ensure desktop launchers
+  template:
+    src: "{{ item.desktop_src }}"
+    dest: "{{ item.desktop_dest }}"
+    mode: "{{ item.mode }}"
+  loop: "{{ backscrub_launchers }}"
+
+- name: Ensure desktop launchers icons
+  copy:
+    src: "{{ item.icon_src }}"
+    dest: "{{ item.icon_dest }}"
+    mode: "{{ item.mode }}"
+  loop: "{{ backscrub_launchers }}"
