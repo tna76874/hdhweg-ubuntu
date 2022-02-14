@@ -119,3 +119,12 @@
     dest: "{{ item.icon_dest }}"
     mode: "{{ item.mode }}"
   loop: "{{ backscrub_launchers }}"
+
+- name: Ensure reloading loopback device
+  assert: { that: true, quiet: true }
+  changed_when: true
+  notify:
+    - reload v4l2loopback
+    - ensure v4l2loopback_dc not loaded
+    - ensure v4l2loopback_dc is loaded
+  when: start_compose|bool
