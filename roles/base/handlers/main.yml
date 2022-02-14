@@ -25,6 +25,11 @@
     update_cache: yes
   ignore_errors: yes
 
+- name: autoremove apt
+  apt:
+    autoremove: yes
+  ignore_errors: yes
+
 - name: upgrade apt
   apt:
     name: "*"
@@ -34,11 +39,6 @@
 - name: dist-upgrade
   apt:
     upgrade: dist
-  ignore_errors: yes
-
-- name: autoremove apt
-  apt:
-    autoremove: yes
   ignore_errors: yes
 
 - name: autoremove flatpaks
