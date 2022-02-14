@@ -24,6 +24,8 @@
       - libopencv-dev
       - build-essential
       - v4l2loopback-dkms
+      - linux-generic
+      - dkms
       - curl
       # dependencies for droidcam
       - libavutil-dev
@@ -127,4 +129,3 @@
     - reload v4l2loopback
     - ensure v4l2loopback_dc not loaded
     - ensure v4l2loopback_dc is loaded
-  when: start_compose|bool
