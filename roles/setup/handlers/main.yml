@@ -6,13 +6,13 @@
     daemon_reload: yes
 
 - name: setting pulseaudio systemd state
-  shell: DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/`id -u {{ item }}`/bus systemctl --user --now disable pulseaudio.service pulseaudio.socket
+  shell: DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/`id -u {{ item }}`/bus systemctl --user --now "{{ 'disable' if config_pipewire_enabled|bool else 'enable' }}" pulseaudio.service pulseaudio.socket
   become_user: "{{ item }}"
   with_items: "{{ ubuntu_users.stdout_lines }}"
   ignore_errors: yes
 
 - name: setting pipewire systemd state
-  shell: DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/`id -u {{ item }}`/bus systemctl --user --now enable pipewire pipewire-pulse
+  shell: DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/`id -u {{ item }}`/bus systemctl --user --now "{{ 'enable' if config_pipewire_enabled|bool else 'disable' }}" pipewire pipewire-pulse
   become_user: "{{ item }}"
   with_items: "{{ ubuntu_users.stdout_lines }}"
   when: config_pipewire_enabled|bool
