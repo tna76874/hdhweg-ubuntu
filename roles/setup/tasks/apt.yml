@@ -53,11 +53,24 @@
 - name: Flush handlers
   meta: flush_handlers
 
-- name: Ensure packages (this might take a looooong time)
+- name: Ensure apt packages
   apt:
     name: "{{ config_apt_list }}"
     state: latest
     install_recommends: yes
+
+- name: Ensure pipewire
+  apt:
+    name: "{{ config_apt_pipewire }}"
+    state: "{{ 'latest' if config_pipewire_enabled|bool else 'absent' }}"
+  ignore_errors: yes
+  notify:
+   - reload systemd
+   - setting pulseaudio systemd state
+   - setting pipewire systemd state
+
+- name: Flush handlers
+  meta: flush_handlers
 
 - name: Ensure apt packages absent
   apt:

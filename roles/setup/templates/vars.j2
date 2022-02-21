@@ -17,6 +17,9 @@ config_autorun_base_time: "{{ config_autorun_base_time|default("15m") }}"
 # ensure rtw89 wifi module for new chipsets
 ensure_rtw89_module: {{ ensure_rtw89_module }}
 
+# using pipewire as mediaserver
+config_pipewire_enabled: {{ config_pipewire_enabled }}
+
 # define custom flatpaks to install
 config_custom_flatpak:
 {% if (config_custom_flatpak != None) %}

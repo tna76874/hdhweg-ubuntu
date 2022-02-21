@@ -1,6 +1,23 @@
 ---
 - include: ../../base/handlers/main.yml
 
+- name: reload systemd
+  ansible.builtin.systemd:
+    daemon_reload: yes
+
+- name: setting pulseaudio systemd state
+  shell: DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/`id -u {{ item }}`/bus systemctl --user --now disable pulseaudio.service pulseaudio.socket
+  become_user: "{{ item }}"
+  with_items: "{{ ubuntu_users.stdout_lines }}"
+  ignore_errors: yes
+
+- name: setting pipewire systemd state
+  shell: DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/`id -u {{ item }}`/bus systemctl --user --now enable pipewire pipewire-pulse
+  become_user: "{{ item }}"
+  with_items: "{{ ubuntu_users.stdout_lines }}"
+  when: config_pipewire_enabled|bool
+  ignore_errors: yes
+
 - name: update flatpaks
   shell: "flatpak update {{ item.package }} -y"
   with_items: "{{ config_flatpak_list }}"
