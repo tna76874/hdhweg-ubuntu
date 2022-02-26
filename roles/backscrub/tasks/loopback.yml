@@ -6,7 +6,7 @@
     group: root
     mode: 0755
     content: |
-      options v4l2loopback exclusive_caps=1,1 max_buffer=10,10 video_nr=8,9 card_label="obs,fakecam"
+      options v4l2loopback exclusive_caps=1,1,1 max_buffer=10,10,10 video_nr=7,8,9 card_label="droidcam,obs,fakecam"
   notify:
     - reload v4l2loopback
 
