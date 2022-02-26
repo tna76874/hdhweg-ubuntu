@@ -6,6 +6,26 @@
   register: droidcam_release_query   
   ignore_errors: yes  
 
+- name: Check if v4l2loopback_dc can be loaded
+  block:
+  - name: Try to load v4l2loopback_dc
+    modprobe:
+      name: v4l2loopback_dc
+      state: present
+    become: yes
+  rescue:
+  - name: Ensure making droidcam
+    assert: { that: true, quiet: true }
+    changed_when: true
+    notify:
+      - cleanup droidcam tmpdir
+      - ensure droidcam tmpdir
+      - extract droidcam
+      - ensure v4l2loopback_dc not loaded
+      - install droidcam
+      - ensure v4l2loopback_dc is loaded
+      - reload v4l2loopback
+
 - name: Get latest droicam release
   get_url:
     url: "{{ (droidcam_release_query.json['assets'] | selectattr('browser_download_url', 'contains', '.zip') | list)[0]['browser_download_url'] }}"
@@ -15,7 +35,6 @@
     - ensure droidcam tmpdir
     - extract droidcam
     - ensure v4l2loopback_dc not loaded
-    # - ensure droidcam resolution
     - install droidcam
     - ensure v4l2loopback_dc is loaded
     - reload v4l2loopback

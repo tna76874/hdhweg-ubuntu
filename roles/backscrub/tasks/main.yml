@@ -108,6 +108,9 @@
 - name: Ensure droidcam
   include_tasks: droidcam.yml
 
+- name: Flush handlers
+  meta: flush_handlers
+
 - name: Ensure desktop launchers
   template:
     src: "{{ item.desktop_src }}"
