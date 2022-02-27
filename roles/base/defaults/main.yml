@@ -41,3 +41,6 @@ config_extension_states:
 config_restic_path: '/snap/bin/restic'
 
 config_restic_prune_policy: '--keep-daily 7 --keep-weekly 5 --keep-monthly 12 --keep-yearly 1'
+
+gotify_notify_dest: []
+  # - { host: "", key: ""}

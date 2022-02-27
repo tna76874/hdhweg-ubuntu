@@ -101,6 +101,7 @@
   loop:
     - { file: "backup.j2", destination: "/usr/local/bin/backup", owner: "root", mode: "0755" }
     - { file: "scan.j2", destination: "/usr/local/bin/scan", owner: "root", mode: "0755" }
+    - { file: "gotify.j2", destination: "/usr/local/bin/gotify", owner: "root", mode: "0755" }
 
 - name: Triggering upgrade handler
   assert: { that: true, quiet: true }
