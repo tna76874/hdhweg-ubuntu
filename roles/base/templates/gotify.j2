@@ -3,9 +3,10 @@
 export CURL_EXE="/usr/bin/curl"
 export MESSAGE=${1:-"Message"}
 export TOPIC=${2:-"Notification"}
+export PRIORITY=${3:-"8"}
 
 {% for notify_job in gotify_notify_dest %}
-( "$CURL_EXE" -k  -X POST "https://{{ notify_job.host }}/message?token={{ notify_job.key }}" -F "title=$TOPIC [{{ ansible_hostname }}] " -F "message=$MESSAGE" >/dev/null 2>&1 ) &
+( "$CURL_EXE" -k  -X POST "https://{{ notify_job.host }}/message?token={{ notify_job.key }}" -F "title=$TOPIC [{{ ansible_hostname }}] " -F "message=$MESSAGE" -F "priority=$PRIORITY" >/dev/null 2>&1 ) &
 {% endfor %}
 
 wait
