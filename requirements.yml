@@ -1,5 +1,3 @@
 collections:
   - name: community.general
   - name: community.crypto
-roles:
-  - name: fubarhouse.rust

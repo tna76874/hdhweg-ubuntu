@@ -140,7 +140,7 @@
     build_rust_from_source: false
     cargo_items: []
   roles:
-    - fubarhouse.rust
+    - rust
     - gotify
 
 
