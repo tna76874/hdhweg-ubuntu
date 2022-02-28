@@ -1,0 +1,76 @@
+---
+- name: Determine existing users
+  shell: 'cat /etc/passwd | grep /bin/bash | grep -v root | grep -v guest | cut -d: -f1'
+  changed_when: false 
+  register: ubuntu_users
+
+- name: Check gotify-desktop executable
+  stat: 
+    path: "{{ gotify_desktop_executable }}"
+  register: stat_gotify_exe
+  changed_when: not stat_gotify_exe.stat.exists
+  notify:
+    - make gotify-desktop
+
+- name: Ensure git repo
+  block:
+  - name: Ensure git repo
+    ansible.builtin.git:
+      repo: "{{ gotify_desktop_repo.url }}"
+      dest: "{{ gotify_desktop_repo.dest }}"
+      clone: yes
+      update: yes
+      force: yes
+      version: "{{ gotify_desktop_repo.version }}"
+      refspec: '+refs/tags/*:refs/tags/*'
+    notify:
+      - make gotify-desktop
+
+  rescue:
+  - name: Delete git repo
+    file:
+      state: absent
+      path: "{{ gotify_desktop_repo.dest }}"
+
+  - name: Ensure git repo
+    ansible.builtin.git:
+      repo: "{{ gotify_desktop_repo.url }}"
+      dest: "{{ gotify_desktop_repo.dest }}"
+      clone: yes
+      update: yes
+      force: yes
+      version: "{{ gotify_desktop_repo.version }}"
+      refspec: '+refs/tags/*:refs/tags/*'
+    notify:
+      - make gotify-desktop
+
+- name: Ensure config directory
+  file:
+    path: "/home/{{ item }}/.config/gotify-desktop/"
+    owner: "{{ item }}"
+    state: directory
+  with_items: "{{ ubuntu_users.stdout_lines }}"
+  when: (gotify_host != None) and (gotify_token != None)
+
+- name: Ensure template
+  template:
+    src: "gotify_config.j2"
+    dest: "/home/{{ item }}/.config/gotify-desktop/config.toml"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: "0755"
+  become: yes
+  ignore_errors: yes 
+  with_items: "{{ ubuntu_users.stdout_lines }}"
+  when: (gotify_host != None) and (gotify_token != None)
+
+- name: Ensure autostart
+  template:
+    src: "gotify_autostart.j2"
+    dest: "/home/{{ item }}/.config/autostart/gotify_autostart.desktop"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: "0664"
+  become: yes
+  with_items: "{{ ubuntu_users.stdout_lines }}"
+  when: (gotify_host != None) and (gotify_token != None)

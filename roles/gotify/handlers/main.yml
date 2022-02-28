@@ -1,0 +1,14 @@
+---
+- name: make gotify-desktop
+  shell: "{{ item }}"
+  args:
+    chdir: "{{ gotify_root_dir }}"
+  become: yes
+  changed_when: True
+  ignore_errors: yes
+  loop:
+    - "git clean -xdf"
+    - "/root/.cargo/bin/cargo build --release"
+    - "strip --strip-all target/release/gotify-desktop"
+    - "install -Dm 755 -t /usr/local/bin target/release/gotify-desktop"
+  when: (gotify_host != None) and (gotify_token != None)

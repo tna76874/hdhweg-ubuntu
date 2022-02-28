@@ -1,0 +1,14 @@
+---
+gotify_host:
+gotify_token: 
+gotify_auto_delete: "false"
+gotify_min_priority: "1"
+
+gotify_root_dir: "/srv/gotify"
+
+gotify_desktop_executable: "/usr/local/bin/gotify-desktop"
+
+gotify_desktop_repo: { url: "https://github.com/desbma/gotify-desktop", dest: "{{ gotify_root_dir }}", version: "master"}
+
+
+

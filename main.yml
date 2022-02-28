@@ -128,6 +128,22 @@
   roles:
     - backscrub
 
+- name: Install Gotify desktop notification
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - gotify
+  vars:
+    rust_update: false
+    rust_install_clean: false
+    build_rust_from_source: false
+    cargo_items: []
+  roles:
+    - fubarhouse.rust
+    - gotify
+
+
 - name: Install pihole
   hosts: localhost
   become: yes
