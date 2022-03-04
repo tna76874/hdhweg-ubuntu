@@ -220,6 +220,7 @@ config_flatpak_list_1:
   - { package: "com.github.Eloston.UngoogledChromium", repo: "flathub", state: present }
   # Miscellaneous
   - { package: "com.github.tchx84.Flatseal", repo: "flathub", state: present }
+  - { package: "com.belmoussaoui.Authenticator", repo: "flathub", state: present }
   - { package: "com.belmoussaoui.Decoder", repo: "flathub", state: present }
   - { package: "org.geogebra.GeoGebra", repo: "flathub", state: present }
   - { package: "org.keepassxc.KeePassXC", repo: "flathub", state: present }
