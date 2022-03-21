@@ -1,4 +1,4 @@
 #!/bin/bash
-ps2pdf "$1" out.pdf
-mv out.pdf "$1"
-rm out.pdf
+ps2pdf "$1" .out.pdf
+mutool clean .out.pdf "$1"
+rm .out.pdf
