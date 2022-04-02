@@ -119,9 +119,14 @@
   register: duplicati_source   
   ignore_errors: yes                                          
 
+- name: Register duplicati beta url
+  set_fact:
+    duplicati_beta:  "{{ duplicati_source.json | selectattr('tag_name', 'contains', '_beta_') | list }}"
+  ignore_errors: yes
+
 - name: Register duplicati deb url
   set_fact:
-    duplicati_deb:  "{{ duplicati_source.json[0]['assets'] | selectattr('browser_download_url', 'contains', 'all.deb') | list }}"
+    duplicati_deb:  "{{ duplicati_beta[0]['assets'] | selectattr('browser_download_url', 'contains', 'all.deb') | list }}"
   ignore_errors: yes
 
 - name: Ensure duplicati
