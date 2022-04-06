@@ -228,7 +228,7 @@ config_flatpak_list_1:
   - { package: "com.gitlab.bitseater.meteo", repo: "flathub", state: present }
   - { package: "com.mattjakeman.ExtensionManager", repo: "flathub", state: present }
   - { package: "io.kopia.KopiaUI", repo: "flathub", state: present }
-  - { package: "com.nextcloud.desktopclient.nextcloud", repo: "flathub", state: present , version: "dc45bf3b778054242c7f937cf3a865871766c2bbbdd287f039b11c185b7a7b5e" }
+  - { package: "com.nextcloud.desktopclient.nextcloud", repo: "flathub", state: present , version: "5e9f197673b5e5d4d90dba0e6b6b0d8ce4d4c2a503dc061edc1c7c6e388113d9" }
 
 config_flatpak_list_2:
   # Media
