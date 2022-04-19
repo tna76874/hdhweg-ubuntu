@@ -78,17 +78,23 @@
     dest: "/srv/install_anaconda.sh"
     mode: 0755
 
-- name: Ensure update icon
-  template:
-    src: updateico.svg
-    dest: "/usr/share/icons/updateico.svg"
+- name: Ensure update icons
+  copy:
+    src: "{{ item.icon }}"
+    dest: "{{ item.dest }}"
     mode: 0644
+  loop:
+    - { icon: "updateico.svg", dest: "/usr/share/icons/updateico.svg" }
+    - { icon: "updateicoshutdown.svg", dest: "/usr/share/icons/updateicoshutdown.svg" }
 
-- name: Ensure update desktop entry
+- name: Ensure update desktop entrys
   template:
-    src: update.desktop
-    dest: "/usr/share/applications/update.desktop"
+    src: "{{ item.entry }}"
+    dest: "{{ item.dest }}"
     mode: 0644
+  loop:
+    - { entry: "update.desktop", dest: "/usr/share/applications/update.desktop" }
+    - { entry: "updateshutdown.desktop", dest: "/usr/share/applications/updateshutdown.desktop" }
 
 - name: Ensure scripts
   template:
