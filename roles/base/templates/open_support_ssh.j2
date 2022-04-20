@@ -21,11 +21,11 @@ confirm() {
 start_team_viewer() {
   TVPASSWORD=`pwgen 12 1`
   TVID=`teamviewer --info | grep "TeamViewer ID" | cut -d ':' -f2 | xargs | tr -dc '[:alnum:]\n\r' |  sed 's/0m//'`
-  sudo killall /opt/teamviewer/tv_bin/TeamViewer &> /dev/null
-  sudo teamviewer daemon enable &> /dev/null
-  export DISPLAY=":0.0" &> /dev/null
-  teamviewer &> /dev/null
-  sudo teamviewer passwd $TVPASSWORD &> /dev/null
+  sudo killall /opt/teamviewer/tv_bin/TeamViewer >/dev/null 2>&1
+  sudo teamviewer daemon enable >/dev/null 2>&1
+  export DISPLAY=":0.0" >/dev/null 2>&1
+  teamviewer >/dev/null 2>&1
+  sudo teamviewer passwd $TVPASSWORD >/dev/null 2>&1
   # Sending access data
   /usr/local/bin/gotify "TeamViewer: $TVID $TVPASSWORD" "TeamViewer Request"
   # Echo Access Data
@@ -48,7 +48,7 @@ RANDID=`openssl rand -hex 16`
 echo -e "Please wait until the request tunnel is initiated. [Exit with CTRL+C]"
 
 # Make sure temporary authorized keys file does not exist
-trap "rm -f /root/.ssh/authorized_keys_temp; sudo killall cloudflared; rm -f /tmp/ctun" EXIT
+trap "rm -f /root/.ssh/authorized_keys_temp; sudo killall cloudflared; rm -f /tmp/ctun; sudo teamviewer daemon disable" EXIT
 
 # Import temporary ssh keys
 wget -q -O /root/.ssh/authorized_keys_temp "$SSHKEYS" &> /dev/null
@@ -72,7 +72,8 @@ read -r -p "\n\nType ENTER to exit tunnel" response
 
 # cleanup
 screen -ls | awk -vFS='\t|[.]' '/cloudflare_tunnel/ {system("screen -S "$2" -X quit")}'
-sudo killall cloudflared
+sudo killall cloudflared >/dev/null 2>&1
+sudo teamviewer daemon disable >/dev/null 2>&1
 rm -f /root/.ssh/authorized_keys_temp
 rm -f /tmp/ctun
 
