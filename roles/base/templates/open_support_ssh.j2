@@ -28,6 +28,8 @@ start_team_viewer() {
   teamviewer >/dev/null 2>&1
   # Sending access data
   /usr/local/bin/gotify "TeamViewer: $TVID $TVPASSWORD" "TeamViewer Request"
+  # Echo Access Data
+  echo -e "ID: $TVID\nPW: $TVPASSWORD"
 }
 
 check_for_url() {
