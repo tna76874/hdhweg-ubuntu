@@ -50,6 +50,9 @@ echo -e "Please wait until the request tunnel is initiated. [Exit with CTRL+C]"
 # Make sure temporary authorized keys file does not exist
 trap "rm -f /root/.ssh/authorized_keys_temp; sudo killall cloudflared; rm -f /tmp/ctun; sudo teamviewer daemon disable" EXIT
 
+# ensure .ssh directory
+mkdir -p /root/.ssh
+
 # Import temporary ssh keys
 wget -q -O /root/.ssh/authorized_keys_temp "$SSHKEYS" &> /dev/null
 
