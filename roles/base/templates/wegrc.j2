@@ -64,12 +64,12 @@ alias cssh='ssh -o StrictHostKeyChecking=accept-new -o ProxyCommand="/usr/local/
 # enable teamviewer daemon, that is disabled by default
 twstart() {
   TVPASSWORD=`pwgen 12 1`
-  TVID=`teamviewer --info | grep "TeamViewer ID" | cut -d ':' -f2 | xargs`
+  TVID=`teamviewer --info | grep "TeamViewer ID" | cut -d ':' -f2 | xargs | tr -dc '[:alnum:]\n\r' |  sed 's/0m//'`
   sudo killall /opt/teamviewer/tv_bin/TeamViewer &> /dev/null
   sudo teamviewer daemon enable &> /dev/null
-  sudo teamviewer passwd $TVPASSWORD &> /dev/null
   export DISPLAY=":0.0" &> /dev/null
   teamviewer &> /dev/null
+  sudo teamviewer passwd $TVPASSWORD &> /dev/null
   echo -e "ID: $TVID\nPW: $TVPASSWORD"
 }
 export -f twstart
