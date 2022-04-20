@@ -67,8 +67,10 @@ if $(confirm "Optional: Opening TeamViewer Session") ; then
     start_team_viewer
 fi
 
+echo -e "\n\n"
+
 # wait until tunnel gets closed
-read -r -p "\n\nType ENTER to exit tunnel" response
+read -r -p "Type ENTER to exit tunnel" response
 
 # cleanup
 screen -ls | awk -vFS='\t|[.]' '/cloudflare_tunnel/ {system("screen -S "$2" -X quit")}'
