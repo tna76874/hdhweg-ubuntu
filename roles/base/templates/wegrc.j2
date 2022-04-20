@@ -46,9 +46,6 @@ alias uninstall_pihole="sudo git -C {{ config_repo_folder }} pull; sudo ansible-
 # build fakecam docker image
 alias build_fakecam="docker-compose -f /srv/webcam/fakecam/docker-compose.yml --env-file /srv/webcam/fakecam/docker_defaults.env build --no-cache --pull"
 
-# enable teamviewer daemon, that is disabled by default
-alias twstart="sudo killall /opt/teamviewer/tv_bin/TeamViewer; sudo teamviewer daemon enable"
-
 # if the git repos got somehow broken, with this command it gets deleted and cloned again.
 alias reinstall="wget -qO setup.sh {{ config_repo_setup }} && chmod +x setup.sh  && sudo bash setup.sh && rm setup.sh"
 
@@ -63,6 +60,19 @@ alias flatpakinfo="flatpak remote-info --log flathub"
 
 # ssh login over cloudflared tunnel
 alias cssh='ssh -o StrictHostKeyChecking=accept-new -o ProxyCommand="/usr/local/bin/cloudflared access ssh --hostname %h"'
+
+# enable teamviewer daemon, that is disabled by default
+twstart() {
+  TVPASSWORD=`pwgen 12 1`
+  TVID=`teamviewer --info | grep "TeamViewer ID" | cut -d ':' -f2 | xargs`
+  sudo killall /opt/teamviewer/tv_bin/TeamViewer &> /dev/null
+  sudo teamviewer daemon enable &> /dev/null
+  sudo teamviewer passwd $TVPASSWORD &> /dev/null
+  export DISPLAY=":0.0" &> /dev/null
+  teamviewer &> /dev/null
+  echo -e "ID: $TVID\nPW: $TVPASSWORD"
+}
+export -f twstart
 
 # creating a pdf that contains hardware informations
 hwpdf() {
