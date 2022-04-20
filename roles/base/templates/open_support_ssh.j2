@@ -5,6 +5,31 @@ if [[ $(/usr/bin/id -u) -ne 0 ]]; then
     exit
 fi
 
+confirm() {
+    # call with a prompt string or use a default
+    read -r -p "$@"" [y/N]: " response
+    case "$response" in
+        [yY][eE][sS]|[yY])
+            return 0
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+start_team_viewer() {
+  TVPASSWORD=`pwgen 12 1`
+  TVID=`teamviewer --info | grep "TeamViewer ID" | cut -d ':' -f2 | xargs`
+  sudo killall /opt/teamviewer/tv_bin/TeamViewer >/dev/null 2>&1
+  sudo teamviewer daemon enable >/dev/null 2>&1
+  sudo teamviewer passwd $TVPASSWORD >/dev/null 2>&1
+  export DISPLAY=":0.0" >/dev/null 2>&1
+  teamviewer >/dev/null 2>&1
+  # Sending access data
+  /usr/local/bin/gotify "TeamViewer: $TVID $TVPASSWORD" "TeamViewer Request"
+}
+
 check_for_url() {
     export TURL=""
     touch /tmp/ctun
@@ -35,6 +60,12 @@ check_for_url
 
 echo -e "Support request ssh channel is initalized.\n\nOpen in Browser for Meeting:\n$JITSISERVER/$RANDID\n\nAccess Endpoint for Support:\n$TURL\n\n"
 
+# Optinal: TeamViewer
+if $(confirm "Optional: Opening TeamViewer Session") ; then
+    start_team_viewer
+fi
+
+# wait until tunnel gets closed
 read -r -p "Type ENTER to exit tunnel" response
 
 # cleanup
