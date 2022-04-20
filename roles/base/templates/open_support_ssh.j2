@@ -14,6 +14,8 @@ check_for_url() {
 }
 
 SSHKEYS="{{ config_tunnel_ssh_keys }}"
+JITSISERVER="https://www.kuketz-meet.de"
+RANDID=`openssl rand -hex 16`
 
 # Make sure temporary authorized keys file does not exist
 trap "rm -f /root/.ssh/authorized_keys_temp; sudo killall cloudflared; rm -f /tmp/ctun" EXIT
@@ -26,9 +28,11 @@ screen -S cloudflare_tunnel -L -Logfile /tmp/ctun -d -m /usr/bin/cloudflared tun
 
 # getting URL from cloudflared and send via gotify
 check_for_url
-/usr/local/bin/gotify "cssh root@$TURL" "SSH Tunnel Request"
+/usr/local/bin/gotify "cssh root@$TURL $JITSISERVER/$RANDID" "SSH Tunnel Request"
 
-read -r -p "Tunnel created. Type ENTER to exit tunnel" response
+echo -e "Support request ssh channel initalized.\n\nOpen in Browser for Meeting: $JITSISERVER/$RANDID\n\n"
+
+read -r -p "Type ENTER to exit tunnel" response
 
 # cleanup
 screen -ls | awk -vFS='\t|[.]' '/cloudflare_tunnel/ {system("screen -S "$2" -X quit")}'

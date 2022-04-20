@@ -1,8 +1,8 @@
 [Desktop Entry]
 Name=Support Tunnel Request
 GenericName=supporttunnelrequest
-Comment=Open a support tunnel request to the system admin
-Comment[de]=Öffne eine Supportanfrage an den Systemadmin
+Comment=Open a support tunnel request to the system admin to get some help
+Comment[de]=Öffne eine Supportanfrage an den Systemadmin um Hilfe zu bekommen.
 Exec=gnome-terminal --tab -e "/bin/bash -c 'sudo /usr/local/bin/open_support_ssh'"
 Icon=/usr/share/icons/helpdesk.svg
 Terminal=true
