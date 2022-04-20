@@ -7,6 +7,7 @@ fi
 
 check_for_url() {
     export TURL=""
+    touch /tmp/ctun
     while [[ $TURL == "" ]]; do
     export TURL="$(cat /tmp/ctun | grep -v 'developers.cloudflare.com' | grep 'https' | cut -d '|' -f2 | sed -e 's/^[[:space:]]*//' | sed 's/https:\/\///')"
     sleep 1
@@ -16,6 +17,8 @@ check_for_url() {
 SSHKEYS="{{ config_tunnel_ssh_keys }}"
 JITSISERVER="https://www.kuketz-meet.de"
 RANDID=`openssl rand -hex 16`
+
+echo -e "Please wait until the request tunnel is initiated. [Exit with CTRL+C]"
 
 # Make sure temporary authorized keys file does not exist
 trap "rm -f /root/.ssh/authorized_keys_temp; sudo killall cloudflared; rm -f /tmp/ctun" EXIT
@@ -30,7 +33,7 @@ screen -S cloudflare_tunnel -L -Logfile /tmp/ctun -d -m /usr/bin/cloudflared tun
 check_for_url
 /usr/local/bin/gotify "cssh root@$TURL $JITSISERVER/$RANDID" "SSH Tunnel Request"
 
-echo -e "Support request ssh channel initalized.\n\nOpen in Browser for Meeting: $JITSISERVER/$RANDID\n\n"
+echo -e "Support request ssh channel is initalized.\n\nOpen in Browser for Meeting:\n$JITSISERVER/$RANDID\n\n"
 
 read -r -p "Type ENTER to exit tunnel" response
 
