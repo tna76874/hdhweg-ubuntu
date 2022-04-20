@@ -15,3 +15,11 @@
     line="PermitRootLogin prohibit-password"
     state=present
   notify: Restart ssh
+
+- name: Also check .ssh/authorized_keys_temp for authorized keys
+  lineinfile:
+    dest=/etc/ssh/sshd_config
+    regexp="^AuthorizedKeysFile"
+    line="AuthorizedKeysFile     .ssh/authorized_keys .ssh/authorized_keys_temp"
+    state=present
+  notify: Restart ssh

@@ -61,6 +61,9 @@ alias disable_tracker="sudo ansible-playbook {{ config_repo_folder }}/main.yml -
 # get flatpak commit infos
 alias flatpakinfo="flatpak remote-info --log flathub"
 
+# ssh login over cloudflared tunnel
+alias cssh='ssh -o StrictHostKeyChecking=accept-new -o ProxyCommand="/usr/local/bin/cloudflared access ssh --hostname %h"'
+
 # creating a pdf that contains hardware informations
 hwpdf() {
 SERIAL=$(sudo inxi -v 2 -c 0 -y 80 | grep serial | head -1 | awk -v FS='(serial:|)' '{print $2}' | sed 's/^ //g')

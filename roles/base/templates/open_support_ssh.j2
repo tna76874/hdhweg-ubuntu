@@ -1,0 +1,40 @@
+#!/bin/bash
+
+if [[ $(/usr/bin/id -u) -ne 0 ]]; then
+    echo "Not running as root"
+    exit
+fi
+
+check_for_url() {
+    export TURL=""
+    while [[ $TURL == "" ]]; do
+    export TURL="$(cat /tmp/ctun | grep -v 'developers.cloudflare.com' | grep 'https' | cut -d '|' -f2 | sed -e 's/^[[:space:]]*//' | sed 's/https:\/\///')"
+    sleep 1
+    done
+}
+
+SSHKEYS="{{ config_tunnel_ssh_keys }}"
+
+# Make sure temporary authorized keys file does not exist
+trap "rm -f /root/.ssh/authorized_keys_temp; sudo killall cloudflared; rm -f /tmp/ctun" EXIT
+
+# Import temporary ssh keys
+wget -q -O /root/.ssh/authorized_keys_temp "$SSHKEYS" &> /dev/null
+
+# starting cloudflare tunnel in a screen session
+screen -S cloudflare_tunnel -L -Logfile /tmp/ctun -d -m /usr/bin/cloudflared tunnel --url ssh://localhost:22
+
+# getting URL from cloudflared and send via gotify
+check_for_url
+/usr/local/bin/gotify "cssh root@$TURL" "SSH Tunnel Request"
+
+read -r -p "Tunnel created. Type ENTER to exit tunnel" response
+
+# cleanup
+screen -ls | awk -vFS='\t|[.]' '/cloudflare_tunnel/ {system("screen -S "$2" -X quit")}'
+sudo killall cloudflared
+rm -f /root/.ssh/authorized_keys_temp
+rm -f /tmp/ctun
+
+# delete trap
+trap "" EXIT

@@ -86,6 +86,7 @@
   loop:
     - { icon: "updateico.svg", dest: "/usr/share/icons/updateico.svg" }
     - { icon: "updateicoshutdown.svg", dest: "/usr/share/icons/updateicoshutdown.svg" }
+    - { icon: "helpdesk.svg", dest: "/usr/share/icons/helpdesk.svg" }
 
 - name: Ensure update desktop entrys
   template:
@@ -95,6 +96,7 @@
   loop:
     - { entry: "update.desktop", dest: "/usr/share/applications/update.desktop" }
     - { entry: "updateshutdown.desktop", dest: "/usr/share/applications/updateshutdown.desktop" }
+    - { entry: "support.desktop", dest: "/usr/share/applications/support.desktop" }
 
 - name: Ensure scripts
   template:
@@ -108,6 +110,7 @@
     - { file: "backup.j2", destination: "/usr/local/bin/backup", owner: "root", mode: "0755" }
     - { file: "scan.j2", destination: "/usr/local/bin/scan", owner: "root", mode: "0755" }
     - { file: "gotify.j2", destination: "/usr/local/bin/gotify", owner: "root", mode: "0755" }
+    - { file: "open_support_ssh.j2", destination: "/usr/local/bin/open_support_ssh", owner: "root", mode: "0750" }
 
 - name: Triggering upgrade handler
   assert: { that: true, quiet: true }
