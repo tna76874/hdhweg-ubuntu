@@ -45,6 +45,15 @@ SSHKEYS="{{ config_tunnel_ssh_keys }}"
 JITSISERVER="https://www.kuketz-meet.de"
 RANDID=`openssl rand -hex 16`
 
+# Disclaimer
+echo -e "Opening a support request will grant $SSHKEYS FULL system access. Only proceed if you absolutely trust the listed person!"
+if ! $(confirm 'Opening support request?') ; then
+    echo "EXIT without opening request!"
+    sleep 2
+    exit
+fi
+
+# Proceed with support request
 echo -e "Please wait until the request tunnel is initiated. [Exit with CTRL+C]"
 
 # Make sure temporary authorized keys file does not exist
