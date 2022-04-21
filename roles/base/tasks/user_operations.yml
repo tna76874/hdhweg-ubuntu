@@ -11,7 +11,7 @@
   loop:
     - { file: "wegrc.j2", dest: "/home/{{ user_item }}/.wegrc", mode: "0644" }
     - { file: "update.desktop", dest: "/home/{{ user_item }}/Schreibtisch/update.desktop", mode: "0644" }
-    - { file: "support.desktop", dest: "/usr/share/applications/support.desktop", mode: "0644" }
+    - { file: "support.desktop", dest: "/home/{{ user_item }}/Schreibtisch/support.desktop", mode: "0644" }
   ignore_errors: yes
 
 - name: Ensure files contents
