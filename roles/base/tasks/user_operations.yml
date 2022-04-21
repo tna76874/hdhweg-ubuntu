@@ -41,11 +41,13 @@
     key: "/org/gnome/shell/favorite-apps"
     state: read
   register: favorites_user
+  ignore_errors: yes
 
 - name: Extracting present favorites
   become_user: "{{ user_item }}"
   set_fact:
     favorites_user: "{{ (favorites_user.value) }}"
+  ignore_errors: yes
 
 - name: Setting host facts using complex arguments
   become_user: "{{ user_item }}"
@@ -54,11 +56,13 @@
   loop:
     - 'support.desktop'
     - 'update.desktop'
+  ignore_errors: yes
 
 - name: Write favorites to dconf
   become_user: "{{ user_item }}"
   ansible.builtin.shell: 'dconf write /org/gnome/shell/favorite-apps "{{ new_favorites }}"'
   when: favorites_user|unique|list != new_favorites|unique|list
+  ignore_errors: yes
 
 # Ensure scripts
 
