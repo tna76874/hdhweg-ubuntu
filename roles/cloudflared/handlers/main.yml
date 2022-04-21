@@ -1,0 +1,10 @@
+---
+- name: apt update
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: deb install
+  apt:
+    deb: "{{ config_cloudflared_deb_url }}"
+  ignore_errors: yes

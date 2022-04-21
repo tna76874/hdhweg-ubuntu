@@ -33,13 +33,13 @@ config_pipewire_enabled: False
 config_apt_keys: []
   # - { url: "https://pkg.cloudflare.com/cloudflare-main.gpg", state: "present", dest: "/usr/share/keyrings/cloudflare-main.gpg" }
 
-config_apt_keys_curl:
-  - { url: "https://pkg.cloudflare.com/cloudflare-main.gpg", state: "present", dest: "/usr/share/keyrings/cloudflare-main.gpg" }
+config_apt_keys_curl: []
+  # - { url: "https://pkg.cloudflare.com/cloudflare-main.gpg", state: "present", dest: "/usr/share/keyrings/cloudflare-main.gpg" }
   
 config_apt_sources:
   - { repo: "deb http://www.geogebra.net/linux/ stable main", state: "absent", filename: "geogebra"}
   - { repo: "deb http://linux.teamviewer.com/deb stable main", state: "present", filename: "teamviewer"}
-  - { repo: "deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/ {{ ansible_distribution_release }} main", state: "present", filename: "cloudflare-main"}
+  # - { repo: "deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/ {{ ansible_distribution_release }} main", state: "present", filename: "cloudflare-main"}
 
 config_apt_ppa_list_1:
   # Present
@@ -150,7 +150,6 @@ config_apt_list_1:
   - sassc
   - libglib2.0-dev-bin
   - libatlas-base-dev
-  - cloudflared
   - flatpak
   - gnome-software-plugin-flatpak
 

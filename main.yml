@@ -49,6 +49,7 @@
     - downgrade
   roles:
     - setup
+    - cloudflared
     - security
 
 - name: Ensure widgets
@@ -97,7 +98,6 @@
   tags:
     - never
     - fonts
-    - bigsetup
   roles:
     - fonts
 
@@ -142,7 +142,6 @@
   roles:
     - rust
     - gotify
-
 
 - name: Install pihole
   hosts: localhost

@@ -1,0 +1,8 @@
+---
+config_apt_keys_curl:
+  - { url: "https://pkg.cloudflare.com/cloudflare-main.gpg", dest: "/usr/share/keyrings/cloudflare-main.gpg" }
+  
+config_apt_sources:
+  - { repo: "deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/ {{ ansible_distribution_release }} main", filename: "cloudflare-main"}
+
+config_cloudflared_deb_url: "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb"

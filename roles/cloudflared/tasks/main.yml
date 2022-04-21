@@ -1,0 +1,50 @@
+---
+- name: Triggering handler when Release==bionic
+  assert: { that: true, quiet: true }
+  changed_when: true
+  notify:
+    - deb install
+  when: ansible_distribution_release == "bionic"
+
+- name: Ensure cloudflared
+  block:
+  - name: Ensure key states (curl)
+    get_url:
+      url: "{{ item.url }}"
+      dest: "{{ item.dest }}"
+    loop: "{{ config_apt_keys_curl }}"
+    ignore_errors: yes
+
+  - name: Ensure source states
+    apt_repository:
+      repo: "{{ item.repo }}"
+      state: "present"
+      filename: "{{ item.filename }}"
+      update_cache: true
+    loop: "{{ config_apt_sources }}"
+
+  - name: Ensure apt packages
+    apt:
+      name:
+        - cloudflared
+      state: latest
+      update_cache: yes
+      install_recommends: yes
+
+  rescue:
+  - name: Ensure source states
+    apt_repository:
+      repo: "{{ item.repo }}"
+      state: "absent"
+      filename: "{{ item.filename }}"
+      update_cache: true
+    loop: "{{ config_apt_sources }}"
+
+  - name: Triggering handler
+    assert: { that: true, quiet: true }
+    changed_when: true
+    notify:
+      - deb install
+  when: ansible_distribution_release != "bionic"
+    
+
