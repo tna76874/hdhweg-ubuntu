@@ -49,7 +49,7 @@
     favorites_user: "{{ (favorites_user.value) }}"
   ignore_errors: yes
 
-- name: Setting host facts using complex arguments
+- name: Ensure favorite entrys
   become_user: "{{ user_item }}"
   set_fact:
     new_favorites: "{{ new_favorites|default(favorites_user) + [item] }}"
@@ -60,7 +60,10 @@
 
 - name: Write favorites to dconf
   become_user: "{{ user_item }}"
-  ansible.builtin.shell: 'dconf write /org/gnome/shell/favorite-apps "{{ new_favorites }}"'
+  dconf:
+    key: "/org/gnome/shell/favorite-apps"
+    value: "{{ new_favorites }}"
+    state: present
   when: favorites_user|unique|list != new_favorites|unique|list
   ignore_errors: yes
 
