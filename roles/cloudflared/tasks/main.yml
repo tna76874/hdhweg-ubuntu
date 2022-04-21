@@ -4,7 +4,7 @@
   changed_when: true
   notify:
     - deb install
-  when: ansible_distribution_release == "bionic"
+  when: ansible_distribution_release in [ "bionic", "jammy" ]
 
 - name: Ensure cloudflared
   block:
