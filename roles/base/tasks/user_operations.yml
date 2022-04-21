@@ -10,6 +10,13 @@
     mode: "{{ item.mode }}"
   loop:
     - { file: "wegrc.j2", dest: "/home/{{ user_item }}/.wegrc", mode: "0644" }
+  ignore_errors: yes
+
+- name: Ensure desktop entrys absent
+  ansible.builtin.file:
+    path: "{{ item.dest }}"
+    state: absent
+  loop:
     - { file: "update.desktop", dest: "/home/{{ user_item }}/Schreibtisch/update.desktop", mode: "0755" }
     - { file: "support.desktop", dest: "/home/{{ user_item }}/Schreibtisch/support.desktop", mode: "0755" }
   ignore_errors: yes
@@ -26,14 +33,32 @@
     - {path: "/home/{{ user_item }}/.bashrc", regexp: '^alias update=(.*)$', state: "absent", line: ""}
     - {path: "/home/{{ user_item }}/.bashrc", regexp: '^source "(.*)/.wegrc"$', state: "present", line: 'source "/home/{{ user_item }}/.wegrc"'}
 
-- name: Ensure trusted update launcher
-  shell: "{{ item }}"
+# Edit favorite bar
+
+- name: Read favorites from dconf
   become_user: "{{ user_item }}"
-  ignore_errors: yes
-  changed_when: false
+  dconf:
+    key: "/org/gnome/shell/favorite-apps"
+    state: read
+  register: favorites_user
+
+- name: Extracting present favorites
+  become_user: "{{ user_item }}"
+  set_fact:
+    favorites_user: "{{ (favorites_user.value) }}"
+
+- name: Setting host facts using complex arguments
+  become_user: "{{ user_item }}"
+  set_fact:
+    new_favorites: "{{ new_favorites|default(favorites_user) + [item] }}"
   loop:
-    - dbus-launch gio set /home/{{ user_item }}/Schreibtisch/update.desktop "metadata::trusted" true
-    - dbus-launch gio set /home/{{ user_item }}/Schreibtisch/support.desktop "metadata::trusted" true
+    - 'support.desktop'
+    - 'update.desktop'
+
+- name: Write favorites to dconf
+  become_user: "{{ user_item }}"
+  ansible.builtin.shell: 'dconf write /org/gnome/shell/favorite-apps "{{ new_favorites }}"'
+  when: favorites_user|unique|list != new_favorites|unique|list
 
 # Ensure scripts
 
