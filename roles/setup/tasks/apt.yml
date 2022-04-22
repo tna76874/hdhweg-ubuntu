@@ -52,6 +52,15 @@
 - name: Flush handlers
   meta: flush_handlers
 
+- name: Ensure update alias in bashrc of new create user
+  lineinfile:
+    path: "/etc/default/grub"
+    regexp: '^GRUB_DISABLE_OS_PROBER=(.*)$'
+    line: GRUB_DISABLE_OS_PROBER=false
+  when: ansible_facts['lsb']['major_release']| int >= 22
+  notify:
+    - update grub
+
 - name: Ensure apt packages
   apt:
     name: "{{ config_apt_list }}"

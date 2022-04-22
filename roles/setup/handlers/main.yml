@@ -1,6 +1,10 @@
 ---
 - include: ../../base/handlers/main.yml
 
+- name: update grub
+  shell: "update-grub"
+  become: yes
+
 - name: reload systemd
   ansible.builtin.systemd:
     daemon_reload: yes
