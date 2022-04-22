@@ -8,6 +8,7 @@
       - gnome-tweaks
       - gnome-shell-extensions
       - make
+      - eslint
     state: latest
   when: not uninstall | bool
 
