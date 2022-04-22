@@ -22,9 +22,10 @@ config_pipewire_enabled: {{ config_pipewire_enabled|bool }}
 
 # define custom flatpaks to install
 config_custom_flatpak:
+#    - { package: "net.codeindustry.MasterPDFEditor", repo: "flathub", state: present }
 {% if (config_custom_flatpak != None) %}
 {% for flatpak in config_custom_flatpak %}
-    - {% raw %}{{% endraw %} package:{{ flatpak.package }}, repo: "{{ flatpak.repo }}", state: {{ flatpak.state }} {% raw %}}{% endraw %}
+    - {% raw %}{{% endraw %} package: "{{ flatpak.package }}", repo: "{{ flatpak.repo }}", state: "{{ flatpak.state }}" {% raw %}}{% endraw %}
 {% endfor %}
 {% endif %}
 
@@ -35,6 +36,7 @@ gotify_notify_dest:
     - {% raw %}{{% endraw %} host: "{{ gotify_dest.host }}", key: "{{ gotify_dest.key }}" {% raw %}}{% endraw %}
 {% endfor %}
 {% endif %}
+
 
 # show support in favorites or not
 config_show_support_in_favorites: {{ config_show_support_in_favorites|bool }}
