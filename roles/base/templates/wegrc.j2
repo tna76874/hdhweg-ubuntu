@@ -65,6 +65,9 @@ alias cssh='ssh -o StrictHostKeyChecking=accept-new -o ProxyCommand="/usr/local/
 alias update_support='sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup -e config_generate_config_file=1 -e config_show_support_in_favorites=1'
 alias update_support_hide='sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup -e config_generate_config_file=1 -e config_show_support_in_favorites=0'
 
+# edit config file
+alias edit_config='sudo gedit /root/.config/vars_sysconfig.yml'
+
 # enable teamviewer daemon, that is disabled by default
 twstart() {
   TVPASSWORD=`pwgen 12 1`
