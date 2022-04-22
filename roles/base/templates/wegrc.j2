@@ -1,5 +1,5 @@
 # run the main playbook to ensure updated packages and proper configs
-alias update="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup"
+alias update="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup -e config_generate_config_file=1"
 
 # run the main playbook to ensure updated packages and proper configs including latest rtw89_module
 alias wifi_update="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup -e ensure_rtw89_module=True"
@@ -60,6 +60,10 @@ alias flatpakinfo="flatpak remote-info --log flathub"
 
 # ssh login over cloudflared tunnel
 alias cssh='ssh -o StrictHostKeyChecking=accept-new -o ProxyCommand="/usr/local/bin/cloudflared access ssh --hostname %h"'
+
+# support buttons in favorites
+alias update_support='sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup -e config_generate_config_file=1 -e config_show_support_in_favorites=1'
+alias update_support_hide='sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup -e config_generate_config_file=1 -e config_show_support_in_favorites=0'
 
 # enable teamviewer daemon, that is disabled by default
 twstart() {
