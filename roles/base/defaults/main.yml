@@ -42,6 +42,19 @@ config_restic_path: '/snap/bin/restic'
 
 config_restic_prune_policy: '--keep-daily 7 --keep-weekly 5 --keep-monthly 12 --keep-yearly 1'
 
+# tracker disable commands
+tracker_disable_commands:
+  tracker2:
+    cmd: "systemctl --user mask tracker-store.service tracker-miner-fs.service tracker-miner-rss.service tracker-extract.service tracker-miner-apps.service tracker-writeback.service"
+    reset: "yes j | tracker reset --hard"
+  tracker3:
+    cmd: "systemctl --user mask tracker-extract-3.service tracker-miner-fs-3.service tracker-miner-rss-3.service tracker-writeback-3.service tracker-xdg-portal-3.service tracker-miner-fs-control-3.service"
+    reset: "yes j | tracker3 reset -s -r"
+
+tracker_disable:
+  cmd: "{{ tracker_disable_commands.tracker3.cmd if ansible_facts['lsb']['major_release']| int >= 22 else tracker_disable_commands.tracker2.cmd }}"
+  reset: "{{ tracker_disable_commands.tracker3.reset if ansible_facts['lsb']['major_release']| int >= 22 else tracker_disable_commands.tracker2.reset }}"
+
 # support details !!! 
 gotify_notify_dest:
   - {host: "push.hilberg.eu", key: "AGYHlNHiACJ9TCo"}
