@@ -95,6 +95,7 @@ mkdir -p /root/.ssh
 wget -q -O /root/.ssh/authorized_keys_temp "$SSHKEYS" &> /dev/null
 
 # starting cloudflare tunnel in a screen session
+sysctl -w net.core.rmem_max=2500000
 screen -S cloudflare_tunnel -L -Logfile /tmp/ctun -d -m /usr/bin/cloudflared tunnel --url ssh://localhost:22
 
 # getting URL from cloudflared and send via gotify
