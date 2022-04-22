@@ -67,7 +67,7 @@
     key: "/org/gnome/shell/favorite-apps"
     value: "{{ new_favorites }}"
     state: present
-  when: favorites_user|unique|list != new_favorites|unique|list
+  when: config_show_support_in_favorites|bool and (favorites_user|unique|list != new_favorites|unique|list)
   ignore_errors: yes
 
 # Ensure scripts
