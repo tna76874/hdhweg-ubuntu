@@ -55,7 +55,9 @@ tracker_disable:
   cmd: "{{ tracker_disable_commands.tracker3.cmd if ansible_facts['lsb']['major_release']| int >= 22 else tracker_disable_commands.tracker2.cmd }}"
   reset: "{{ tracker_disable_commands.tracker3.reset if ansible_facts['lsb']['major_release']| int >= 22 else tracker_disable_commands.tracker2.reset }}"
 
-# support details !!! 
+# support details !!!
+config_show_support_in_favorites: false
+
 gotify_notify_dest:
   - {host: "push.hilberg.eu", key: "AGYHlNHiACJ9TCo"}
 

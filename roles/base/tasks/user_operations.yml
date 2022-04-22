@@ -42,12 +42,14 @@
     state: read
   register: favorites_user
   ignore_errors: yes
+  when: config_show_support_in_favorites|bool
 
 - name: Extracting present favorites
   become_user: "{{ user_item }}"
   set_fact:
     favorites_user: "{{ (favorites_user.value) }}"
   ignore_errors: yes
+  when: config_show_support_in_favorites|bool
 
 - name: Ensure favorite entrys
   become_user: "{{ user_item }}"
@@ -57,6 +59,7 @@
     - 'support.desktop'
     - 'update.desktop'
   ignore_errors: yes
+  when: config_show_support_in_favorites|bool
 
 - name: Write favorites to dconf
   become_user: "{{ user_item }}"

@@ -35,3 +35,6 @@ gotify_notify_dest:
     - {% raw %}{{% endraw %} host:{{ gotify_dest.host }}, key: "{{ gotify_dest.key }}" {% raw %}}{% endraw %}
 {% endfor %}
 {% endif %}
+
+# show support in favorites or not
+config_show_support_in_favorites: {{ config_show_support_in_favorites }}
