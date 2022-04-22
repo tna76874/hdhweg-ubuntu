@@ -1,13 +1,13 @@
 # disable teamviewer daemon at startup
-disable_teamviewer: {{ disable_teamviewer|default(True)|bool }}
+disable_teamviewer: {{ disable_teamviewer|default(True) }}
 # upgrade apt with basic role
 config_perform_apt_upgrade: {{ config_perform_apt_upgrade|default(False) }}
 
 # pulling latest changes of the git repo when running base role
-config_ensure_repo: {{ config_ensure_repo|default(True)|bool }}
+config_ensure_repo: {{ config_ensure_repo|default(True) }}
 
 # pull all latest changes from the repo after given time after startup
-config_autopull_repo: {{ config_autopull_repo|default(True)|bool }}
+config_autopull_repo: {{ config_autopull_repo|default(True) }}
 config_autopull_repo_time: "{{ config_autopull_repo_time|default("10m") }}"
 
 # run basic role after given time after startup
@@ -15,7 +15,7 @@ config_autorun_base: {{ config_autorun_base|default(True) }}
 config_autorun_base_time: "{{ config_autorun_base_time|default("15m") }}"
 
 # ensure rtw89 wifi module for new chipsets
-ensure_rtw89_module: {{ ensure_rtw89_module|bool }}
+ensure_rtw89_module: {{ ensure_rtw89_module }}
 
 # using pipewire as mediaserver
 config_pipewire_enabled: {{ config_pipewire_enabled|bool }}
