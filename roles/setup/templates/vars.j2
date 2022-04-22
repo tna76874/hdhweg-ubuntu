@@ -32,7 +32,7 @@ config_custom_flatpak:
 {% if (gotify_notify_dest != []) %}
 gotify_notify_dest:
 {% for gotify_dest in gotify_notify_dest %}
-    - {% raw %}{{% endraw %} host:{{ gotify_dest.host }}, key: "{{ gotify_dest.key }}" {% raw %}}{% endraw %}
+    - {% raw %}{{% endraw %} host: "{{ gotify_dest.host }}", key: "{{ gotify_dest.key }}" {% raw %}}{% endraw %}
 {% endfor %}
 {% endif %}
 
