@@ -1,5 +1,7 @@
 # ubuntu desktop configuration
 
+Ubuntu versions supported: 20.04, 22.04
+
 ## Aim
 
 Sometimes there are PCs/Notebooks available but without an up-to-date operating system. The aim of this notebook is to find the balance between data protection and a “somehow managed" device running a free-of-charge open-source system. 

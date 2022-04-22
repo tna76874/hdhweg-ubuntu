@@ -9,14 +9,7 @@
     repo: "{{ item.ppa }}"
     state: "{{ item.state }}"
   with_items: "{{ config_apt_ppa_list }}"
-
-- name: Ensure ppa's states (< Ubuntu 20)
-  apt_repository:
-    repo: "{{ item.ppa }}"
-    state: "{{ item.state }}"
-  loop:
-    - { ppa: "ppa:recoll-backports/recoll-1.15-on", state: "present"}
-  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
+  when: item.state == 'absent' or ansible_facts['lsb']['major_release']| int <= item.ubuntu_max_release
 
 - name: Ensure key states
   apt_key:

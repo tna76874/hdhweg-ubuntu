@@ -37,27 +37,28 @@ config_apt_keys_curl: []
   # - { url: "https://pkg.cloudflare.com/cloudflare-main.gpg", state: "present", dest: "/usr/share/keyrings/cloudflare-main.gpg" }
   
 config_apt_sources:
-  - { repo: "deb http://www.geogebra.net/linux/ stable main", state: "absent", filename: "geogebra"}
-  - { repo: "deb http://linux.teamviewer.com/deb stable main", state: "present", filename: "teamviewer"}
+  - { repo: "deb http://www.geogebra.net/linux/ stable main", state: "absent", filename: "geogebra" }
+  - { repo: "deb http://linux.teamviewer.com/deb stable main", state: "present", filename: "teamviewer" }
   # - { repo: "deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/ {{ ansible_distribution_release }} main", state: "present", filename: "cloudflare-main"}
 
 config_apt_ppa_list_1:
   # Present
-  - { ppa: "ppa:marko-preuss/hibiscus", state: "present"}
-  - { ppa: "ppa:ubuntu-mozilla-security/ppa", state: "present"}
-  - { ppa: "ppa:unit193/encryption", state: "present"}
-  - { ppa: "ppa:alexlarsson/flatpak", state: "present"}
+  - { ppa: "ppa:marko-preuss/hibiscus", state: "present", ubuntu_max_release: 20 }
+  - { ppa: "ppa:ubuntu-mozilla-security/ppa", state: "present", ubuntu_max_release: 20 }
+  - { ppa: "ppa:unit193/encryption", state: "present", ubuntu_max_release: 22 }
+  - { ppa: "ppa:alexlarsson/flatpak", state: "present", ubuntu_max_release: 20 }
+  - { ppa: "ppa:recoll-backports/recoll-1.15-on", state: "present", ubuntu_max_release: 18 }
   # Choice
-  - { ppa: "ppa:pipewire-debian/pipewire-upstream", state: "{{ 'present' if config_pipewire_enabled|bool else 'absent' }}"}
+  - { ppa: "ppa:pipewire-debian/pipewire-upstream", state: "{{ 'present' if config_pipewire_enabled|bool else 'absent' }}", ubuntu_max_release: 22 }
   # Absent
-  - { ppa: "ppa:nextcloud-devs/client", state: "absent"}
-  - { ppa: "ppa:andreasbutti/xournalpp-master", state: "absent"}
-  - { ppa: "ppa:apandada1/xournalpp-stable", state: "absent"}
-  - { ppa: "ppa:smathot/cogscinl", state: "absent"}
+  - { ppa: "ppa:nextcloud-devs/client", state: "absent", ubuntu_max_release: 20 }
+  - { ppa: "ppa:andreasbutti/xournalpp-master", state: "absent", ubuntu_max_release: 20 }
+  - { ppa: "ppa:apandada1/xournalpp-stable", state: "absent", ubuntu_max_release: 20 }
+  - { ppa: "ppa:smathot/cogscinl", state: "absent", ubuntu_max_release: 20 }
 
 config_apt_ppa_list_2:
-  - { ppa: "ppa:tomtomtom/woeusb", state: "present"}
-  - { ppa: "ppa:cubic-wizard/release", state: "present"}
+  - { ppa: "ppa:tomtomtom/woeusb", state: "present" , ubuntu_max_release: 22 }
+  - { ppa: "ppa:cubic-wizard/release", state: "present", ubuntu_max_release: 22 }
 
 config_apt_list_1:
   - curl
