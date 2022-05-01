@@ -13,7 +13,7 @@ RANDID=`openssl rand -hex 16`
 
 # define functions
 ## simple yes or no function for promts
-confirm() {
+function confirm() {
     # call with a prompt string or use a default
     read -r -p "$@"" [y/N]: " response
     case "$response" in
@@ -27,7 +27,7 @@ confirm() {
 }
 
 ## starting teamviewer and set random password
-start_team_viewer() {
+function start_team_viewer() {
   TVPASSWORD=`pwgen 12 1`
   TVID=`teamviewer --info | grep "TeamViewer ID" | cut -d ':' -f2 | xargs | tr -dc '[:alnum:]\n\r' |  sed 's/0m//'`
   sudo killall /opt/teamviewer/tv_bin/TeamViewer >/dev/null 2>&1
@@ -44,7 +44,7 @@ start_team_viewer() {
 }
 
 ## the screen session dump with the cloudflared tunnel gets parsed every second to find the cloudflared tunnel URL
-check_for_url() {
+function check_for_url() {
     export TURL=""
     touch /tmp/ctun
     while [[ $TURL == "" ]]; do
@@ -71,6 +71,24 @@ function cleanup()
     sleep 2
 }
 
+function start_ssh_tunnel() {
+    # ensure .ssh directory
+    mkdir -p /root/.ssh
+
+    # Import temporary ssh keys
+    wget -q -O /root/.ssh/authorized_keys_temp "$SSHKEYS" &> /dev/null
+
+    # starting cloudflare tunnel in a screen session
+    sysctl -w net.core.rmem_max=2500000
+    screen -S cloudflare_tunnel -L -Logfile /tmp/ctun -d -m /usr/bin/cloudflared tunnel --url ssh://localhost:22
+
+    # getting URL from cloudflared and send via gotify
+    check_for_url
+    /usr/local/bin/gotify "cssh root@$TURL $JITSISERVER/$RANDID" "SSH Tunnel Request"
+
+    echo -e "Support request ssh channel is initalized.\n\nOpen in Browser for Meeting:\n$JITSISERVER/$RANDID\n\nAccess Endpoint for Support:\n$TURL\n\n"
+}
+
 ######################################
 
 # printing disclaimer
@@ -88,21 +106,11 @@ echo -e "Please wait until the request tunnel is initiated. [Exit with CTRL+C]"
 ## trap with cleanup function in case there is an error in the script
 trap cleanup EXIT
 
-# ensure .ssh directory
-mkdir -p /root/.ssh
+# ensure no old tunnel sessions open
+cleanup
 
-# Import temporary ssh keys
-wget -q -O /root/.ssh/authorized_keys_temp "$SSHKEYS" &> /dev/null
-
-# starting cloudflare tunnel in a screen session
-sysctl -w net.core.rmem_max=2500000
-screen -S cloudflare_tunnel -L -Logfile /tmp/ctun -d -m /usr/bin/cloudflared tunnel --url ssh://localhost:22
-
-# getting URL from cloudflared and send via gotify
-check_for_url
-/usr/local/bin/gotify "cssh root@$TURL $JITSISERVER/$RANDID" "SSH Tunnel Request"
-
-echo -e "Support request ssh channel is initalized.\n\nOpen in Browser for Meeting:\n$JITSISERVER/$RANDID\n\nAccess Endpoint for Support:\n$TURL\n\n"
+# open ssh tunnel
+start_ssh_tunnel
 
 # Optinal: TeamViewer
 if $(confirm "Optional: Opening TeamViewer Session") ; then
