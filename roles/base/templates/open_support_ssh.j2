@@ -28,14 +28,14 @@ function confirm() {
 
 ## starting teamviewer and set random password
 function start_team_viewer() {
-  TVPASSWORD=`pwgen 12 1`
-  TVID=`teamviewer --info | grep "TeamViewer ID" | cut -d ':' -f2 | xargs | tr -dc '[:alnum:]\n\r' |  sed 's/0m//'`
   sudo killall /opt/teamviewer/tv_bin/TeamViewer >/dev/null 2>&1
   sleep 1
   sudo teamviewer daemon enable >/dev/null 2>&1
   export DISPLAY=":0.0" >/dev/null 2>&1
   sleep 1
   teamviewer >/dev/null 2>&1
+  TVPASSWORD=`pwgen 12 1`
+  TVID=`teamviewer --info | grep "TeamViewer ID" | cut -d ':' -f2 | xargs | tr -dc '[:alnum:]\n\r' |  sed 's/0m//'`
   sudo teamviewer passwd $TVPASSWORD >/dev/null 2>&1
   # Sending access data
   /usr/local/bin/gotify "TeamViewer: $TVID $TVPASSWORD" "TeamViewer Request"
