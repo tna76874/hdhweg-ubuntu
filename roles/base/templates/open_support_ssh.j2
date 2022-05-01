@@ -67,8 +67,7 @@ function cleanup()
     # cleanup temporary logfile from screen session dump
     rm -f /tmp/ctun
     # print message
-    echo -e "\e[32mSystem access for support is now closed.\e[0m"
-    sleep 2
+    echo -e "\e[32mSystem access cleaned up.\e[0m"
 }
 
 function start_ssh_tunnel() {
@@ -124,6 +123,7 @@ read -r -p "Type ENTER to exit tunnel" response
 
 # run cleanup
 cleanup
+sleep 2
 
 # delete trap
 trap "" EXIT
