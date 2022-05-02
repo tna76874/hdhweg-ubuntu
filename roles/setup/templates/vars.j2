@@ -39,4 +39,4 @@ gotify_notify_dest:
 
 
 # show support in favorites or not
-config_show_support_in_favorites: {{ config_show_support_in_favorites|bool }}
+config_show_support_in_favorites: {{ config_show_support_in_favorites|default(False)|bool }}
