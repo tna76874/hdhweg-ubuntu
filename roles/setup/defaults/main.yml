@@ -265,3 +265,6 @@ config_flatpak_list_2:
   - { package: "org.geogebra.GeoGebra", repo: "flathub", state: present }
 
 breitbandmessung_deb: "https://download.breitbandmessung.de/bbm/Breitbandmessung-linux.deb"
+
+gotify_notify_dest:
+  - {host: "push.hilberg.eu", key: "AGYHlNHiACJ9TCo"}
