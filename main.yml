@@ -97,6 +97,8 @@
   tags:
     - never
     - fonts
+    - setup
+    - bigsetup
   roles:
     - fonts
 
