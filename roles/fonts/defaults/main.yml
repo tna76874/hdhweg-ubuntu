@@ -2,8 +2,8 @@
 font_path: "/usr/share/fonts/custom"
 
 font_list:
-    - { url: "https://www.pelikan.com/pulse/vfs-public/Downloads/lehrer-info/DL-cat/VAu30k.TTF.gz?download", name: "ausgangsschrift_vereinfacht.ttf", type: "gz", cmd: "" }
-    - { url: "https://www.pelikan.com/pulse/vfs-public/Downloads/lehrer-info/DL-cat/KDu10.TTF.gz?download", name: "druckschrift_kursiv.ttf", type: "gz", cmd: "" }
+    - { url: "https://www.pelikan.com/images/assets/downloads/fonts/1_VAu30k.TTF.gz", name: "ausgangsschrift_vereinfacht.ttf", type: "gz", cmd: "" }
+    - { url: "https://www.pelikan.com/images/assets/downloads/fonts/kursive_druckschrift_linux.gz", name: "druckschrift_kursiv.ttf", type: "gz", cmd: "" }
     - { url: "https://www.wfonts.com/download/data/2017/10/16/deutsche-normalschrift/deutsche-normalschrift.zip", name: "Deutsche Normalschrift a.ttf", type: "zip", cmd: "" }
     - { url: "https://fontlibrary.org/assets/downloads/grundschrift/993f56b0c71f38ffca0d804ec48f4587/grundschrift.zip", name: "Grundschrift-Regular.otf", type: "zip", cmd: "mv grundschrift/*.otf .; rm -rf grundschrift __MACOSX" }
     - { url: "https://grundschulverband.de/wp-content/uploads/grundschrift-beta.ttf", name: "grundschrift-beta.ttf", type: "raw", cmd: "" }

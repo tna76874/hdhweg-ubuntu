@@ -17,6 +17,7 @@
   become: yes
   loop: "{{ font_list }}"
   when: item.name not in found_files.stdout_lines and item.type=="gz"
+  ignore_errors: true
   notify:
     - update cache
 
@@ -28,6 +29,7 @@
   become: yes
   loop: "{{ font_list }}"
   when: item.name not in found_files.stdout_lines and item.type=="zip"
+  ignore_errors: true
   notify:
     - update cache
 
@@ -38,6 +40,7 @@
   become: yes
   loop: "{{ font_list }}"
   when: item.name not in found_files.stdout_lines and item.type=="raw"
+  ignore_errors: true
   notify:
     - update cache
 
