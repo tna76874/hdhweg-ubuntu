@@ -1,0 +1,7 @@
+#!/bin/bash
+v4l2-ctl --list-devices
+read -e -p "Source-Camera: " -i "0" CAMERA
+
+{{ backscrub_binary }} ${{ '{' }}COMMAND{{ '}' }}
+
+ffmpeg -f v4l2 -i /dev/video${{ '{' }}CAMERA{{ '}' }} -vf "vflip" -f v4l2 /dev/video9

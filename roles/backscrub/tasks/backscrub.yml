@@ -22,48 +22,17 @@
     pattern: "selfiesegmentation*.tflite"
   register: fakecam_models
 
-- name: Ensure script
-  copy:
-    dest: /usr/local/bin/fakecam
+- name: Ensure scripts
+  template:
+    src: "{{ item.entry }}"
+    dest: "{{ item.dest }}"
     owner: root
     group: root
     mode: 0755
-    content: |
-      #!/bin/bash
+  loop:
+    - { entry: "fakecam.j2", dest: "/usr/local/bin/fakecam" }
+    - { entry: "rotatecam.j2", dest: "/usr/local/bin/rotatecam" }
 
-      BACKGROUND="-b {{ backscrub_background }}"
-      THREADS={{ ((cpu_info.stdout | float) / 2) | round | int  }}
-      BLUR=""
-      FORMAT=""
-      WIDTH=""
-      HEIGHT=""
-      EXTRAARGS="{{ backscrub_extra_args }}"
-
-      v4l2-ctl --list-devices
-      read -e -p "Source-Camera: " -i "0" CAMERA
-
-      v4l2-ctl -d /dev/video"$CAMERA" --list-formats-ext
-
-      while getopts ':b:u:t:f:w:h:e:gz' opt
-      do
-      case "$opt" in
-        'b')  BACKGROUND="-b $OPTARG";;
-        'u')  BLUR="-p bgblur:$OPTARG";;
-        't')  THREADS="$OPTARG";;
-        'f')  FORMAT="-f $OPTARG";;
-        'w')  WIDTH="-w $OPTARG";;
-        'h')  HEIGHT="-h $OPTARG";;
-        'e')  EXTRAARGS="$OPTARG";;
-        'g')  BACKGROUND="";;
-        'z')  BACKGROUND="-b 0"
-              BLUR="-p bgblur:0.9";;
-      esac
-      done
-
-      COMMAND="-t ${{ '{' }}THREADS{{ '}' }} -m {{ fakecam_models.files[0].path }} -c /dev/video${{ '{' }}CAMERA{{ '}' }}  -v /dev/video9  ${{ '{' }}BACKGROUND{{ '}' }} ${{ '{' }}FORMAT{{ '}' }} ${{ '{' }}BLUR{{ '}' }} ${{ '{' }}WIDTH{{ '}' }} ${{ '{' }}HEIGHT{{ '}' }} ${{ '{' }}EXTRAARGS{{ '}' }}"
-
-      {{ backscrub_binary }} ${{ '{' }}COMMAND{{ '}' }}
-      
 - name: Ensure wallpaper
   copy:
     src: "blackboard.jpg"

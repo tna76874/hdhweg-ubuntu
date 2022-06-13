@@ -26,6 +26,7 @@ backscrub_repos:
 
 backscrub_launchers:
   - {desktop_src: "fakecam.desktop", desktop_dest: "/usr/share/applications/fakecam.desktop", icon_src: "fakecamlogo.svg", icon_dest: "/usr/share/icons/fakecamlogo.svg", mode: "0644"}
+  - {desktop_src: "rotatecam.desktop", desktop_dest: "/usr/share/applications/rotatecam.desktop", icon_src: "rotatecam.svg", icon_dest: "/usr/share/icons/rotatecam.svg", mode: "0644"}
   - {desktop_src: "droidcam.desktop", desktop_dest: "/usr/share/applications/droidcam.desktop", icon_src: "droidcam.png", icon_dest: "/usr/share/icons/droidcam.png", mode: "0644"}
 
 

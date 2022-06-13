@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Rotate Camera
+GenericName=Rotate Camera
+Comment=Rotate Camera
+Comment[de]=Camera rotieren
+Exec=gnome-terminal --tab -e "/bin/bash -c '/usr/local/bin/rotatecam'"
+Icon=/usr/share/icons/rotatecam.svg
+Terminal=true
+X-MultipleArgs=false
+Type=Application
+Categories=Network;
+StartupWMClass=rotatecam
+StartupNotify=true
