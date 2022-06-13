@@ -37,7 +37,7 @@
       FORMAT=""
       WIDTH=""
       HEIGHT=""
-      EXTRAARGS=""
+      EXTRAARGS="{{ backscrub_extra_args }}"
 
       v4l2-ctl --list-devices
       read -e -p "Source-Camera: " -i "0" CAMERA

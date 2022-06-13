@@ -95,6 +95,7 @@
   loop:
     - "make droidcam-cli"
     - "apt install linux-headers-`uname -r` gcc make"
+    - "./install-client"
     - "./install-video"
     - "./install-sound"
 

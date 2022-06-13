@@ -17,6 +17,7 @@ backscrub_folders:
 
 backscrub_background: "{{ backscrub_folders.backscrub }}/blackboard.jpg"
 backscrub_binary: "{{ backscrub_folders.backscrub }}/backscrub"
+backscrub_extra_args: ""
 
 backscrub_repos:
   - {url: "https://github.com/obsproject/obs-studio.git" , dest: "{{ backscrub_folders.obs }}", version: "master"}
