@@ -37,13 +37,14 @@
       FORMAT=""
       WIDTH=""
       HEIGHT=""
+      EXTRAARGS=""
 
       v4l2-ctl --list-devices
       read -e -p "Source-Camera: " -i "0" CAMERA
 
       v4l2-ctl -d /dev/video"$CAMERA" --list-formats-ext
 
-      while getopts ':b:u:t:f:w:h:gz' opt
+      while getopts ':b:u:t:f:w:h:e:gz' opt
       do
       case "$opt" in
         'b')  BACKGROUND="-b $OPTARG";;
@@ -52,13 +53,14 @@
         'f')  FORMAT="-f $OPTARG";;
         'w')  WIDTH="-w $OPTARG";;
         'h')  HEIGHT="-h $OPTARG";;
+        'e')  EXTRAARGS="$OPTARG";;
         'g')  BACKGROUND="";;
         'z')  BACKGROUND="-b 0"
               BLUR="-p bgblur:0.9";;
       esac
       done
 
-      COMMAND="-t ${{ '{' }}THREADS{{ '}' }} -m {{ fakecam_models.files[0].path }} -c /dev/video${{ '{' }}CAMERA{{ '}' }}  -v /dev/video9  ${{ '{' }}BACKGROUND{{ '}' }} ${{ '{' }}FORMAT{{ '}' }} ${{ '{' }}BLUR{{ '}' }} ${{ '{' }}WIDTH{{ '}' }} ${{ '{' }}HEIGHT{{ '}' }}"
+      COMMAND="-t ${{ '{' }}THREADS{{ '}' }} -m {{ fakecam_models.files[0].path }} -c /dev/video${{ '{' }}CAMERA{{ '}' }}  -v /dev/video9  ${{ '{' }}BACKGROUND{{ '}' }} ${{ '{' }}FORMAT{{ '}' }} ${{ '{' }}BLUR{{ '}' }} ${{ '{' }}WIDTH{{ '}' }} ${{ '{' }}HEIGHT{{ '}' }} ${{ '{' }}EXTRAARGS{{ '}' }}"
 
       {{ backscrub_binary }} ${{ '{' }}COMMAND{{ '}' }}
       
