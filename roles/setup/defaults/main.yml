@@ -226,7 +226,8 @@ config_flatpak_list_1:
   # Browser
   - { package: "org.chromium.Chromium", repo: "flathub", state: present }
   - { package: "org.mozilla.firefox", repo: "flathub", state: present }
-  - { package: "com.google.Chrome", repo: "flathub-beta", state: present }
+  - { package: "com.google.Chrome", repo: "flathub-beta", state: absent }
+  - { package: "com.google.Chrome", repo: "flathub", state: present }
   - { package: "com.github.Eloston.UngoogledChromium", repo: "flathub", state: present }
   # Miscellaneous
   - { package: "com.github.tchx84.Flatseal", repo: "flathub", state: present }
