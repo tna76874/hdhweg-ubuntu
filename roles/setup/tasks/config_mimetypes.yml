@@ -52,4 +52,5 @@
     path: "/home/{{ user_item }}/.var/app/re.sonny.Junction/config/mimeapps.list"
     regexp: '^{{ item.mime }}'
     line: "{{ item.mime }}={{ item.apps | join(';') }}"
+    create: yes
   loop: "{{ junction_mimetypes_apps }}"
