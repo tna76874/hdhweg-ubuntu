@@ -96,3 +96,8 @@
   notify:
     - disable rtw89
 
+- include_tasks: config_mimetypes.yml
+  loop: "{{ ubuntu_users.stdout_lines }}"
+  loop_control:
+    loop_var: user_item
+  when: config_mimetypes|bool

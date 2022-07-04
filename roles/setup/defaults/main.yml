@@ -223,6 +223,7 @@ config_flatpak_list_1:
   - { package: "com.github.jeromerobert.pdfarranger", repo: "flathub", state: present }
   - { package: "org.libreoffice.LibreOffice", repo: "flathub", state: present }
   - { package: "com.vscodium.codium", repo: "flathub", state: present }
+  - { package: "re.sonny.Junction", repo: "flathub", state: present }
   # Browser
   - { package: "org.chromium.Chromium", repo: "flathub", state: present }
   - { package: "org.mozilla.firefox", repo: "flathub", state: present }
@@ -269,3 +270,121 @@ breitbandmessung_deb: "https://download.breitbandmessung.de/bbm/Breitbandmessung
 
 gotify_notify_dest:
   - {host: "push.hilberg.eu", key: "AGYHlNHiACJ9TCo"}
+
+### MIMETYPES
+config_mimetypes: False
+
+mimetype_default_apps_for:
+  audio: "audacious.desktop"
+  video: "vlc.desktop"
+  web: "com.google.Chrome.desktop"
+
+junction_mimetypes_apps:
+  - mime: "application/pdf"
+    apps:
+      - org.gnome.Evince.desktop
+      - com.github.jeromerobert.pdfarranger.desktop
+      - net.codeindustry.MasterPDFEditor.desktop
+      - org.libreoffice.LibreOffice.draw.desktop
+
+mimetypes_default_apps:
+  - { mime: "application/pdf", app: "re.sonny.Junction.desktop" }
+  - { mime: "text/html", app: "{{ mimetype_default_apps_for.web }}" }
+  - { mime: "application/xhtml+xml", app: "{{ mimetype_default_apps_for.web }}" }
+  - { mime: "x-scheme-handler/http", app: "{{ mimetype_default_apps_for.web }}" }
+  - { mime: "x-scheme-handler/https", app: "{{ mimetype_default_apps_for.web }}" }
+  - { mime: "x-scheme-handler/about", app: "{{ mimetype_default_apps_for.web }}" }
+  - { mime: "x-scheme-handler/unknown", app: "{{ mimetype_default_apps_for.web }}" }
+  - { mime: "image/svg+xml", app: "org.inkscape.Inkscape.desktop" }
+  - { mime: "application/x-ms-dos-executable", app: "wine.desktop" }
+  - { mime: "application/x-wine-extension-ini", app: "org.gnome.gedit.desktop" }
+  - { mime: "video/x-matroska", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/mp4", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/x-msvideo", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "x-scheme-handler/webcal", app: "{{ mimetype_default_apps_for.web }}" }
+  - { mime: "text/plain", app: "org.gnome.gedit.desktop" }
+  - { mime: "application/vnd.geogebra.file", app: "org.geogebra.GeoGebra.desktop" }
+  - { mime: "application/vnd.geogebra-classic.file", app: "org.geogebra.GeoGebra.desktop" }
+  - { mime: "x-scheme-handler/mailto", app: "thunderbird.desktop" }
+  - { mime: "message/rfc822", app: "userapp-Thunderbird-08GXI0.desktop" }
+  # AUDIO
+  - { mime: "audio/x-vorbis+ogg", app: "{{ mimetype_default_apps_for.audio }}" }
+  - { mime: "audio/midi", app: "{{ mimetype_default_apps_for.audio }}" }
+  - { mime: "audio/mp3", app: "{{ mimetype_default_apps_for.audio }}" }
+  - { mime: "audio/mp4", app: "{{ mimetype_default_apps_for.audio }}" }
+  - { mime: "audio/mpeg", app: "{{ mimetype_default_apps_for.audio }}" }
+  - { mime: "audio/mpegurl", app: "{{ mimetype_default_apps_for.audio }}" }
+  - { mime: "audio/ogg", app: "{{ mimetype_default_apps_for.audio }}" }
+  - { mime: "audio/prs.sid", app: "{{ mimetype_default_apps_for.audio }}" }
+  - { mime: "audio/x-flac", app: "{{ mimetype_default_apps_for.audio }}" }
+  - { mime: "audio/x-it", app: "{{ mimetype_default_apps_for.audio }}" }
+  - { mime: "audio/x-mod", app: "{{ mimetype_default_apps_for.audio }}" }
+  - { mime: "audio/x-mp3", app: "{{ mimetype_default_apps_for.audio }}" }
+  - { mime: "audio/x-mpeg", app: "{{ mimetype_default_apps_for.audio }}" }
+  - { mime: "audio/x-mpegurl", app: "{{ mimetype_default_apps_for.audio }}" }
+  - { mime: "audio/x-ms-asx", app: "{{ mimetype_default_apps_for.audio }}" }
+  - { mime: "audio/x-ms-wma", app: "{{ mimetype_default_apps_for.audio }}" }
+  - { mime: "audio/x-musepack", app: "{{ mimetype_default_apps_for.audio }}" }
+  - { mime: "audio/x-s3m", app: "{{ mimetype_default_apps_for.audio }}" }
+  - { mime: "audio/x-scpls", app: "{{ mimetype_default_apps_for.audio }}" }
+  - { mime: "audio/x-stm", app: "{{ mimetype_default_apps_for.audio }}" }
+  - { mime: "audio/x-wav", app: "{{ mimetype_default_apps_for.audio }}" }
+  - { mime: "audio/x-xm", app: "{{ mimetype_default_apps_for.audio }}" }
+  # VIDEO
+  - { mime: "video/x-ogm+ogg", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/ogg", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/x-ogm", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/x-theora+ogg", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/x-theora", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/x-ms-asf", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/x-ms-asf-plugin", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/x-ms-asx", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/x-ms-wm", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/x-ms-wmv", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/x-ms-wmx", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/x-ms-wvx", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/divx", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/msvideo", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/vnd.divx", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/avi", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/x-avi", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/vnd.rn-realvideo", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/mp2t", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/mpeg", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/mpeg-system", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/x-mpeg", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/x-mpeg2", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/x-mpeg-system", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/mp4v-es", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/x-m4v", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/quicktime", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/webm", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/3gp", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/3gpp", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/3gpp2", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/vnd.mpegurl", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/dv", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/x-anim", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/x-nsv", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/fli", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/flv", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/x-flc", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/x-fli", app: "{{ mimetype_default_apps_for.video }}" }
+  - { mime: "video/x-flv", app: "{{ mimetype_default_apps_for.video }}" }
+  # ETC
+  - { mime: "application/x-php", app: "com.vscodium.codium.desktop" }
+  - { mime: "text/markdown", app: "io.typora.Typora.desktop" }
+  - { mime: "text/x-tex", app: "texstudio.desktop" }
+  - { mime: "application/vnd.appimage", app: "nautilus-autorun-software.desktop" }
+  - { mime: "application/vnd.oasis.opendocument.text", app: "org.libreoffice.LibreOffice.writer.desktop" }
+  - { mime: "application/rtf", app: "org.gnome.gedit.desktop" }
+  - { mime: "application/json", app: "com.vscodium.codium.desktop" }
+  - { mime: "x-scheme-handler/etcher", app: "balena-etcher-electron.desktop" }
+  - { mime: "application/zip", app: "org.gnome.FileRoller.desktop" }
+  - { mime: "image/heif", app: "org.gnome.eog.desktop" }
+  - { mime: "application/x-yaml", app: "com.vscodium.codium.desktop" }
+  - { mime: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", app: "org.libreoffice.LibreOffice.writer.desktop" }
+  - { mime: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", app: "org.libreoffice.LibreOffice.calc.desktop" }
+  - { mime: "application/vnd.ms-excel", app: "org.libreoffice.LibreOffice.calc.desktop" }
+  - { mime: "application/msword", app: "org.libreoffice.LibreOffice.writer.desktop" }
+  - { mime: "application/x-shellscript", app: "com.vscodium.codium.desktop" }

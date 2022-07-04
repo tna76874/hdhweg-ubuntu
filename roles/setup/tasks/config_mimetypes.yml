@@ -1,0 +1,55 @@
+---
+- name: Remove all default entrys in mimetypes
+  become_user: "{{ user_item }}"
+  ansible.builtin.replace:
+    path: "/home/{{ user_item }}/.config/mimeapps.list"
+    regexp: '^(.+)$'
+    replace: ''
+    before: '\[Added Associations\]'
+  changed_when: False
+
+- name: Add BLOCK with default mimetypes
+  become_user: "{{ user_item }}"
+  ansible.builtin.blockinfile:
+    path: "/home/{{ user_item }}/.config/mimeapps.list"
+    insertbefore: 'BOF'
+    marker: "# {mark} ANSIBLE MANAGED BLOCK: DO NOT EDIT AS CHANGES WILL BE OVERWRITTEN"
+    block: |
+      [Default Applications]
+      {% for entry in mimetypes_default_apps %}
+      {{ entry.mime }}={{ entry.app }}
+      {% endfor %}
+  changed_when: False
+
+- name: Remove blank lines
+  become_user: "{{ user_item }}"
+  replace:
+    path: "/home/{{ user_item }}/.config/mimeapps.list"
+    regexp: '(^\s*$)'
+    replace: ''
+  changed_when: False
+
+- name: Ensure Junction flatpak user directory
+  become_user: "{{ user_item }}"
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    state: directory
+  loop:
+    - { path: "/home/{{ user_item }}/.var/app/re.sonny.Junction/config", owner: "{{ user_item }}" }
+
+- name: Ensure Junction mimetypes file
+  become_user: "{{ user_item }}"
+  ansible.builtin.copy:
+    content: |
+      [Added Associations]
+    dest: "/home/{{ user_item }}/.var/app/re.sonny.Junction/config/mimeapps.list"
+    force: False
+
+- name: Ensure Junction mimetypes
+  become_user: "{{ user_item }}"
+  ansible.builtin.lineinfile:
+    path: "/home/{{ user_item }}/.var/app/re.sonny.Junction/config/mimeapps.list"
+    regexp: '^{{ item.mime }}'
+    line: "{{ item.mime }}={{ item.apps | join(';') }}"
+  loop: "{{ junction_mimetypes_apps }}"
