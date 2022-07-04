@@ -286,9 +286,31 @@ junction_mimetypes_apps:
       - com.github.jeromerobert.pdfarranger.desktop
       - net.codeindustry.MasterPDFEditor.desktop
       - org.libreoffice.LibreOffice.draw.desktop
+  - mime: "application/zip"
+    apps:
+      - org.gnome.FileRoller.desktop
+      - org.geogebra.GeoGebra.desktop
 
 mimetypes_default_apps:
+  # MANAGED WITH JUNCTION
   - { mime: "application/pdf", app: "re.sonny.Junction.desktop" }
+  - { mime: "application/zip", app: "re.sonny.Junction.desktop" }
+  # ETC
+  - { mime: "application/x-php", app: "com.vscodium.codium.desktop" }
+  - { mime: "text/markdown", app: "io.typora.Typora.desktop" }
+  - { mime: "text/x-tex", app: "texstudio.desktop" }
+  - { mime: "application/vnd.appimage", app: "nautilus-autorun-software.desktop" }
+  - { mime: "application/vnd.oasis.opendocument.text", app: "org.libreoffice.LibreOffice.writer.desktop" }
+  - { mime: "application/rtf", app: "org.gnome.gedit.desktop" }
+  - { mime: "application/json", app: "com.vscodium.codium.desktop" }
+  - { mime: "x-scheme-handler/etcher", app: "balena-etcher-electron.desktop" }
+  - { mime: "image/heif", app: "org.gnome.eog.desktop" }
+  - { mime: "application/x-yaml", app: "com.vscodium.codium.desktop" }
+  - { mime: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", app: "org.libreoffice.LibreOffice.writer.desktop" }
+  - { mime: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", app: "org.libreoffice.LibreOffice.calc.desktop" }
+  - { mime: "application/vnd.ms-excel", app: "org.libreoffice.LibreOffice.calc.desktop" }
+  - { mime: "application/msword", app: "org.libreoffice.LibreOffice.writer.desktop" }
+  - { mime: "application/x-shellscript", app: "com.vscodium.codium.desktop" }
   - { mime: "text/html", app: "{{ mimetype_default_apps_for.web }}" }
   - { mime: "application/xhtml+xml", app: "{{ mimetype_default_apps_for.web }}" }
   - { mime: "x-scheme-handler/http", app: "{{ mimetype_default_apps_for.web }}" }
@@ -371,20 +393,3 @@ mimetypes_default_apps:
   - { mime: "video/x-flc", app: "{{ mimetype_default_apps_for.video }}" }
   - { mime: "video/x-fli", app: "{{ mimetype_default_apps_for.video }}" }
   - { mime: "video/x-flv", app: "{{ mimetype_default_apps_for.video }}" }
-  # ETC
-  - { mime: "application/x-php", app: "com.vscodium.codium.desktop" }
-  - { mime: "text/markdown", app: "io.typora.Typora.desktop" }
-  - { mime: "text/x-tex", app: "texstudio.desktop" }
-  - { mime: "application/vnd.appimage", app: "nautilus-autorun-software.desktop" }
-  - { mime: "application/vnd.oasis.opendocument.text", app: "org.libreoffice.LibreOffice.writer.desktop" }
-  - { mime: "application/rtf", app: "org.gnome.gedit.desktop" }
-  - { mime: "application/json", app: "com.vscodium.codium.desktop" }
-  - { mime: "x-scheme-handler/etcher", app: "balena-etcher-electron.desktop" }
-  - { mime: "application/zip", app: "org.gnome.FileRoller.desktop" }
-  - { mime: "image/heif", app: "org.gnome.eog.desktop" }
-  - { mime: "application/x-yaml", app: "com.vscodium.codium.desktop" }
-  - { mime: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", app: "org.libreoffice.LibreOffice.writer.desktop" }
-  - { mime: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", app: "org.libreoffice.LibreOffice.calc.desktop" }
-  - { mime: "application/vnd.ms-excel", app: "org.libreoffice.LibreOffice.calc.desktop" }
-  - { mime: "application/msword", app: "org.libreoffice.LibreOffice.writer.desktop" }
-  - { mime: "application/x-shellscript", app: "com.vscodium.codium.desktop" }
