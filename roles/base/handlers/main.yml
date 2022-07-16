@@ -23,7 +23,6 @@
 - name: update apt
   apt:
     update_cache: yes
-  ignore_errors: yes
   register: apt_return
   until: apt_return.rc | default(0) == 0
   retries: 30
@@ -32,7 +31,6 @@
 - name: autoremove apt
   apt:
     autoremove: yes
-  ignore_errors: yes
   register: apt_return
   until: apt_return.rc | default(0) == 0
   retries: 30
@@ -42,7 +40,6 @@
   apt:
     name: "*"
     state: latest
-  ignore_errors: yes
   register: apt_return
   until: apt_return.rc | default(0) == 0
   retries: 30
@@ -51,7 +48,6 @@
 - name: dist-upgrade
   apt:
     upgrade: dist
-  ignore_errors: yes
   register: apt_return
   until: apt_return.rc | default(0) == 0
   retries: 30
