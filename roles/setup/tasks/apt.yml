@@ -3,6 +3,10 @@
   shell: dpkg --configure -a
   become: yes
   changed_when: false
+  register: apt_return
+  until: apt_return.rc | default(0) == 0
+  retries: 30
+  delay: 30
 
 - name: Ensure ppa's states
   apt_repository:
