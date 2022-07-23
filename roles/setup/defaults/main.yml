@@ -183,6 +183,7 @@ config_apt_list_2:
   - git-lfs
   - android-tools-adb
   - esptool
+  - ldap-utils
   - autossh
 
 config_apt_pipewire:
