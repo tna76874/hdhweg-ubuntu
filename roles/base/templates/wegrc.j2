@@ -111,7 +111,8 @@ ln -sr /run/systemd/resolve/resolv.conf /run/systemd/resolve/stub-resolv.conf
 }
 export -f fixcubicdns
 
-# copy home dir from remote host
+############################################################################
+### copy home dir from remote host
 alias get_network_ip="ifconfig -a | grep 'inet 192' | tr -s ' ' | cut -d ' ' -f 3"
 
 append_ssh_key(){
@@ -151,6 +152,7 @@ else
     esac
 fi
 }
+############################################################################
 
 # a script to open a wifi hotspot
 openap() {
@@ -176,3 +178,32 @@ else
 fi
 }
 export -f openap
+
+############################################################################
+## git functions and alias
+
+# nice log format
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+git config --global alias.doc "log --color --graph --pretty=format:'%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit"
+
+# generate pdf with documentation form git repo in current working directory
+dgit () {
+    # render README.md, if found
+    pandoc README.md -V geometry:margin=1.5cm -o ./.README.pdf > /dev/null 2>&1 || echo "No README.md found."
+    
+    # render commit graph to PDF
+    reponame=$(basename `git rev-parse --show-toplevel`)
+    { echo "$reponame" ;date ; echo -e '\n'; git doc; } | aha -w | wkhtmltopdf -q -s A4 - ./.commits.pdf > /dev/null 2>&1
+
+    # merge and A4 format reports
+    ( pdftk ./.README.pdf ./.commits.pdf cat output ./."$reponame".pdf > /dev/null 2>&1 ) || pdfjam ./.commits.pdf -o ./"$reponame".pdf
+    ( pdfjam ./."$reponame".pdf -o ./"$reponame".pdf > /dev/null 2>&1 ) || :
+
+    # cleanup
+    ( rm ./.README.pdf > /dev/null 2>&1 ) || :
+    ( rm ./."$reponame".pdf > /dev/null 2>&1 ) || :
+    ( rm ./.commit.pdf > /dev/null 2>&1 ) || :
+}
+export -f dgit
+
+############################################################################
