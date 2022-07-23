@@ -1,0 +1,43 @@
+#!/bin/bash -e
+exec 2>/dev/null	# supress error messages
+
+## defining cleanup function
+function cleanup()
+{
+    # reset sudo timestamp
+    sudo -k
+    # blank PASS variable
+    PASS=""
+}
+
+## trap with cleanup function in case there is an error in the script
+trap cleanup EXIT
+
+## collecting args
+SHUTDOWN=0
+while getopts ':s' opt
+do
+case "$opt" in
+   's')SHUTDOWN=1;
+       ;;
+    *) echo -e "Invalid parameter";
+       ;;
+esac
+done
+
+if ! PASS=$(zenity --entry --width=600 --height=400 --window-icon=/usr/share/icons/updateico.svg --hide-text --text "\n\n\nBitte geben Sie das Passwort ein:\n\n\n" --title "System-Update"); then
+  exit;
+fi
+
+# run playbook
+if [[ "$SHUTDOWN" -eq "1" ]]; then
+  echo -e "$PASS\n" | sudo -S /bin/bash -c 'sudo /usr/bin/git -C {{ config_repo_folder }}  pull; sudo /usr/bin/ansible-playbook {{ config_repo_folder }}/main.yml -t setup && systemctl poweroff'
+else
+  echo -e "$PASS\n" | sudo -S /bin/bash -c 'sudo /usr/bin/git -C {{ config_repo_folder }}  pull; sudo /usr/bin/ansible-playbook {{ config_repo_folder }}/main.yml -t setup'
+fi
+
+# run cleanup
+cleanup
+
+# delete trap
+trap "" EXIT

@@ -111,6 +111,7 @@
     - { file: "scan.j2", destination: "/usr/local/bin/scan", owner: "root", mode: "0755" }
     - { file: "gotify.j2", destination: "/usr/local/bin/gotify", owner: "root", mode: "0755" }
     - { file: "open_support_ssh.j2", destination: "/usr/local/bin/open_support_ssh", owner: "root", mode: "0750" }
+    - { file: "update_gui.j2", destination: "/usr/local/bin/update_gui", owner: "root", mode: "0755" }
 
 - name: Triggering upgrade handler
   assert: { that: true, quiet: true }

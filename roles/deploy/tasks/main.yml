@@ -25,6 +25,7 @@
       - git
       - sudo
       - htop
+      - zenity
       - bmon
       - vim
       - nano
