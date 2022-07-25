@@ -68,6 +68,7 @@ config_apt_list_1:
   - zsh
   - wget
   - dnsutils
+  - nethogs
   - git
   - git-gui
   - sudo
