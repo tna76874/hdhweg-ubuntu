@@ -24,7 +24,7 @@
   apt:
     update_cache: yes
   register: apt_return
-  until: apt_return.rc | default(0) == 0
+  until: '(apt_return.rc | default(0) == 0) and ("Failed" not in apt_return.msg | default(""))'
   retries: 30
   delay: 30
 
@@ -32,7 +32,7 @@
   apt:
     autoremove: yes
   register: apt_return
-  until: apt_return.rc | default(0) == 0
+  until: '(apt_return.rc | default(0) == 0) and ("Failed" not in apt_return.msg | default(""))'
   retries: 30
   delay: 30
 
@@ -41,7 +41,7 @@
     name: "*"
     state: latest
   register: apt_return
-  until: apt_return.rc | default(0) == 0
+  until: '(apt_return.rc | default(0) == 0) and ("Failed" not in apt_return.msg | default(""))'
   retries: 30
   delay: 30
 
@@ -49,7 +49,7 @@
   apt:
     upgrade: dist
   register: apt_return
-  until: apt_return.rc | default(0) == 0
+  until: '(apt_return.rc | default(0) == 0) and ("Failed" not in apt_return.msg | default(""))'
   retries: 30
   delay: 30
 
