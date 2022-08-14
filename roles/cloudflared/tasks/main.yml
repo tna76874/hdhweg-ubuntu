@@ -32,6 +32,12 @@
       install_recommends: yes
 
   rescue:
+  - name: Remove cloudflare source files
+    ansible.builtin.file:
+      path: "/etc/apt/sources.list.d/{{ item.filename }}.list"
+      state: absent
+    loop: "{{ config_apt_sources }}"
+      
   - name: Ensure source states
     apt_repository:
       repo: "{{ item.repo }}"
