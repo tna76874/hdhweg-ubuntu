@@ -1,7 +1,7 @@
 # disable teamviewer daemon at startup
 disable_teamviewer: {{ disable_teamviewer|default(True) }}
 # upgrade apt with basic role
-config_perform_apt_upgrade: {{ config_perform_apt_upgrade|default(False) }}
+config_perform_apt_upgrade: False
 
 # pulling latest changes of the git repo when running base role
 config_ensure_repo: {{ config_ensure_repo|default(True) }}

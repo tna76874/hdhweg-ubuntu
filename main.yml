@@ -48,8 +48,8 @@
     - bigsetup
     - downgrade
   roles:
-    - setup
     - cloudflared
+    - setup
     - security
 
 - name: Ensure widgets
