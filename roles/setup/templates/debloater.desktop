@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Android Debloater
+GenericName=androiddebloater
+Comment=Debloate your android device
+Comment[de]=Debloate dein Android Gerät
+Exec={{ debloater_exec_path }}
+Icon=/usr/share/icons/debloater.svg
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Categories=Network;
+StartupWMClass=debloater
+StartupNotify=true

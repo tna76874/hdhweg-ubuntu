@@ -182,7 +182,6 @@ config_apt_list_2:
   - woeusb
   - build-essential
   - git-lfs
-  - android-tools-adb
   - esptool
   - ldap-utils
   - autossh

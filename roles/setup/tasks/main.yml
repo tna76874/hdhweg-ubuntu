@@ -101,3 +101,5 @@
   loop_control:
     loop_var: user_item
   when: config_mimetypes|bool
+
+- import_tasks: debloater.yml

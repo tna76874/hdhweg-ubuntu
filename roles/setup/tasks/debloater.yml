@@ -1,0 +1,54 @@
+---
+- name: Ensure apt packages
+  apt:
+    name:
+      - android-tools-adb
+      - android-tools-fastboot
+      - android-sdk-platform-tools
+    state: latest
+    update_cache: yes
+    install_recommends: yes
+
+- name: Query debloater release from github
+  uri:
+    url: https://api.github.com/repos/0x192/universal-android-debloater/releases
+    return_content: true                                             
+  register: debloater_github_releases
+  ignore_errors: yes
+
+- name: Register debloater url
+  set_fact:
+    debloater_url_archive: "{{ ((debloater_github_releases.json | list)[0]['assets'] | selectattr('name', 'equalto', 'uad_gui-linux-opengl.tar.gz') | list)[0]['browser_download_url'] }}"
+    debloater_base: "/usr/local/bin"
+
+- name: Ensure debloater
+  ansible.builtin.unarchive:
+    src: "{{ debloater_url_archive }}"
+    dest: "{{ debloater_base }}"
+    remote_src: yes
+    list_files: yes
+    owner: 'root'
+    group: 'root'
+    mode: '0755'
+  register: debloater_extract_return
+  become: yes
+
+- name: Register debloater path
+  set_fact:
+    debloater_exec_path:  "{{ debloater_base }}/{{ debloater_extract_return['files'][0] }}"
+
+- name: Ensure debloater desktop entrys
+  template:
+    src: "{{ item.entry }}"
+    dest: "{{ item.dest }}"
+    mode: 0644
+  loop:
+    - { entry: "debloater.desktop", dest: "/usr/share/applications/debloater.desktop" }
+
+- name: Ensure debloater icon
+  copy:
+    src: "{{ item.icon }}"
+    dest: "{{ item.dest }}"
+    mode: 0644
+  loop:
+    - { icon: "debloater.svg", dest: "/usr/share/icons/debloater.svg" }
