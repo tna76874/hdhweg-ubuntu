@@ -3,6 +3,9 @@ disable_teamviewer: {{ disable_teamviewer|default(True) }}
 # upgrade apt with basic role
 config_perform_apt_upgrade: False
 
+# systemctl command on update-and-shutdown
+shutdown_after_update_systemctl_cmd: {{ shutdown_after_update_systemctl_cmd|default('poweroff') }}
+
 # pulling latest changes of the git repo when running base role
 config_ensure_repo: {{ config_ensure_repo|default(True) }}
 

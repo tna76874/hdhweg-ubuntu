@@ -5,6 +5,10 @@ disable_teamviewer: true
 ## upgrade apt with basic role
 config_perform_apt_upgrade: false
 
+# update systemctl command
+
+shutdown_after_update_systemctl_cmd: "poweroff"
+
 # repo details
 config_repo_name: "tna76874/hdhweg-ubuntu"
 config_repo_url: "https://github.com/{{ config_repo_name }}.git"
