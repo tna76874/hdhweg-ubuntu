@@ -117,6 +117,7 @@ config_apt_list_1:
   - net-tools
   - traceroute
   - imagemagick
+  - nautilus-image-converter
   - gnuplot
   - gnuplot-x11
   - gnuplot-doc
