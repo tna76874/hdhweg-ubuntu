@@ -151,3 +151,8 @@
   apt:
     deb: "{{ breitbandmessung_deb }}"
   ignore_errors: yes
+
+- name: Ensure TeamViewer
+  apt:
+    deb: "https://download.teamviewer.com/download/linux/teamviewer_amd64.deb"
+  ignore_errors: yes

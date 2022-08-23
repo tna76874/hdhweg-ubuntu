@@ -38,7 +38,7 @@ config_apt_keys_curl: []
   
 config_apt_sources:
   - { repo: "deb http://www.geogebra.net/linux/ stable main", state: "absent", filename: "geogebra" }
-  - { repo: "deb http://linux.teamviewer.com/deb stable main", state: "present", filename: "teamviewer" }
+  # - { repo: "deb http://linux.teamviewer.com/deb stable main", state: "present", filename: "teamviewer" }
 
 config_apt_ppa_list_1:
   # Present
@@ -135,7 +135,6 @@ config_apt_list_1:
   - qtqr
   - macchanger
   - youtube-dl
-  - teamviewer
   - autossh
   - zbar-tools
   - texlive-extra-utils
