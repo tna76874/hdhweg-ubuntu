@@ -113,6 +113,7 @@
       - speedtest-cli
       - codium
       - nextcloud-client
+      - nautilus-wipe
     state: absent
 
 - name: Ensure packages for ubuntu => 20
