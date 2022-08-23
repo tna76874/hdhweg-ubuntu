@@ -128,6 +128,25 @@
     - ensuring shc
     - ensuring update exe
 
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Ensure group "update" exists
+  ansible.builtin.group:
+    name: update
+    state: present
+
+- name: Ensure permissions and groups of compiled maintenance scripts
+  file:
+    path: "{{ item.path }}"
+    owner: "root"
+    group: "update"
+    mode: "{{ item.mode }}"
+  become: yes
+  loop:
+    - { path: "/usr/local/bin/open_support_ssh.x", mode: "0750" }
+    - { path: "/usr/local/bin/update_gui.x", mode: "0750" }
+
 ##############################################################
 
 - name: Triggering upgrade handler

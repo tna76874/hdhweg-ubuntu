@@ -1,4 +1,14 @@
 ---
+# Ensure user groups
+- name: Ensure user groups
+  user:
+    name: "{{ user_item }}"
+    groups: "{{ item }}"
+    append: yes
+    state: present
+  loop:
+   - 'update'
+
 # Ensure settings and alias
 
 - name: Ensure templates
