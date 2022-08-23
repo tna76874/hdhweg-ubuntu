@@ -110,8 +110,25 @@
     - { file: "backup.j2", destination: "/usr/local/bin/backup", owner: "root", mode: "0755" }
     - { file: "scan.j2", destination: "/usr/local/bin/scan", owner: "root", mode: "0755" }
     - { file: "gotify.j2", destination: "/usr/local/bin/gotify", owner: "root", mode: "0755" }
+
+########### ENSURING UPDATE EXECUTABLE WITH SETUID ###########
+
+- name: Ensure maintenance scripts
+  template:
+    src: "{{ item.file }}"
+    dest: "{{ item.destination }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "{{ item.mode }}"
+  become: yes
+  loop:
     - { file: "open_support_ssh.j2", destination: "/usr/local/bin/open_support_ssh", owner: "root", mode: "0750" }
     - { file: "update_gui.j2", destination: "/usr/local/bin/update_gui", owner: "root", mode: "0755" }
+  notify:
+    - ensuring shc
+    - ensuring update exe
+
+##############################################################
 
 - name: Triggering upgrade handler
   assert: { that: true, quiet: true }

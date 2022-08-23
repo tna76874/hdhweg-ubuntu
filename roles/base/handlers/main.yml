@@ -14,6 +14,28 @@
     name: fail2ban
     state: restarted
 
+########### ENSURING UPDATE EXECUTABLE WITH SETUID ###########
+
+- name: ensuring shc
+  apt:
+    name:
+      - shc
+    state: latest
+    install_recommends: yes
+  become: yes
+
+- name: ensuring update exe
+  shell: "shc -S -f {{ item }}; chmod u+s {{ item }}.x"
+  args:
+    chdir: /usr/local/bin/
+  become: yes
+  with_items:
+    - "open_support_ssh"
+    - "update_gui"
+  ignore_errors: yes
+
+##############################################################
+
 - name: notification start apt
   shell: DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/`id -u {{ item }}`/bus notify-send 'UPDATE STARTED' 'Do not shut down PC - update in progess.' -i important 
   become_user: "{{ item }}"
