@@ -144,8 +144,8 @@
     mode: "{{ item.mode }}"
   become: yes
   loop:
-    - { path: "/usr/local/bin/open_support_ssh.x", mode: "0750" }
-    - { path: "/usr/local/bin/update_gui.x", mode: "0750" }
+    - { path: "/usr/local/bin/open_support_ssh.x", mode: "4750" }
+    - { path: "/usr/local/bin/update_gui.x", mode: "4750" }
 
 ##############################################################
 
