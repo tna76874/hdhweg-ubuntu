@@ -146,7 +146,6 @@ config_apt_list_1:
   - python3-pip
   - veracrypt
   - simple-scan
-  - nautilus-wipe
   - usb-creator-gtk
   - gnome-tweaks
   - gnome-shell-extensions
