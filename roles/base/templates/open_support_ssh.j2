@@ -12,6 +12,16 @@ JITSISERVER="https://www.kuketz-meet.de"
 RANDID=`openssl rand -hex 16`
 
 # define functions
+## countdown function
+countdown() {
+    secs=$(( 10 ))
+    while [ $secs -gt 0 ]; do
+    echo -ne "(CTRL+C to abort)      $secs\033[0K\r"
+    sleep 1
+    : $((secs--))
+    done
+}
+
 ## simple yes or no function for promts
 function confirm() {
     # call with a prompt string or use a default
@@ -92,11 +102,7 @@ function start_ssh_tunnel() {
 
 # printing disclaimer
 echo -e "\e[31mOpening a support request will grant $SSHKEYS temporary full system access as long as this terminal is open. A push message containing the ssh support url and optional the TeamViewer credentials will be send to support.\nOnly proceed if you absolutely trust the listed person!\e[0m\n"
-if ! $(confirm 'Opening support request?') ; then
-    echo "EXIT without opening request!"
-    sleep 2
-    exit
-fi
+countdown
 
 # Proceed with support request
 echo -e "Please wait until the request tunnel is initiated. [Exit with CTRL+C]"
