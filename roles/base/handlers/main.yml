@@ -22,6 +22,7 @@
       - shc
     state: latest
     install_recommends: yes
+  ignore_errors: yes
   become: yes
 
 - name: ensuring update exe
