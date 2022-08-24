@@ -33,6 +33,7 @@
   with_items:
     - "open_support_ssh"
     - "update_gui"
+    - "open_ap"
   ignore_errors: yes
 
 ##############################################################

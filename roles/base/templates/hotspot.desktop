@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=WLAN Hotspot
+GenericName=openwifihotspot
+Comment=Open a wifi hotspot
+Comment[de]=Öffne einen Wlan-Hotspot.
+Exec=gnome-terminal --tab -e "/bin/bash -c '/usr/local/bin/open_ap.x'"
+Icon=/usr/share/icons/hotspot.svg
+Terminal=true
+X-MultipleArgs=false
+Type=Application
+Categories=Network;
+StartupWMClass=Supportrequest
+StartupNotify=true
