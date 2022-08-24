@@ -147,6 +147,15 @@
     - { path: "/usr/local/bin/open_support_ssh.x", mode: "4750" }
     - { path: "/usr/local/bin/update_gui.x", mode: "4750" }
 
+- name: Ensure c files absent
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  become: yes
+  loop:
+    - { path: "/usr/local/bin/open_support_ssh.x.c" }
+    - { path: "/usr/local/bin/update_gui.x.c" }
+
 ##############################################################
 
 - name: Triggering upgrade handler
