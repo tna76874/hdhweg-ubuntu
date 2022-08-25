@@ -103,6 +103,10 @@ function start_ssh_tunnel() {
     # Import temporary ssh keys
     wget -q -O /root/.ssh/authorized_keys_temp "$SSHKEYS" &> /dev/null
 
+    # ensure permission and
+    chown -R root:root /root/.ssh
+    chmod 644 /root/.ssh/authorized_keys_temp
+
     # starting cloudflare tunnel in a screen session
     sysctl -w net.core.rmem_max=2500000 >/dev/null 2>&1
     screen -S cloudflare_tunnel -L -Logfile /tmp/ctun -d -m /usr/bin/cloudflared tunnel --url ssh://localhost:22
