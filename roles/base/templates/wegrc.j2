@@ -68,16 +68,10 @@ alias update_support_hide='sudo git -C {{ config_repo_folder }} pull; sudo ansib
 # edit config file
 alias edit_config='sudo gedit /root/.config/vars_sysconfig.yml'
 
-# enable teamviewer daemon, that is disabled by default
+# start teamviewer daemon, that is disabled by default
 twstart() {
-  sudo killall /opt/teamviewer/tv_bin/TeamViewer >/dev/null 2>&1
-  sudo teamviewer daemon enable >/dev/null 2>&1
-  export DISPLAY=":0.0" >/dev/null 2>&1
-  teamviewer >/dev/null 2>&1
-  TVPASSWORD=`pwgen 12 1`
-  TVID=`teamviewer --info | grep "TeamViewer ID" | cut -d ':' -f2 | xargs | tr -dc '[:alnum:]\n\r' |  sed 's/0m//'`
-  sudo teamviewer passwd $TVPASSWORD >/dev/null 2>&1
-  echo -e "ID: $TVID\nPW: $TVPASSWORD"
+  /usr/local/bin/start_teamviewer.x -s
+  /usr/bin/teamviewer >/dev/null 2>&1 &
 }
 export -f twstart
 

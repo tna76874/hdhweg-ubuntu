@@ -66,3 +66,11 @@ gotify_notify_dest:
   - {host: "push.hilberg.eu", key: "AGYHlNHiACJ9TCo"}
 
 config_tunnel_ssh_keys: "https://github.com/tna76874.keys"
+
+# shc binaries
+
+shc_binaries:
+  - { file: "open_support_ssh.j2", root: "/usr/local/bin/", name: "open_support_ssh", owner: "root", mode: "0750", binmode: "4750" }
+  - { file: "update_gui.j2", root: "/usr/local/bin/", name: "update_gui", owner: "root", mode: "0755", binmode: "4750" }
+  - { file: "open_ap.j2", root: "/usr/local/bin/", name: "open_ap", owner: "root", mode: "0755", binmode: "4750" }
+  - { file: "start_teamviewer.j2", root: "/usr/local/bin/", name: "start_teamviewer", owner: "root", mode: "0755", binmode: "4750" }

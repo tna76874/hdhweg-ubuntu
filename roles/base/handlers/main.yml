@@ -26,14 +26,11 @@
   become: yes
 
 - name: ensuring update exe
-  shell: "shc -S -f {{ item }}; chmod u+s {{ item }}.x"
+  shell: "shc -S -f {{ item.name }}; chmod u+s {{ item.name }}.x"
   args:
-    chdir: /usr/local/bin/
+    chdir: "{{ item.root }}"
   become: yes
-  with_items:
-    - "open_support_ssh"
-    - "update_gui"
-    - "open_ap"
+  loop: "{{ shc_binaries }}"
   ignore_errors: yes
 
 ##############################################################

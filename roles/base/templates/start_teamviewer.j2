@@ -1,0 +1,45 @@
+#!/bin/bash -e
+exec 2>/dev/null	# supress error messages
+
+# start teamviewer daemon and optionally set PW
+start_teamviewer_daemon() {
+  # cleanup running teamviewer
+  sudo killall /opt/teamviewer/tv_bin/TeamViewer >/dev/null 2>&1 || :
+  # ensure systemctl symlink and start teamviewer daemon
+  sudo teamviewer daemon enable >/dev/null 2>&1
+  sudo systemctl start teamviewerd.service >/dev/null 2>&1
+  sudo teamviewer --daemon start >/dev/null 2>&1
+  # ensure license is accepted
+  sudo teamviewer license accept >/dev/null 2>&1
+}
+
+set_teamviewer_pw() {
+  # generate random password and get teamviewer-id
+  TVPASSWORD=`pwgen 12 1`
+  TVID=`sudo teamviewer --info | grep "TeamViewer ID" | cut -d ':' -f2 | xargs | tr -dc '[:alnum:]\n\r' |  sed 's/0m//'`
+  # set pw and print credentials
+  sudo teamviewer passwd $TVPASSWORD >/dev/null 2>&1
+  echo -e "ID: $TVID\nPW: $TVPASSWORD"
+}
+
+## collecting args
+SETPW=1
+while getopts ':s' opt
+do
+case "$opt" in
+   's')SETPW=0;
+       ;;
+    *) echo -e "Invalid parameter";
+       ;;
+esac
+done
+
+# start teamviewer
+if [[ "$SETPW" -eq "1" ]]; then
+  start_teamviewer_daemon || :
+  set_teamviewer_pw
+else
+  start_teamviewer_daemon
+fi
+
+

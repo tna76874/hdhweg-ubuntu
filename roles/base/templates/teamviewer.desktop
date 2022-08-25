@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Categories=Network;
+
+Name=TeamViewer
+Comment=Remote control and meeting solution.
+#Exec=/opt/teamviewer/tv_bin/script/teamviewer
+Exec=/bin/bash -c '/usr/local/bin/start_teamviewer.x -s; /usr/bin/teamviewer'
+
+Icon=TeamViewer

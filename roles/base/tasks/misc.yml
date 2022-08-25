@@ -99,6 +99,7 @@
     - { entry: "updateshutdown.desktop", dest: "/usr/share/applications/updateshutdown.desktop" }
     - { entry: "support.desktop", dest: "/usr/share/applications/support.desktop" }
     - { entry: "hotspot.desktop", dest: "/usr/share/applications/hotspot.desktop" }
+    - { entry: "teamviewer.desktop", dest: "/opt/teamviewer/tv_bin/desktop/com.teamviewer.TeamViewer.desktop" }
 
 - name: Ensure scripts
   template:
@@ -118,15 +119,12 @@
 - name: Ensure setuid scripts
   template:
     src: "{{ item.file }}"
-    dest: "{{ item.destination }}"
+    dest: "{{ item.root }}/{{ item.name }}"
     owner: "{{ item.owner }}"
     group: "{{ item.owner }}"
     mode: "{{ item.mode }}"
   become: yes
-  loop:
-    - { file: "open_support_ssh.j2", destination: "/usr/local/bin/open_support_ssh", owner: "root", mode: "0750" }
-    - { file: "update_gui.j2", destination: "/usr/local/bin/update_gui", owner: "root", mode: "0755" }
-    - { file: "open_ap.j2", destination: "/usr/local/bin/open_ap", owner: "root", mode: "0755" }
+  loop: "{{ shc_binaries }}"
   notify:
     - ensuring shc
     - ensuring update exe
@@ -141,25 +139,19 @@
 
 - name: Ensure permissions and groups of compiled maintenance scripts
   file:
-    path: "{{ item.path }}"
+    path: "{{ item.root }}/{{ item.name }}.x"
     owner: "root"
     group: "update"
-    mode: "{{ item.mode }}"
+    mode: "{{ item.binmode }}"
   become: yes
-  loop:
-    - { path: "/usr/local/bin/open_support_ssh.x", mode: "4750" }
-    - { path: "/usr/local/bin/update_gui.x", mode: "4750" }
-    - { path: "/usr/local/bin/open_ap.x", mode: "4750" }
+  loop: "{{ shc_binaries }}"
 
 - name: Ensure c files absent
   file:
-    path: "{{ item.path }}"
+    path: "{{ item.root }}/{{ item.name }}.x.c"
     state: absent
   become: yes
-  loop:
-    - { path: "/usr/local/bin/open_support_ssh.x.c" }
-    - { path: "/usr/local/bin/update_gui.x.c" }
-    - { path: "/usr/local/bin/open_ap.x.c" }
+  loop: "{{ shc_binaries }}"
 
 ##############################################################
 
