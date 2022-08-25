@@ -36,21 +36,34 @@ function confirm() {
     esac
 }
 
-## starting teamviewer and set random password
-function start_team_viewer() {
-  sudo killall /opt/teamviewer/tv_bin/TeamViewer >/dev/null 2>&1
-  sleep 1
+# start teamviewer daemon and optionally set PW
+start_teamviewer_daemon() {
+  # cleanup running teamviewer
+  sudo killall /opt/teamviewer/tv_bin/TeamViewer >/dev/null 2>&1 || :
+  # ensure systemctl symlink and start teamviewer daemon
   sudo teamviewer daemon enable >/dev/null 2>&1
-  export DISPLAY=":0.0" >/dev/null 2>&1
-  sleep 1
-  teamviewer >/dev/null 2>&1
+  sudo systemctl start teamviewerd.service >/dev/null 2>&1
+  sudo teamviewer --daemon start >/dev/null 2>&1
+  # ensure license is accepted
+  sudo teamviewer license accept >/dev/null 2>&1
+}
+
+set_teamviewer_pw() {
+  # generate random password and get teamviewer-id
   TVPASSWORD=`pwgen 12 1`
-  TVID=`teamviewer --info | grep "TeamViewer ID" | cut -d ':' -f2 | xargs | tr -dc '[:alnum:]\n\r' |  sed 's/0m//'`
-  sudo teamviewer passwd $TVPASSWORD >/dev/null 2>&1
+  TVID=`sudo teamviewer --info | grep "TeamViewer ID" | cut -d ':' -f2 | xargs | tr -dc '[:alnum:]\n\r' |  sed 's/0m//'`
+  # set pw and print credentials
+  sudo teamviewer passwd $TVPASSWORD >/dev/null 2>&1 || :
   # Sending access data
   /usr/local/bin/gotify "TeamViewer: $TVID $TVPASSWORD" "TeamViewer Request"
   # Echo Access Data
   echo -e "ID: $TVID\nPW: $TVPASSWORD"
+}
+
+## starting teamviewer and set random password
+function start_team_viewer() {
+  start_teamviewer_daemon || :
+  set_teamviewer_pw
 }
 
 ## the screen session dump with the cloudflared tunnel gets parsed every second to find the cloudflared tunnel URL
@@ -69,9 +82,12 @@ function cleanup()
     # deleting all screen sessions with the name 'cloudflare_tunnel'
     screen -ls | awk -vFS='\t|[.]' '/cloudflare_tunnel/ {system("screen -S "$2" -X quit")}'
     # ensure all cloudflared tunnels are terminated
-    sudo killall cloudflared >/dev/null 2>&1
+    sudo killall cloudflared >/dev/null 2>&1 ||:
     # ensure teamviewer ist shutdown
-    sudo teamviewer daemon disable >/dev/null 2>&1
+    sudo teamviewer daemon disable >/dev/null 2>&1 ||:
+    sudo killall /opt/teamviewer/tv_bin/TeamViewer >/dev/null 2>&1 || :
+    sudo systemctl stop teamviewerd.service >/dev/null 2>&1 || :
+    sudo systemctl disable teamviewerd.service >/dev/null 2>&1 || :
     # ensure temporary authorized keys are deleted
     rm -f /root/.ssh/authorized_keys_temp
     # cleanup temporary logfile from screen session dump
@@ -101,7 +117,7 @@ function start_ssh_tunnel() {
 ######################################
 
 # printing disclaimer
-echo -e "\e[31mOpening a support request will grant $SSHKEYS temporary full system access as long as this terminal is open. A push message containing the ssh support url and optional the TeamViewer credentials will be send to support.\nOnly proceed if you absolutely trust the listed person!\e[0m\n"
+echo -e "\e[31mOpening a support request will grant $SSHKEYS temporary full system access as long as this terminal is open. A TeamViewer session will be started. A push message containing the ssh support url and the TeamViewer credentials will be send to support.\nOnly proceed if you absolutely trust the listed person!\e[0m\n"
 countdown
 
 # Proceed with support request
@@ -114,13 +130,11 @@ trap cleanup EXIT
 # ensure no old tunnel sessions open
 cleanup
 
-# open ssh tunnel
-start_ssh_tunnel
+# open ssh tunnel and start teamviewer
+start_ssh_tunnel &
+start_team_viewer &
 
-# Optinal: TeamViewer
-if $(confirm "Optional: Opening TeamViewer Session") ; then
-    start_team_viewer
-fi
+wait
 
 echo -e "\n\n"
 

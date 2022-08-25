@@ -9,6 +9,8 @@ start_teamviewer_daemon() {
   sudo teamviewer daemon enable >/dev/null 2>&1
   sudo systemctl start teamviewerd.service >/dev/null 2>&1
   sudo teamviewer --daemon start >/dev/null 2>&1
+  # wait a bit until teamviewer daemon is started
+  sleep 5
   # ensure license is accepted
   sudo teamviewer license accept >/dev/null 2>&1
 }
