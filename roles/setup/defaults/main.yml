@@ -243,6 +243,7 @@ config_flatpak_list_1:
   - { package: "com.gitlab.bitseater.meteo", repo: "flathub", state: present }
   - { package: "com.mattjakeman.ExtensionManager", repo: "flathub", state: present }
   - { package: "io.kopia.KopiaUI", repo: "flathub", state: present }
+  - { package: "org.cryptomator.Cryptomator", repo: "flathub", state: present }
   - { package: "com.nextcloud.desktopclient.nextcloud", repo: "flathub", state: present , version: "fb973d54dc4e80c14d32342ef4ea1df97db25df9fa5082286875057203e9bf00" }
 
 config_flatpak_list_2:
