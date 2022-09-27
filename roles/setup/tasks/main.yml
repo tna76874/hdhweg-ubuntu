@@ -53,8 +53,23 @@
 
 #############
 
-- import_tasks: apt.yml
-  when: not config_downgrade|bool
+- name: Run apt
+  block:
+  - import_tasks: apt.yml
+    when: not config_downgrade|bool
+
+  rescue:
+  - name: Ensure teamviewer repos absent
+    ansible.builtin.file:
+      path: "{{ item }}"
+      state: absent
+    loop:
+      - "/etc/apt/sources.list.d/teamviewer.list"
+      - "/etc/apt/sources.list.d/teamviewer.list.dpkg-dist"
+      - "/etc/apt/sources.list.d/teamviewer.list.save"
+
+  - import_tasks: apt.yml
+    when: not config_downgrade|bool
 
 - import_tasks: flatpak.yml
   when: not config_downgrade|bool

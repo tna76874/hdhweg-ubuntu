@@ -35,7 +35,7 @@
     repo: "{{ item.repo }}"
     state: "{{ item.state }}"
     filename: "{{ item.filename }}"
-    update_cache: true
+    update_cache: false
   loop: "{{ config_apt_sources }}"
 
 - name: Triggering upgrade handler

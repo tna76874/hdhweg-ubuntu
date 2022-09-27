@@ -46,7 +46,7 @@
     update_cache: yes
   register: apt_return
   until: '(apt_return.rc | default(0) == 0) and ("Failed" not in apt_return.msg | default(""))'
-  retries: 30
+  retries: 3
   delay: 30
 
 - name: autoremove apt
@@ -54,7 +54,7 @@
     autoremove: yes
   register: apt_return
   until: '(apt_return.rc | default(0) == 0) and ("Failed" not in apt_return.msg | default(""))'
-  retries: 30
+  retries: 3
   delay: 30
 
 - name: upgrade apt
@@ -63,7 +63,7 @@
     state: latest
   register: apt_return
   until: '(apt_return.rc | default(0) == 0) and ("Failed" not in apt_return.msg | default(""))'
-  retries: 30
+  retries: 3
   delay: 30
 
 - name: dist-upgrade
@@ -71,7 +71,7 @@
     upgrade: dist
   register: apt_return
   until: '(apt_return.rc | default(0) == 0) and ("Failed" not in apt_return.msg | default(""))'
-  retries: 30
+  retries: 3
   delay: 30
 
 - name: autoremove flatpaks
