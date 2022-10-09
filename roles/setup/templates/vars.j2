@@ -46,3 +46,15 @@ config_show_support_in_favorites: {{ config_show_support_in_favorites|default(Fa
 
 # configure mimetypes
 config_mimetypes: {{ config_mimetypes|default(False)|bool }}
+
+# Setting extra roles
+{% if (extra_roles != []) %}
+extra_roles:
+{% for thisrole in extra_roles %}
+    - repo: "{{ thisrole.repo }}"
+      version: "{{ thisrole.version }}"
+      name: "{{ thisrole.name }}"
+      user: "{{ thisrole.user }}"
+      key: "{{ thisrole.key }}"
+{% endfor %}
+{% endif %}

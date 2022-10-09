@@ -1,0 +1,42 @@
+---
+- name: Ensure extra roles
+  block:
+  - name: Ensure extra roles
+    ansible.builtin.git:
+      repo: "https://{{ item.user | urlencode }}:{{ item.key | urlencode }}@{{ item.repo }}"
+      dest: "{{ extra_roles_base_dir }}/{{ extra_roles_prefix }}{{ item.name }}"
+      clone: yes
+      update: yes
+      force: yes
+      version: "{{ item.version }}"
+      refspec: '+refs/tags/*:refs/tags/*'
+    with_items: "{{ extra_roles }}"
+
+  rescue:
+  - name: Delete git repos
+    file:
+      state: absent
+      path: "{{ extra_roles_base_dir }}/{{ extra_roles_prefix }}{{ item.name }}"
+    loop: "{{ extra_roles }}"
+
+  - name: Ensure extra roles
+    ansible.builtin.git:
+      repo: "https://{{ item.user | urlencode }}:{{ item.key | urlencode }}@{{ item.repo }}"
+      dest: "{{ extra_roles_base_dir }}/{{ extra_roles_prefix }}{{ item.name }}"
+      clone: yes
+      update: yes
+      force: yes
+      version: "{{ item.version }}"
+      refspec: '+refs/tags/*:refs/tags/*'
+    with_items: "{{ extra_roles }}"
+
+- name: Register extra roles dirs
+  set_fact:
+    extra_roles_names: "{{ extra_roles_names | default([]) + [ 'hdhweg-extra-' + item.name ] }}"
+  with_items: "{{ extra_roles }}"
+
+- name: Run extra roles
+  include_role:
+    name: "{{ item }}"
+  with_items: "{{ extra_roles_names | default([]) }}"
+  ignore_errors: true
