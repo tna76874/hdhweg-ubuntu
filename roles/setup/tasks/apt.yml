@@ -116,6 +116,13 @@
       - nautilus-wipe
     state: absent
 
+- name: Ensure apt packages purged
+  apt:
+    name:
+      - gnome-software-plugin-snap
+    state: absent
+    purge: yes
+
 - name: Ensure packages for ubuntu => 20
   apt:
     name:
