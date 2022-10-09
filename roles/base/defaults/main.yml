@@ -74,12 +74,3 @@ shc_binaries:
   - { file: "open_ap.j2", root: "/usr/local/bin/", name: "open_ap", owner: "root", mode: "0755", binmode: "4750" }
   - { file: "start_teamviewer.j2", root: "/usr/local/bin/", name: "start_teamviewer", owner: "root", mode: "0755", binmode: "4750" }
 
-# extra roles
-extra_roles_prefix: "hdhweg-extra-"
-extra_roles_base_dir: "/root/.ansible/roles"
-extra_roles: []
-  # - repo: "git.server.xyz/user/repo.git"
-  #   version: "master"
-  #   name: "myrolename"
-  #   user: "gituser"
-  #   key: "gitapikey"

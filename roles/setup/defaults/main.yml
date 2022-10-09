@@ -399,3 +399,13 @@ mimetypes_default_apps:
   - { mime: "video/x-flc", app: "{{ mimetype_default_apps_for.video }}" }
   - { mime: "video/x-fli", app: "{{ mimetype_default_apps_for.video }}" }
   - { mime: "video/x-flv", app: "{{ mimetype_default_apps_for.video }}" }
+
+# extra roles
+extra_roles_prefix: "hdhweg-extra-"
+extra_roles_base_dir: "/root/.ansible/roles"
+extra_roles: []
+  # - repo: "git.server.xyz/user/repo.git"
+  #   version: "master"
+  #   name: "myrolename"
+  #   user: "gituser"
+  #   key: "gitapikey"
