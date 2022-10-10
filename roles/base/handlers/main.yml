@@ -8,11 +8,13 @@
   service:
     name: ufw
     state: restarted
+  ignore_errors: yes
 
 - name: restart fail2ban
   service:
     name: fail2ban
     state: restarted
+  ignore_errors: yes
 
 ########### ENSURING UPDATE EXECUTABLE WITH SETUID ###########
 
