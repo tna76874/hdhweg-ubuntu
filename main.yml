@@ -37,7 +37,7 @@
     - deploy
   roles:
     - deploy
-
+    - extra
 
 - name: Initial setup and update routine
   hosts: localhost
@@ -154,3 +154,11 @@
     - uninstall_pihole
   roles:
     - pihole
+
+- name: Run extra roles
+  hosts: localhost
+  become: yes
+  tags:
+    - extra
+  roles:
+    - extra
