@@ -99,7 +99,15 @@
     - { entry: "updateshutdown.desktop", dest: "/usr/share/applications/updateshutdown.desktop" }
     - { entry: "support.desktop", dest: "/usr/share/applications/support.desktop" }
     - { entry: "hotspot.desktop", dest: "/usr/share/applications/hotspot.desktop" }
+
+- name: Ensure teamviewer desktop entrys
+  template:
+    src: "{{ item.entry }}"
+    dest: "{{ item.dest }}"
+    mode: 0644
+  loop:
     - { entry: "teamviewer.desktop", dest: "/opt/teamviewer/tv_bin/desktop/com.teamviewer.TeamViewer.desktop" }
+  ignore_errors: yes
 
 - name: Ensure scripts
   template:
