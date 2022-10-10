@@ -132,6 +132,7 @@
     group: "{{ item.owner }}"
     mode: "{{ item.mode }}"
   become: yes
+  ignore_errors: yes
   loop: "{{ shc_binaries }}"
   notify:
     - ensuring shc
@@ -152,6 +153,7 @@
     group: "update"
     mode: "{{ item.binmode }}"
   become: yes
+  ignore_errors: yes
   loop: "{{ shc_binaries }}"
 
 - name: Ensure c files absent
@@ -159,6 +161,7 @@
     path: "{{ item.root }}/{{ item.name }}.x.c"
     state: absent
   become: yes
+  ignore_errors: yes
   loop: "{{ shc_binaries }}"
 
 ##############################################################
