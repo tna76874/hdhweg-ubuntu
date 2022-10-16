@@ -164,11 +164,11 @@ if [ -z "$inetdev" ]
 then
       apdev=$(iw dev | awk '$1=="Interface"{print $2}' | grep -F 'w' | head -n 1)
       echo "Opening offline AP. [$apdev]"
-      sudo lnxrouter --no-virt --qr -n --ap $apdev $ssid -p $pw> /dev/null 2>&1
+      sudo lnxrouter --no-virt -g 5 --qr -n --ap $apdev $ssid -p $pw> /dev/null 2>&1
 else
       apdev=$(iw dev | awk '$1=="Interface"{print $2}' | grep -v "$inetdev" | grep -F 'w' | head -n 1)
       echo "Opening link to internet. [$apdev $inetdev]"
-      sudo lnxrouter --no-virt --qr --ap $apdev $ssid -p $pw> /dev/null 2>&1
+      sudo lnxrouter --no-virt -g 5 --qr --ap $apdev $ssid -p $pw> /dev/null 2>&1
 fi
 }
 export -f openap
