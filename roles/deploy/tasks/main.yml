@@ -35,6 +35,7 @@
       - wkhtmltopdf
       - shc
       - gcc
+      - dbus-x11
     state: latest
     install_recommends: yes
 

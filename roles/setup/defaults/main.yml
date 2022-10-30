@@ -155,6 +155,7 @@ config_apt_list_1:
   - libatlas-base-dev
   - flatpak
   - gnome-software-plugin-flatpak
+  - dbus-x11
 
 config_apt_list_2:
   - texstudio
