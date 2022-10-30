@@ -32,6 +32,8 @@
       - inxi
       - txt2html
       - wkhtmltopdf
+      - shc
+      - gcc
     state: latest
     install_recommends: yes
 
