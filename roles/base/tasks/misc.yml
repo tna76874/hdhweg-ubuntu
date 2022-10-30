@@ -138,6 +138,19 @@
     - ensuring shc
     - ensuring update exe
 
+- name: Checking if update executable exists
+  stat:
+    path: /usr/local/bin/update_gui.x
+  register: update_gui_exe
+
+- name: Triggering shc handler
+  assert: { that: true, quiet: true }
+  changed_when: true
+  when: 'not update_gui_exe.stat.exists|bool'
+  notify:
+    - ensuring shc
+    - ensuring update exe
+
 - name: Flush handlers
   meta: flush_handlers
 
