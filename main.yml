@@ -19,6 +19,15 @@
             - /root/.config/vars_sysconfig.yml
           skip: true
 
+- name: Run extra roles
+  hosts: localhost
+  become: yes
+  tags:
+    - deploy
+    - extra
+  roles:
+    - extra
+
 - name: Maintenance script
   hosts: localhost
   become: yes
@@ -37,7 +46,6 @@
     - deploy
   roles:
     - deploy
-    - extra
 
 - name: Initial setup and update routine
   hosts: localhost
