@@ -76,6 +76,7 @@
     name: "{{ config_apt_pipewire }}"
     state: "{{ 'latest' if config_pipewire_enabled|bool else 'absent' }}"
   ignore_errors: yes
+  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int == 20
   notify:
    - reload systemd
    - setting pulseaudio systemd state
@@ -123,7 +124,7 @@
     state: absent
     purge: yes
 
-- name: Ensure packages for ubuntu => 20
+- name: Ensure packages for ubuntu 20
   apt:
     name:
       - python-is-python3
