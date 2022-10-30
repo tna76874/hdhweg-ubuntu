@@ -19,6 +19,14 @@
             - /root/.config/vars_sysconfig.yml
           skip: true
 
+- name: Deploy script
+  hosts: localhost
+  become: yes
+  tags:
+    - deploy
+  roles:
+    - deploy
+
 - name: Run extra roles
   hosts: localhost
   become: yes
@@ -38,14 +46,6 @@
     - bigsetup
   roles:
     - base
-
-- name: Deploy script
-  hosts: localhost
-  become: yes
-  tags:
-    - deploy
-  roles:
-    - deploy
 
 - name: Initial setup and update routine
   hosts: localhost
