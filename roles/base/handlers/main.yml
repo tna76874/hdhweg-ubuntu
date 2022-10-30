@@ -29,7 +29,7 @@
   become: yes
 
 - name: ensuring update exe
-  shell: "shc -S -f {{ item.name }}; chmod u+s {{ item.name }}.x"
+  shell: "/usr/bin/shc -S -f {{ item.name }}; chmod u+s {{ item.name }}.x"
   args:
     chdir: "{{ item.root }}"
   become: yes
