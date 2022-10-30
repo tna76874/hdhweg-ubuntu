@@ -2,6 +2,7 @@
 - name: Ensure flatpak ppa
   apt_repository:
     repo: ppa:alexlarsson/flatpak
+  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int == 20
 
 - name: Update apt
   apt:
