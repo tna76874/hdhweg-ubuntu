@@ -247,6 +247,8 @@ config_flatpak_list_1:
   - { package: "org.cryptomator.Cryptomator", repo: "flathub", state: present }
   - { package: "io.github.peazip.PeaZip", repo: "flathub", state: present }
   - { package: "com.nextcloud.desktopclient.nextcloud", repo: "flathub", state: present , version: "94cf6bfacabab1c907775d2f5c01aa178066c2680daca5c61427ddfc09fa6545" }
+  # Game
+  - { package: "com.teeworlds.Teeworlds", repo: "flathub", state: present }
 
 config_flatpak_list_2:
   # Media
