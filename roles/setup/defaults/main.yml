@@ -246,7 +246,7 @@ config_flatpak_list_1:
   - { package: "io.kopia.KopiaUI", repo: "flathub", state: present }
   - { package: "org.cryptomator.Cryptomator", repo: "flathub", state: present }
   - { package: "io.github.peazip.PeaZip", repo: "flathub", state: present }
-  - { package: "com.nextcloud.desktopclient.nextcloud", repo: "flathub", state: present , version: "fb973d54dc4e80c14d32342ef4ea1df97db25df9fa5082286875057203e9bf00" }
+  - { package: "com.nextcloud.desktopclient.nextcloud", repo: "flathub", state: present , version: "94cf6bfacabab1c907775d2f5c01aa178066c2680daca5c61427ddfc09fa6545" }
 
 config_flatpak_list_2:
   # Media
