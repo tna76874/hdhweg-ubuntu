@@ -75,7 +75,7 @@
   when: not config_downgrade|bool
 
 - import_tasks: snap.yml
-  when: not config_downgrade|bool
+  when: "not config_downgrade|bool and 'deploy' not in ansible_run_tags"
 
 - import_tasks: misc.yml
   when: not config_downgrade|bool
