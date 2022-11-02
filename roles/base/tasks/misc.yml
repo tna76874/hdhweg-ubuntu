@@ -123,59 +123,63 @@
     - { file: "gotify.j2", destination: "/usr/local/bin/gotify", owner: "root", mode: "0755" }
 
 ########### ENSURING UPDATE EXECUTABLE WITH SETUID ###########
+- name: ENSURING UPDATE EXECUTABLE WITH SETUID
+  block:
+    - name: Ensure setuid scripts
+      template:
+        src: "{{ item.file }}"
+        dest: "{{ item.root }}/{{ item.name }}"
+        owner: "{{ item.owner }}"
+        group: "{{ item.owner }}"
+        mode: "{{ item.mode }}"
+      become: yes
+      ignore_errors: yes
+      loop: "{{ shc_binaries }}"
+      notify:
+        - ensuring shc
+        - ensuring update exe
 
-- name: Ensure setuid scripts
-  template:
-    src: "{{ item.file }}"
-    dest: "{{ item.root }}/{{ item.name }}"
-    owner: "{{ item.owner }}"
-    group: "{{ item.owner }}"
-    mode: "{{ item.mode }}"
-  become: yes
-  ignore_errors: yes
-  loop: "{{ shc_binaries }}"
-  notify:
-    - ensuring shc
-    - ensuring update exe
+    - name: Checking if update executable exists
+      stat:
+        path: /usr/local/bin/update_gui.x
+      register: update_gui_exe
 
-- name: Checking if update executable exists
-  stat:
-    path: /usr/local/bin/update_gui.x
-  register: update_gui_exe
+    - name: Triggering shc handler
+      assert: { that: true, quiet: true }
+      changed_when: true
+      when: 'not update_gui_exe.stat.exists|bool or recompile_shc|default(False)|bool'
+      notify:
+        - ensuring shc
+        - ensuring update exe
 
-- name: Triggering shc handler
-  assert: { that: true, quiet: true }
-  changed_when: true
-  when: 'not update_gui_exe.stat.exists|bool'
-  notify:
-    - ensuring shc
-    - ensuring update exe
+    - name: Flush handlers
+      meta: flush_handlers
 
-- name: Flush handlers
-  meta: flush_handlers
+    - name: Ensure group "update" exists
+      ansible.builtin.group:
+        name: update
+        state: present
 
-- name: Ensure group "update" exists
-  ansible.builtin.group:
-    name: update
-    state: present
+    - name: Ensure permissions and groups of compiled maintenance scripts
+      file:
+        path: "{{ item.root }}/{{ item.name }}.x"
+        owner: "root"
+        group: "update"
+        mode: "{{ item.binmode }}"
+      become: yes
+      ignore_errors: yes
+      loop: "{{ shc_binaries }}"
 
-- name: Ensure permissions and groups of compiled maintenance scripts
-  file:
-    path: "{{ item.root }}/{{ item.name }}.x"
-    owner: "root"
-    group: "update"
-    mode: "{{ item.binmode }}"
-  become: yes
-  ignore_errors: yes
-  loop: "{{ shc_binaries }}"
+    - name: Ensure c files absent
+      file:
+        path: "{{ item.root }}/{{ item.name }}.x.c"
+        state: absent
+      become: yes
+      ignore_errors: yes
+      loop: "{{ shc_binaries }}"
+  become: true
+  when: "'deploy' not in ansible_run_tags"
 
-- name: Ensure c files absent
-  file:
-    path: "{{ item.root }}/{{ item.name }}.x.c"
-    state: absent
-  become: yes
-  ignore_errors: yes
-  loop: "{{ shc_binaries }}"
 
 ##############################################################
 

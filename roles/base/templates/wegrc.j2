@@ -1,5 +1,5 @@
 # run the main playbook to ensure updated packages and proper configs
-alias update="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup -e config_generate_config_file=1"
+alias update="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup -e config_generate_config_file=1 -e recompile_shc=1"
 
 # run the main playbook to ensure updated packages and proper configs including latest rtw89_module
 alias wifi_update="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup -e ensure_rtw89_module=True"
