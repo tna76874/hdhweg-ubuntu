@@ -18,6 +18,7 @@
     name: "{{ item.package }}"
     state: "{{ item.state }}"
   with_items: "{{ config_flatpak_list }}"
+  ignore_errors: yes
 
 - name: Triggering flatpak upgrade handler
   assert: { that: true, quiet: true }
