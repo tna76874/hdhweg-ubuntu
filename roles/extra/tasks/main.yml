@@ -11,6 +11,7 @@
       version: "{{ item.version }}"
       refspec: '+refs/tags/*:refs/tags/*'
     with_items: "{{ extra_roles }}"
+    no_log: true
 
   rescue:
   - name: Delete git repos
@@ -18,6 +19,7 @@
       state: absent
       path: "{{ extra_roles_base_dir }}/{{ extra_roles_prefix }}{{ item.name }}"
     loop: "{{ extra_roles }}"
+    no_log: true
 
   - name: Ensure extra roles
     ansible.builtin.git:
@@ -29,14 +31,17 @@
       version: "{{ item.version }}"
       refspec: '+refs/tags/*:refs/tags/*'
     with_items: "{{ extra_roles }}"
+    no_log: true
 
 - name: Register extra roles dirs
   set_fact:
     extra_roles_names: "{{ extra_roles_names | default([]) + [ 'hdhweg-extra-' + item.name ] }}"
   with_items: "{{ extra_roles }}"
+  no_log: true
 
 - name: Run extra roles
   include_role:
     name: "{{ item }}"
   with_items: "{{ extra_roles_names | default([]) }}"
   ignore_errors: true
+  no_log: true
