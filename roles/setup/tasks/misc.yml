@@ -35,6 +35,13 @@
         install_recommends: yes
       ignore_errors: yes
 
+    - name: Ensure steam apt absent
+      apt:
+        name:
+          - steam
+        state: absent
+      ignore_errors: yes
+
     - include_tasks: ge_proton.yml
       loop: "{{ ubuntu_users.stdout_lines }}"
       loop_control:
