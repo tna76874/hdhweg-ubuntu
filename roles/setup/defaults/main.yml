@@ -217,7 +217,8 @@ config_flatpak_list_1:
   - { package: "org.gimp.GIMP", repo: "flathub", state: present }
   - { package: "org.inkscape.Inkscape", repo: "flathub", state: present }
   - { package: "org.gnome.Shotwell", repo: "flathub", state: present }
-  - { package: "org.gnome.NetworkDisplays", repo: "flathub", state: present }
+  - { package: "org.gnome.NetworkDisplays", repo: "flathub", state: "{{ 'present' if ansible_facts['lsb']['major_release']| int == 2 else 'absent' }}" }
+  - { package: "com.makemkv.MakeMKV", repo: "flathub", state: present }
   # Voice chat / communication
   - { package: "com.teamspeak.TeamSpeak", repo: "flathub", state: present }
   - { package: "im.riot.Riot", repo: "flathub", state: present }
@@ -232,11 +233,11 @@ config_flatpak_list_1:
   # Browser
   - { package: "org.chromium.Chromium", repo: "flathub", state: present }
   - { package: "org.mozilla.firefox", repo: "flathub", state: present }
-  # - { package: "com.google.Chrome", repo: "flathub-beta", state: absent }
   - { package: "com.google.Chrome", repo: "flathub", state: present }
   - { package: "com.github.Eloston.UngoogledChromium", repo: "flathub", state: present }
   # Miscellaneous
   - { package: "com.github.tchx84.Flatseal", repo: "flathub", state: present }
+  - { package: "de.breitbandmessung.Breitbandmessung", repo: "flathub", state: present }
   - { package: "com.belmoussaoui.Authenticator", repo: "flathub", state: present }
   - { package: "com.belmoussaoui.Decoder", repo: "flathub", state: present }
   - { package: "org.keepassxc.KeePassXC", repo: "flathub", state: present }
@@ -275,8 +276,7 @@ config_flatpak_list_2:
   - { package: "de.willuhn.Jameica", repo: "flathub", state: present }
   # - { package: "org.geogebra.GeoGebra", repo: "flathub", state: present }
 
-breitbandmessung_deb: "https://download.breitbandmessung.de/bbm/Breitbandmessung-linux.deb"
-
+### PUSH GATEWAY
 gotify_notify_dest:
   - {host: "push.hilberg.eu", key: "AGYHlNHiACJ9TCo"}
 

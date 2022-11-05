@@ -115,6 +115,7 @@
       - codium
       - nextcloud-client
       - nautilus-wipe
+      - breitbandmessung
     state: absent
 
 - name: Ensure apt packages purged
@@ -155,12 +156,36 @@
     deb: "{{ duplicati_deb[0]['browser_download_url'] }}"
   ignore_errors: yes
 
-- name: Ensure Breitbandmessung
-  apt:
-    deb: "{{ breitbandmessung_deb }}"
-  ignore_errors: yes
-
 - name: Ensure TeamViewer
   apt:
     deb: "https://download.teamviewer.com/download/linux/teamviewer_amd64.deb"
   ignore_errors: yes
+
+- name: Ensure libs to play DVDs
+  block:
+    - name: Ensure apt packages
+      apt:
+        name:
+          - libdvd-pkg
+          - "{{ 'libdvdread7' if ansible_facts['lsb']['major_release']| int == 20 else ( 'libdvdread8' if ansible_facts['lsb']['major_release']| int == 22 else 'libdvdread' ) }}"
+        state: latest
+        install_recommends: yes
+        ignore_errors: yes
+      notify:
+        - configure libdvd-pkg
+
+    - name: Configure libdvd-pkg debconf
+      ansible.builtin.debconf:
+        name: "{{ item.name }}"
+        question: "{{ item.question }}"
+        value: "{{ item.value }}"
+        vtype: "{{ item.vtype }}"
+      loop:
+        - {name: "libdvd-pkg", question: 'libdvd-pkg/first-install', value: 'true', vtype: "select"}
+        - {name: "libdvd-pkg", question: 'libdvd-pkg/post-invoke_hook-install', value: 'true', vtype: "select"}
+        - {name: "libdvd-pkg", question: 'libdvd-pkg/build', value: 'true', vtype: "select"}
+        - {name: "libdvd-pkg", question: 'libdvd-pkg/upgrade', value: 'true', vtype: "select"}
+      notify:
+        - configure libdvd-pkg
+  ignore_errors: yes
+  become: yes

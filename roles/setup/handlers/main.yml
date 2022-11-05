@@ -63,3 +63,8 @@
     name: rtw89pci
     state: present
   ignore_errors: yes
+
+- name: configure libdvd-pkg
+  shell: dpkg-reconfigure libdvd-pkg -f noninteractive
+  become: yes
+  ignore_errors: yes
