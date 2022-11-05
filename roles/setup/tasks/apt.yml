@@ -163,14 +163,14 @@
 
 - name: Ensure libs to play DVDs
   block:
-    - name: Ensure apt packages
+    - name: Ensure libdvd-pkg apt packages
       apt:
         name:
           - libdvd-pkg
           - "{{ 'libdvdread7' if ansible_facts['lsb']['major_release']| int == 20 else ( 'libdvdread8' if ansible_facts['lsb']['major_release']| int == 22 else 'libdvdread' ) }}"
         state: latest
         install_recommends: yes
-        ignore_errors: yes
+      ignore_errors: yes
       notify:
         - configure libdvd-pkg
 
