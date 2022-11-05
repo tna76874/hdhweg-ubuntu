@@ -1,0 +1,59 @@
+---
+- name: Checking for user flatpak steam directory
+  stat:
+    path: "/home/{{ user_item }}/.var/app/com.valvesoftware.Steam/"
+  register: steam_base_dir_check
+
+- name: Ensure proton versions
+  block:
+    - name: Ensure proton dir
+      ansible.builtin.file:
+        path: "/home/{{ user_item }}/.var/app/com.valvesoftware.Steam/data/Steam/compatibilitytools.d/"
+        state: directory
+        owner: "{{ user_item }}"
+        group: "{{ user_item }}"
+
+    - name: Query latest GE proton release
+      uri:
+        url: https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases?page_size=10000
+        return_content: true
+      register: ge_proton_query
+      ignore_errors: yes
+
+    - name: Registering GE proton version
+      set_fact:
+        ge_proton: "{{ (ge_proton_query.json[0]['assets'] | selectattr('browser_download_url', 'contains', 'tar.gz') | list)[0]['browser_download_url'] }}"
+        ge_proton_tag: "{{ ge_proton_query.json[0]['tag_name'] }}"
+        ge_proton_local_tar: "/home/{{ user_item }}/.var/app/com.valvesoftware.Steam/data/Steam/compatibilitytools.d/{{ ge_proton_query.json[0]['tag_name'] }}.tar.gz"
+
+    - name: Checking if GE proton archive exists
+      stat:
+        path: "{{ ge_proton_local_tar }}"
+      register: ge_proton_last_release_archive
+
+    - name: Checking if GE proton directory exists
+      stat:
+        path: "/home/{{ user_item }}/.var/app/com.valvesoftware.Steam/data/Steam/compatibilitytools.d/{{ ge_proton_tag }}"
+      register: ge_proton_last_release_dir
+
+    - name: Ensure latest GE-Proton downloaded
+      ansible.builtin.get_url:
+        url: "{{ ge_proton }}"
+        dest: "{{ ge_proton_local_tar }}"
+        owner: "{{ user_item }}"
+        group: "{{ user_item }}"
+        force: no
+      when: not ge_proton_last_release_archive.stat.exists
+      become: yes
+
+    - name: Ensure latest GE-Proton
+      ansible.builtin.unarchive:
+        src: "{{ ge_proton_local_tar }}"
+        dest: "/home/{{ user_item }}/.var/app/com.valvesoftware.Steam/data/Steam/compatibilitytools.d/"
+        owner: "{{ user_item }}"
+        group: "{{ user_item }}"
+      become: yes
+      when: not ge_proton_last_release_dir.stat.exists
+
+  when: steam_base_dir_check.stat.exists
+  become: yes

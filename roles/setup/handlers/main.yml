@@ -25,7 +25,7 @@
 - name: update flatpaks
   shell: "flatpak update {{ item.package }} -y"
   with_items: "{{ config_flatpak_list }}"
-  when: item.version is not defined
+  when: "(item.version is not defined) and (item.state=='present')"
 
 - name: unmask flatpaks
   shell: "flatpak mask --remove {{ item.package }}"

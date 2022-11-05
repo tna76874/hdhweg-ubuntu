@@ -27,7 +27,6 @@
   notify:
     - autoremove flatpaks
 
-
 - name: Triggering flatpak versions handler
   assert: { that: true, quiet: true }
   changed_when: true
