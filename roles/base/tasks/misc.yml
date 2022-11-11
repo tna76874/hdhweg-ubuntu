@@ -1,4 +1,9 @@
 ---
+- name: Gather Package facts
+  package_facts:
+    manager: auto
+  ignore_errors: yes
+
 - name: Grabbing UIDs
   getent:
     database: passwd

@@ -68,6 +68,11 @@ alias update_support_hide='sudo git -C {{ config_repo_folder }} pull; sudo ansib
 # edit config file
 alias edit_config='sudo gedit /root/.config/vars_sysconfig.yml'
 
+{% if "docker-ce" in ansible_facts.packages %}
+# manim docker alias
+alias manim_docker='docker run --rm -it -v "$PWD:/manim" manimcommunity/manim:latest manim'
+{% endif %}
+
 # start teamviewer daemon, that is disabled by default
 twstart() {
   /usr/local/bin/start_teamviewer.x -s

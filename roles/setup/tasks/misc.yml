@@ -1,13 +1,37 @@
 ---
-- name: Ensure apt packages
+- name: Ensure misc apt packages
   apt:
     name:
       - python3
       - python3-pip
       - gir1.2-poppler-0.18
       - libimage-exiftool-perl
+      # Manim
+      - libcairo2-dev
+      - libpango1.0-dev
+      - ffmpeg
     state: latest
     install_recommends: yes
+
+- name: Ensure latest manim docker image
+  docker_image:
+    name: manimcommunity/manim:latest
+    source: pull
+  ignore_errors: yes
+  when: '"docker-ce" in ansible_facts.packages'
+
+- name: Ensure manim pip packages
+  pip:
+    name: "{{ item.name }}"
+    executable: "{{ item.executable }}"
+    state: "{{ item.state }}"
+    extra_args: "{{ item.extra }}"
+  become: true
+  loop:
+    - { name: "pycairo", executable: "pip3", state: "latest", extra: "--ignore-installed"}
+    - { name: "manim", executable: "pip3", state: "latest", extra: ""}
+    - { name: "manim-*", executable: "pip3", state: "latest", extra: ""}
+  ignore_errors: yes
 
 - name: Ensure pip packages
   pip:

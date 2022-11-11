@@ -41,6 +41,11 @@
   register: flatpak_installed_list
   changed_when: False
 
+- name: Gather Package facts
+  package_facts:
+    manager: auto
+  ignore_errors: yes
+
 - name: Set facts
   set_fact:
     config_flatpak_list: "{% if config_extended_software|bool %}{{ config_custom_flatpak + config_flatpak_list_1 + config_flatpak_list_2 }}{% else %}{{ config_custom_flatpak + config_flatpak_list_1 }}{% endif %}"
