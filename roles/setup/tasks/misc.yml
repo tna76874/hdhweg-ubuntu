@@ -30,7 +30,6 @@
   loop:
     - { name: "pycairo", executable: "pip3", state: "latest", extra: "--ignore-installed"}
     - { name: "manim", executable: "pip3", state: "latest", extra: ""}
-    - { name: "manim-*", executable: "pip3", state: "latest", extra: ""}
   ignore_errors: yes
 
 - name: Ensure pip packages
