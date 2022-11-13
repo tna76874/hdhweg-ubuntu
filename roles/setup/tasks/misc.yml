@@ -20,18 +20,6 @@
   ignore_errors: yes
   when: '"docker-ce" in ansible_facts.packages'
 
-- name: Ensure manim pip packages
-  pip:
-    name: "{{ item.name }}"
-    executable: "{{ item.executable }}"
-    state: "{{ item.state }}"
-    extra_args: "{{ item.extra }}"
-  become: true
-  loop:
-    - { name: "pycairo", executable: "pip3", state: "latest", extra: "--ignore-installed"}
-    - { name: "manim", executable: "pip3", state: "latest", extra: ""}
-  ignore_errors: yes
-
 - name: Ensure pip packages
   pip:
     name: "{{ item.name }}"
