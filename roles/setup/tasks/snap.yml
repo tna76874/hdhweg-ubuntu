@@ -13,11 +13,11 @@
     name:
       - restic
     classic: yes
+  ignore_errors: yes
 
 - name: Ensure snap packages absent
   snap:
     name:
-      - mumble
       - code
       - rambox
       - firefox
@@ -30,3 +30,4 @@
   shell: "snap refresh"
   become: yes
   changed_when: false
+  ignore_errors: yes
