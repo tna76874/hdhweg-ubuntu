@@ -219,6 +219,7 @@ config_flatpak_list_1:
   - { package: "org.gnome.Shotwell", repo: "flathub", state: present }
   - { package: "org.gnome.NetworkDisplays", repo: "flathub", state: "{{ 'present' if ansible_facts['lsb']['major_release']| int == 2 else 'absent' }}" }
   - { package: "com.makemkv.MakeMKV", repo: "flathub", state: present }
+  - { package: "fr.handbrake.ghb", repo: "flathub", state: present }
   # Voice chat / communication
   - { package: "com.teamspeak.TeamSpeak", repo: "flathub", state: present }
   - { package: "im.riot.Riot", repo: "flathub", state: present }
@@ -259,7 +260,6 @@ config_flatpak_list_2:
   - { package: "org.audacityteam.Audacity", repo: "flathub", state: present }
   - { package: "org.js.nuclear.Nuclear", repo: "flathub", state: present }
   - { package: "org.kde.kdenlive", repo: "flathub", state: present }
-  - { package: "fr.handbrake.ghb", repo: "flathub", state: present }
   - { package: "com.calibre_ebook.calibre", repo: "flathub", state: present }
   # Voice chat / communication
   - { package: "io.github.Soundux", repo: "flathub", state: present }
