@@ -157,7 +157,8 @@ config_apt_list_1:
   - gnome-software-plugin-flatpak
   - dbus-x11
   - nautilus-actions
-  - gnome-terminal 
+  - gnome-terminal
+  - ubuntu-desktop
 
 config_apt_list_2:
   - texstudio
