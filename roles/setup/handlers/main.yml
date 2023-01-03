@@ -1,5 +1,5 @@
 ---
-- include: ../../base/handlers/main.yml
+- import_tasks: ../../base/handlers/main.yml
 
 - name: update grub
   shell: "update-grub"
@@ -22,10 +22,14 @@
   when: config_pipewire_enabled|bool
   ignore_errors: yes
 
+# UPDATING FOR EACH PACKAGE
+# - name: update flatpaks
+#   shell: "flatpak update {{ item.package }} -y"
+#   with_items: "{{ config_flatpak_list }}"
+#   when: "(item.version is not defined) and (item.state=='present')"
+
 - name: update flatpaks
-  shell: "flatpak update {{ item.package }} -y"
-  with_items: "{{ config_flatpak_list }}"
-  when: "(item.version is not defined) and (item.state=='present')"
+  shell: "flatpak update -y"
 
 - name: unmask flatpaks
   shell: "flatpak mask --remove {{ item.package }}"

@@ -11,8 +11,9 @@
 - name: Ensure verify flatpaks
   shell: "flatpak repair"
   become: yes
+  when: verify_flatpak|default(False)
 
-- name: Install flatpak packages
+- name: Ensure flatpak packages
   flatpak:
     remote: "{{ item.repo }}"
     name: "{{ item.package }}"
