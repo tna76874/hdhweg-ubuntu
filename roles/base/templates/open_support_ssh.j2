@@ -8,8 +8,8 @@ fi
 
 # define variables
 SSHKEYS="{{ config_tunnel_ssh_keys }}"
-JITSISERVER="https://www.kuketz-meet.de"
-RANDID=`openssl rand -hex 16`
+JITSISERVER="https://meet.jit.si"
+RANDID=$(( $RANDOM % 100000 + 10000 ))
 
 # define functions
 ## countdown function
@@ -34,6 +34,15 @@ function confirm() {
             return 1
             ;;
     esac
+}
+
+# start rustdesk
+start_rustdesk() {
+    # starting rustdesk
+    /usr/bin/rustdesk >/dev/null 2>&1 &
+    # Sending access data
+    RD=`head -n 2 /root/.config/rustdesk/RustDesk.toml`
+    /usr/local/bin/gotify "$RD" "RustDesk Request"
 }
 
 # start teamviewer daemon and optionally set PW
@@ -92,6 +101,8 @@ function cleanup()
     rm -f /root/.ssh/authorized_keys_temp
     # cleanup temporary logfile from screen session dump
     rm -f /tmp/ctun
+    # cleanup rustdesk sessions
+    sudo killall rustdesk
     # print message
     echo -e "\e[32mSystem access cleaned up.\e[0m"
 }
@@ -121,7 +132,7 @@ function start_ssh_tunnel() {
 ######################################
 
 # printing disclaimer
-echo -e "\e[31mOpening a support request will grant $SSHKEYS temporary full system access as long as this terminal is open. A TeamViewer session will be started. A push message containing the ssh support url and the TeamViewer credentials will be send to support.\nOnly proceed if you absolutely trust the listed person!\e[0m\n"
+echo -e "\e[31mOpening a support request will grant $SSHKEYS temporary full system access as long as this terminal is open. A RustDesk session will be started. A push message containing the ssh support url and the RustDesk credentials will be send to support.\nOnly proceed if you absolutely trust the listed person!\e[0m\n"
 countdown
 
 # Proceed with support request
@@ -134,9 +145,9 @@ trap cleanup EXIT
 # ensure no old tunnel sessions open
 cleanup
 
-# open ssh tunnel and start teamviewer
+# open ssh tunnel and start rustdesk
 start_ssh_tunnel &
-start_team_viewer &
+start_rustdesk &
 
 wait
 
