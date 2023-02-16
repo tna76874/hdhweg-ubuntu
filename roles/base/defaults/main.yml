@@ -65,6 +65,10 @@ config_show_support_in_favorites: false
 gotify_notify_dest:
   - {host: "push.hilberg.eu", key: "AGYHlNHiACJ9TCo"}
 
+rustdesk_config:
+  host: 'rd.hilberg.eu'
+  key: 'SxRaqkuOKDrZcApDZJeAIqiR8l+jA+neyv7Bzuv3D8A='
+
 config_tunnel_ssh_keys: "https://github.com/tna76874.keys"
 
 # shc binaries

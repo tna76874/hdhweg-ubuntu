@@ -35,6 +35,28 @@
     regexp: '^alias update=(.*)$'
     line: alias update="sudo git -C {{ config_repo_folder }} pull && sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup"
 
+- name: Ensure RustDesk root
+  block:
+    - name: Ensure directories
+      file:
+        path: "{{ item }}"
+        owner: "root"
+        state: directory
+      loop:
+        - "/root/.config/rustdesk/"
+
+    - name: Ensure root RustDesk config
+      template:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        mode: "{{ item.mode }}"
+        owner: "root"
+        group: "root"
+      loop:
+        - {src: "RustDesk2.toml.j2", dest: "/root/.config/rustdesk/RustDesk2.toml", mode: "0664"}
+  ignore_errors: yes
+  become: yes
+
 - include_tasks: user_operations.yml
   loop: "{{ ubuntu_users.stdout_lines }}"
   loop_control:

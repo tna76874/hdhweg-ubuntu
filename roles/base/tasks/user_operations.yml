@@ -83,24 +83,29 @@
   ignore_errors: yes
 
 # Ensure scripts
-
-- name: Ensure nautilus scripts directory
+- name: Ensure directories
   file:
-    path: "/home/{{ user_item }}/.local/share/nautilus/scripts"
+    path: "{{ item }}"
     owner: "{{ user_item }}"
     state: directory
+  loop:
+    - "/home/{{ user_item }}/.local/share/nautilus/scripts"
+    - "/home/{{ user_item }}/.config/rustdesk"
 
 - name: Ensure nautilus scripts
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     mode: "{{ item.mode }}"
+    owner: "{{ user_item }}"
+    group: "{{ user_item }}"
   loop:
     - {src: "pdf_verkleinern", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/pdf_verkleinern", mode: "0755"}
     - {src: "scans_verbessern", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/scans_verbessern", mode: "0755"}
     - {src: "pdf_zusammenfassen", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/pdf_zusammenfassen", mode: "0755"}
     - {src: "img2pdf.sh", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/img2pdf", mode: "0755"}
     - {src: "anonymisieren", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/anonymisieren", mode: "0755"}
+    - {src: "RustDesk2.toml.j2", dest: "/home/{{ user_item }}/.config/rustdesk/RustDesk2.toml", mode: "0664"}
 
 - name: Ensure rembg script
   template:
