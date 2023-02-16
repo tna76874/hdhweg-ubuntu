@@ -190,3 +190,21 @@
   ignore_errors: yes
   become: yes
 
+- name: Ensure rustdesk
+  block:
+    - name: Query debloater release from github
+      uri:
+        url: https://api.github.com/repos/rustdesk/rustdesk/releases
+        return_content: true
+      register: rustdesk_github_releases
+
+    - name: Register rustdesk url
+      set_fact:
+        rustdesk_url_deb: "{{ ((rustdesk_github_releases.json | rejectattr('tag_name', 'equalto', 'nightly') | list)[0]['assets'] | rejectattr('name', 'contains', 'armhf') | selectattr('name', 'contains', '.deb') | list)[0]['browser_download_url'] }}"
+
+    - name: Ensure rustdesk
+      apt:
+        deb: "{{ rustdesk_url_deb }}"
+      ignore_errors: yes
+  ignore_errors: yes
+  become: yes
