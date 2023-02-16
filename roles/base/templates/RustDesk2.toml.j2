@@ -1,0 +1,9 @@
+rendezvous_server = '{{ rustdesk_config.host }}'
+nat_type = 1
+serial = 0
+
+[options]
+relay-server = '{{ rustdesk_config.host }}'
+custom-rendezvous-server = '{{ rustdesk_config.host }}'
+api-server = 'https://{{ rustdesk_config.host }}'
+key = '{{ rustdesk_config.key }}'
