@@ -87,35 +87,7 @@
 
 - name: Ensure apt packages absent
   apt:
-    name:
-      - xournalpp
-      - master-pdf-editor
-      - zotero-standalone
-      - geogebra-classic
-      - libreoffice-draw
-      - libreoffice-calc
-      - libreoffice-impress
-      - libreoffice-writer
-      - darktable
-      - freecad
-      - signal-desktop
-      - restic
-      - gimp
-      - inkscape
-      - chromium-browser
-      - chromium-codecs-ffmpeg-extra
-      - firefox
-      - kdenlive
-      - scribus
-      - scribus-doc
-      - scribus-template
-      - shotwell
-      - hibiscus-ppa
-      - speedtest-cli
-      - codium
-      - nextcloud-client
-      - nautilus-wipe
-      - breitbandmessung
+    name: "{{ config_apt_list_absent }}"
     state: absent
 
 - name: Ensure apt packages purged
@@ -160,6 +132,7 @@
   apt:
     deb: "https://download.teamviewer.com/download/linux/teamviewer_amd64.deb"
   ignore_errors: yes
+  when: teamviewer_enabled|default(False)
 
 - name: Ensure libs to play DVDs
   block:
@@ -189,10 +162,11 @@
         - configure libdvd-pkg
   ignore_errors: yes
   become: yes
+  when: ensure_dvd_libs|default(False)
 
 - name: Ensure rustdesk
   block:
-    - name: Query debloater release from github
+    - name: Query rustdesk release from github
       uri:
         url: https://api.github.com/repos/rustdesk/rustdesk/releases
         return_content: true

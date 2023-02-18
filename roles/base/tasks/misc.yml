@@ -58,7 +58,7 @@
     enabled: no
     state: stopped
   ignore_errors: yes
-  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int <= 20 and disable_teamviewer
+  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int <= 20 and disable_teamviewer and teamviewer_enabled|default(False)
 
 - name: Ensuring cron file - running base script 15min after reboot
   cron:
@@ -113,6 +113,7 @@
   loop:
     - { entry: "teamviewer.desktop", dest: "/opt/teamviewer/tv_bin/desktop/com.teamviewer.TeamViewer.desktop" }
   ignore_errors: yes
+  when: teamviewer_enabled|default(False)
 
 - name: Ensure scripts
   template:

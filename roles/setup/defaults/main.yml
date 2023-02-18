@@ -38,7 +38,6 @@ config_apt_keys_curl: []
   
 config_apt_sources:
   - { repo: "deb http://www.geogebra.net/linux/ stable main", state: "absent", filename: "geogebra" }
-  # - { repo: "deb http://linux.teamviewer.com/deb stable main", state: "present", filename: "teamviewer" }
 
 config_apt_ppa_list_1:
   # Present
@@ -189,6 +188,36 @@ config_apt_list_2:
   - esptool
   - ldap-utils
   - autossh
+
+config_apt_list_absent:
+  - xournalpp
+  - master-pdf-editor
+  - zotero-standalone
+  - geogebra-classic
+  - libreoffice-draw
+  - libreoffice-calc
+  - libreoffice-impress
+  - libreoffice-writer
+  - darktable
+  - freecad
+  - signal-desktop
+  - restic
+  - gimp
+  - inkscape
+  - chromium-browser
+  - chromium-codecs-ffmpeg-extra
+  - firefox
+  - kdenlive
+  - scribus
+  - scribus-doc
+  - scribus-template
+  - shotwell
+  - hibiscus-ppa
+  - speedtest-cli
+  - codium
+  - nextcloud-client
+  - nautilus-wipe
+  - breitbandmessung
 
 config_apt_pipewire:
   - pipewire

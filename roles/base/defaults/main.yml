@@ -71,6 +71,8 @@ rustdesk_config:
 
 config_tunnel_ssh_keys: "https://github.com/tna76874.keys"
 
+teamviewer_enabled: False
+
 # shc binaries
 recompile_shc: False
 shc_binaries:

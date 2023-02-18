@@ -51,6 +51,7 @@
   until: '(apt_return.rc | default(0) == 0) and ("Failed" not in apt_return.msg | default(""))'
   retries: 3
   delay: 30
+  ignore_errors: yes
 
 - name: autoremove apt
   apt:

@@ -54,6 +54,11 @@
     flatpak_masked_list: "{{ flatpak_masked.stdout_lines | map('trim') | list }}"
     flatpak_installed_list: "{{ flatpak_installed_list.stdout_lines | map('trim') | list }}"
 
+- name: Update TeamViewer apt state
+  set_fact:
+    config_apt_list_absent: "{% if not teamviewer_enabled|default(False) %}{{ config_apt_list_absent + ['teamviewer'] }}{% else %}{{ config_apt_list_absent }}{% endif %}"
+  when: 'not teamviewer_enabled|default(False)'
+
 - name: Ensure galaxy requirements
   shell: "{{ item }}"
   args:
