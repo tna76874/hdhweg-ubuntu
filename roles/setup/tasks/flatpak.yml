@@ -8,6 +8,11 @@
     - { repo: "https://dl.flathub.org/repo/flathub.flatpakrepo", name: "flathub", state: "present" }
     - { repo: "https://flathub.org/beta-repo/flathub-beta.flatpakrepo", name: "flathub-beta", state: "present" }
 
+- name: Force unmask for unversioned flatpaks
+  shell: "flatpak mask --remove {{ item.package }}"
+  with_items: "{{ config_flatpak_list }}"
+  when: item.version is not defined
+
 - name: Ensure verify flatpaks
   shell: "flatpak repair"
   become: yes
