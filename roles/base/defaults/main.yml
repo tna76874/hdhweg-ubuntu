@@ -67,7 +67,7 @@ gotify_notify_dest:
 
 rustdesk_config:
   host: 'rd.hilberg.eu'
-  key: 'SxRaqkuOKDrZcApDZJeAIqiR8l+jA+neyv7Bzuv3D8A='
+  key: 'gGhfhdygWBEma9gpErFe2rmcibBaFLEoSvSPYhlqY+g='
 
 config_tunnel_ssh_keys: "https://github.com/tna76874.keys"
 

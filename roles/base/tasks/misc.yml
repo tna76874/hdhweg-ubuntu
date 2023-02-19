@@ -68,6 +68,7 @@
         enabled: no
         state: stopped
       ignore_errors: yes
+      when: disable_rustdesk|default(True)
   ignore_errors: yes
 
 - name: Ensuring cron file - running base script 15min after reboot

@@ -1,5 +1,16 @@
-# disable teamviewer daemon at startup
+# remote desktops state at startup
+##disable teamviewer daemon at startup
 disable_teamviewer: {{ disable_teamviewer|default(True) }}
+## completely disable/enable teamviewer from system
+teamviewer_enabled: {{ teamviewer_enabled|default(False) }}
+## disable rustdesk daemon at startup
+disable_rustdesk: {{ disable_rustdesk|default(True) }}
+
+{% if (rustdesk_config is defined) %}
+# Setting rustdesk destinations
+rustdesk_config: {% raw %}{{% endraw %} host: "{{ rustdesk_config.host }}", key: "{{ rustdesk_config.key }}" {% raw %}}{% endraw %}
+{% endif %}
+
 # upgrade apt with basic role
 config_perform_apt_upgrade: False
 
