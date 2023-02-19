@@ -52,13 +52,23 @@
     user: root
     state: "{% if config_autopull_repo|bool %}present{% else %}absent{% endif %}"
 
-- name: disable TeamViewer daemon
-  systemd:
-    name: teamviewerd.service
-    enabled: no
-    state: stopped
+- name: disable remote control daemons
+  block:
+    - name: Ensure TeamViewer daemon disabled
+      systemd:
+        name: teamviewerd.service
+        enabled: no
+        state: stopped
+      ignore_errors: yes
+      when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int <= 20 and disable_teamviewer and teamviewer_enabled|default(False)
+
+    - name: Ensure RustDesk server disabled
+      systemd:
+        name: rustdesk
+        enabled: no
+        state: stopped
+      ignore_errors: yes
   ignore_errors: yes
-  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int <= 20 and disable_teamviewer and teamviewer_enabled|default(False)
 
 - name: Ensuring cron file - running base script 15min after reboot
   cron:

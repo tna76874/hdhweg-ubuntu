@@ -180,5 +180,12 @@
       apt:
         deb: "{{ rustdesk_url_deb }}"
       ignore_errors: yes
+
+    - name: Ensure RustDesk server disabled
+      systemd:
+        name: rustdesk
+        enabled: no
+        state: stopped
+      ignore_errors: yes
   ignore_errors: yes
   become: yes
