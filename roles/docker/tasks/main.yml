@@ -47,11 +47,11 @@
     - { name: "pip", executable: "pip3", state: "latest"}
     - { name: "requests", executable: "pip3", state: "latest"}
 
-- name: Ensure docker-compose installed
+- name: Ensure docker-compose not installed with pip
   pip:
     name: docker-compose
     executable: pip3
-    state: present
+    state: absent
   become: true
 
 - name: Determine existing sudo users
@@ -67,3 +67,26 @@
     state: present
   with_items: '{{ sudo_users.stdout_lines }}'
 
+##GETTING COMPOSE BINARY
+- name: Query compose tags from github
+  uri:
+    url: https://api.github.com/repos/docker/compose/releases?page_size=10000
+    return_content: true
+  register: compose_github_tags
+  ignore_errors: yes                                          
+
+- name: Register compose_tag
+  set_fact:
+    compose_tag:  "{{ (compose_github_tags.json | rejectattr('name', 'contains', '-') | selectattr('name', 'contains', 'v2') | list)[0]['name'] }}"
+
+- name: Get compose binary github url
+  set_fact:
+    compose_bin_url:  "{{ (((compose_github_tags.json | selectattr('name', 'equalto', compose_tag) | list)[0]['assets']) | selectattr('name', 'equalto', 'docker-compose-linux-x86_64') | list)[0]['browser_download_url']  }}"
+
+- name: Install docker-compose from official github repo
+  get_url:
+    url : "{{ compose_bin_url }}"
+    dest: /usr/local/bin/docker-compose
+    mode: 'u+x,g+x'
+    group: 'docker'
+  become: yes
