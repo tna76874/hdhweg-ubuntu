@@ -1,0 +1,19 @@
+---
+# Ensure scripts
+- name: Ensure directories
+  file:
+    path: "{{ item }}"
+    owner: "{{ user_item }}"
+    state: directory
+  loop:
+    - "/home/{{ user_item }}/.local/share/nautilus/scripts"
+
+- name: Ensure nautilus script
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ user_item }}"
+    group: "{{ user_item }}"
+  loop:
+    - {src: "removebg.j2", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/removebg", mode: "0755"}
