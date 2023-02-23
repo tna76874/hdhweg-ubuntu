@@ -87,8 +87,18 @@
     - docker
     - bigsetup
     - install_pihole
+    - removebg
   roles:
     - docker
+
+- name: Install removebg API
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - removebg
+  roles:
+    - removebg
 
 - name: Install themes
   hosts: localhost

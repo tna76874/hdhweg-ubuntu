@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Background Remover API
+GenericName=Background Remover API
+Comment=Background Remover API
+Comment[de]=Background Remover API
+Exec=gnome-terminal --tab -e "/bin/bash -c '{{ removebg_dir }}/run.sh'"
+Icon=/usr/share/icons/removebg.svg
+Terminal=true
+X-MultipleArgs=false
+Type=Application
+Categories=Network;
+StartupWMClass=API
+StartupNotify=true

@@ -1,0 +1,6 @@
+---
+- name: build removebg
+  shell: "docker run -v {{ rembg_cli_repo_dir }}:/build {{ build_docker_name }}"
+  become: yes
+  changed_when: False
+  ignore_errors: yes

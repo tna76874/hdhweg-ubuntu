@@ -1,0 +1,18 @@
+---
+removebg_docker_image: "anodev/carvekit"
+removebg_docker_image_tag: "latest-cpu"
+
+removebg_bin: "/usr/local/bin/removebg"
+removebg_api_key: "localaccess"
+
+removebg_dir: "/srv/removebg"
+
+
+##building env
+npm_image: "node"
+npm_tag: "14.18.1"
+
+rembg_cli_repo: "https://github.com/remove-bg/remove-bg-cli.git"
+rembg_cli_repo_version: "main"
+rembg_cli_repo_dir: "{{ removebg_dir }}/build"
+build_docker_name: "rembgbuild"

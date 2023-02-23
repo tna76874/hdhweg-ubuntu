@@ -22,6 +22,9 @@ alias install_fritzbox="sudo ansible-playbook {{ config_repo_folder }}/main.yml 
 # install rembg
 alias install_rembg="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup -e enable_rembg=True"
 
+# install removebg API
+alias install_removebgapi="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t removebg"
+
 # install gotify-desktop. Append server and token: -e gotify_host=myserver -e gotify_token=mytoken
 alias install_gotify="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t gotify"
 

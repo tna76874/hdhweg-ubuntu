@@ -1,0 +1,53 @@
+---
+- name: Ensure directory
+  file:
+    path: "{{ removebg_dir }}"
+    owner: "root"
+    state: directory
+
+- name: Ensure templates
+  template:
+    src: "{{ item.file }}"
+    dest: "{{ item.destination }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "{{ item.mode }}"
+  become: yes
+  loop:
+    - { file: "BGremove.desktop", destination: "/usr/share/applications/BGremove.desktop", owner: "root", mode: "0755"}
+    - { file: "docker-compose.yml.j2", destination: "{{ removebg_dir }}/docker-compose.yml", owner: "root", mode: "0755" }
+    - { file: "run.sh.j2", destination: "{{ removebg_dir }}/run.sh", owner: "root", mode: "0755" }
+    - { file: "Dockerfile.j2", destination: "{{ removebg_dir }}/Dockerfile", owner: "root", mode: "0755" }
+    - { file: "build_bin.sh.j2", destination: "{{ removebg_dir }}/build_bin.sh", owner: "root", mode: "0755" }
+  notify:
+    - build removebg
+
+#### BUILD
+- import_tasks: build_base.yml
+#####
+
+- name: Flush handlers
+  meta: flush_handlers
+
+- name: Ensure icon
+  copy:
+    src: "{{ item.file }}"
+    dest: "{{ item.destination }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - { file: "removebg.svg", destination: "/usr/share/icons/removebg.svg", owner: "root", mode: "0755" }
+
+- name: Ensure executable
+  copy:
+    src: "{{ item.file }}"
+    dest: "{{ item.destination }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "{{ item.mode }}"
+    remote_src: yes
+  loop:
+    - { file: "{{ removebg_dir }}/build/dist/removebg", destination: "{{ removebg_bin }}", owner: "root", mode: "0755" }
+  become: yes
+

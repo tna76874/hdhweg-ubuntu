@@ -1,0 +1,7 @@
+FROM {{ npm_image }}:{{ npm_tag }}
+
+RUN npm install pkg; mkdir /build
+
+COPY build_bin.sh /usr/local/bin/
+
+CMD [ "build_bin.sh" ]

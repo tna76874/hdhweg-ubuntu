@@ -1,0 +1,47 @@
+---
+- name: Ensure git build repo
+  block:
+  - name: Ensure build git repo
+    ansible.builtin.git:
+      repo: "{{ rembg_cli_repo }}"
+      dest: "{{ rembg_cli_repo_dir }}"
+      clone: yes
+      update: yes
+      force: yes
+      version: "{{ rembg_cli_repo_version }}"
+      refspec: '+refs/tags/*:refs/tags/*'
+      notify:
+        - build removebg
+
+  rescue:
+  - name: Delete git repo
+    file:
+      state: absent
+      dest: "{{ rembg_cli_repo_dir }}"
+      notify:
+        - build removebg
+
+  - name: Ensure build git repo
+    ansible.builtin.git:
+      repo: "{{ rembg_cli_repo }}"
+      dest: "{{ rembg_cli_repo_dir }}"
+      clone: yes
+      update: yes
+      force: yes
+      version: "{{ rembg_cli_repo_version }}"
+      refspec: '+refs/tags/*:refs/tags/*'
+      notify:
+        - build removebg
+
+- name: docker build npm
+  docker_image:
+    name: "{{ build_docker_name }}"
+    build:
+      path: "{{ removebg_dir }}"
+      dockerfile: "{{ removebg_dir }}/Dockerfile"
+      nocache: yes
+      pull: yes
+    source: build
+  become: yes
+  notify:
+    - build removebg

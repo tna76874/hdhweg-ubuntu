@@ -1,0 +1,37 @@
+#!/bin/bash
+BUILD_DIR="/build"
+BUILD_BIN="/build/dist/removebg"
+LIBFILE="$BUILD_DIR"/lib/functions.js
+OPTFILE="$BUILD_DIR"/lib/options.js
+
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+
+build_bin() {
+cd "$BUILD_DIR"
+npm install pkg
+npm i
+npm run build
+}
+
+replace_patterns() {
+sed -i 's/https:\/\/api.remove.bg\/v1.0\/removebg/http:\/\/localhost:5000\/api\/removebg/g' "$LIBFILE"
+sed -i 's/error = "API key must be specified"/removebgOptions["api-key"]="localaccess"/g' "$OPTFILE"
+}
+
+reset_git () {
+    cd "$BUILD_DIR"
+    git stash ||:
+    git stash drop ||:
+}
+
+delete_prev_builds () {
+    cd "$BUILD_DIR"
+    git clean -xdf ||:
+}
+
+delete_prev_builds
+reset_git
+replace_patterns
+build_bin
+reset_git

@@ -1,0 +1,20 @@
+#!/bin/bash
+print_message() {
+echo "
+Starting api server. You can now either use the
+command line tool removebg or access the webinterface
+
+http://localhost:5000/
+
+with the key: localaccess
+"
+}
+
+cleanup(){
+/usr/local/bin/docker-compose -f {{ removebg_dir }}/docker-compose.yml down
+}
+trap cleanup EXIT
+print_message
+/usr/local/bin/docker-compose -f {{ removebg_dir }}/docker-compose.yml up
+cleanup
+trap "" EXIT
