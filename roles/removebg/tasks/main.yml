@@ -1,4 +1,24 @@
 ---
+- name: Gather Package facts
+  package_facts:
+    manager: auto
+  ignore_errors: yes
+
+- name: Grabbing UIDs
+  getent:
+    database: passwd
+
+- name: Determine existing users
+  shell: 'cat /etc/passwd | grep /bin/bash | grep -v root | grep -v guest | cut -d: -f1'
+  changed_when: false 
+  register: ubuntu_users
+
+- name: Set facts
+  set_fact:
+    ubuntu_users_reg: "{{ ubuntu_users }}"
+
+############
+
 - name: Ensure directory
   file:
     path: "{{ removebg_dir }}"
@@ -51,3 +71,7 @@
     - { file: "{{ removebg_dir }}/build/dist/removebg", destination: "{{ removebg_bin }}", owner: "root", mode: "0755" }
   become: yes
 
+- include_tasks: user_operations.yml
+  loop: "{{ ubuntu_users.stdout_lines }}"
+  loop_control:
+    loop_var: user_item

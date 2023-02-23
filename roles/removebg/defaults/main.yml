@@ -1,6 +1,8 @@
 ---
+removebg_backend: "cpu"
+gpu_enabled: "{{ False if removebg_backend=='cpu' else True }}"
 removebg_docker_image: "anodev/carvekit"
-removebg_docker_image_tag: "latest-cpu"
+removebg_docker_image_tag: "latest-{{ 'cuda' if gpu_enabled|bool else 'cpu' }}"
 
 removebg_bin: "/usr/local/bin/removebg"
 removebg_api_key: "localaccess"
