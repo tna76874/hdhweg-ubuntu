@@ -1,0 +1,7 @@
+#!/bin/bash
+inputname="$1"
+bname=${1%.*}
+HANDBRAKE="flatpak run --command=HandBrakeCLI fr.handbrake.ghb"
+
+eval "$HANDBRAKE -i $inputname -o $bname.m4v"
+

@@ -105,6 +105,7 @@
     - {src: "pdf_zusammenfassen", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/pdf_zusammenfassen", mode: "0755"}
     - {src: "img2pdf.sh", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/img2pdf", mode: "0755"}
     - {src: "anonymisieren", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/anonymisieren", mode: "0755"}
+    - {src: "compress_video.j2", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/compress_video", mode: "0755"}
     - {src: "RustDesk2.toml.j2", dest: "/home/{{ user_item }}/.config/rustdesk/RustDesk2.toml", mode: "0664"}
 
 - name: Ensure rembg script
