@@ -252,6 +252,7 @@ config_flatpak_list_1:
   - { package: "org.gnome.NetworkDisplays", repo: "flathub", state: "{{ 'present' if ansible_facts['lsb']['major_release']| int == 2 else 'absent' }}" }
   - { package: "com.makemkv.MakeMKV", repo: "flathub", state: present }
   - { package: "fr.handbrake.ghb", repo: "flathub", state: present }
+  - { package: "io.gitlab.theevilskeleton.Upscaler", repo: "flathub", state: present }
   # Voice chat / communication
   - { package: "com.teamspeak.TeamSpeak", repo: "flathub", state: present }
   - { package: "im.riot.Riot", repo: "flathub", state: present }
@@ -275,7 +276,6 @@ config_flatpak_list_1:
   - { package: "com.belmoussaoui.Decoder", repo: "flathub", state: present }
   - { package: "org.keepassxc.KeePassXC", repo: "flathub", state: present }
   - { package: "org.gnome.Gnote", repo: "flathub", state: present }
-  - { package: "com.gitlab.bitseater.meteo", repo: "flathub", state: present }
   - { package: "com.mattjakeman.ExtensionManager", repo: "flathub", state: present }
   - { package: "io.kopia.KopiaUI", repo: "flathub", state: present }
   - { package: "org.cryptomator.Cryptomator", repo: "flathub", state: present }
@@ -306,6 +306,7 @@ config_flatpak_list_2:
   - { package: "org.zotero.Zotero", repo: "flathub", state: present }
   - { package: "fr.romainvigier.MetadataCleaner", repo: "flathub", state: present }
   - { package: "de.willuhn.Jameica", repo: "flathub", state: present }
+  - { package: "com.gitlab.bitseater.meteo", repo: "flathub", state: present }
   # - { package: "org.geogebra.GeoGebra", repo: "flathub", state: present }
 
 ### PUSH GATEWAY
