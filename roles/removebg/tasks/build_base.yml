@@ -10,16 +10,16 @@
       force: yes
       version: "{{ rembg_cli_repo_version }}"
       refspec: '+refs/tags/*:refs/tags/*'
-      notify:
-        - build removebg
+    notify:
+      - build removebg
 
   rescue:
   - name: Delete git repo
     file:
       state: absent
       dest: "{{ rembg_cli_repo_dir }}"
-      notify:
-        - build removebg
+    notify:
+      - build removebg
 
   - name: Ensure build git repo
     ansible.builtin.git:
@@ -30,8 +30,8 @@
       force: yes
       version: "{{ rembg_cli_repo_version }}"
       refspec: '+refs/tags/*:refs/tags/*'
-      notify:
-        - build removebg
+    notify:
+      - build removebg
 
 - name: docker build npm
   docker_image:
