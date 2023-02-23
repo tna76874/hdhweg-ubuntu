@@ -10,11 +10,24 @@ with the key: localaccess
 "
 }
 
+pull_latest_image() {
+/usr/local/bin/docker-compose -f {{ removebg_dir }}/docker-compose.yml pull
+}
+
+startup() {
+/usr/local/bin/docker-compose -f {{ removebg_dir }}/docker-compose.yml up
+}
+
 cleanup(){
 /usr/local/bin/docker-compose -f {{ removebg_dir }}/docker-compose.yml down
 }
 trap cleanup EXIT
+
+### MAIN
 print_message
-/usr/local/bin/docker-compose -f {{ removebg_dir }}/docker-compose.yml up
+pull_latest_image
+startup
+###
+
 cleanup
 trap "" EXIT
