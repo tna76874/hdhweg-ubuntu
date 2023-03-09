@@ -15,6 +15,13 @@
     classic: yes
   ignore_errors: yes
 
+- name: Ensure latest/edge snap packages present
+  snap:
+    name:
+      - lumi
+    channel: latest/edge
+  ignore_errors: yes
+
 - name: Ensure snap packages absent
   snap:
     name:

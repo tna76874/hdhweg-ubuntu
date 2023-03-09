@@ -253,6 +253,7 @@ config_flatpak_list_1:
   - { package: "com.makemkv.MakeMKV", repo: "flathub", state: present }
   - { package: "fr.handbrake.ghb", repo: "flathub", state: present }
   - { package: "io.gitlab.theevilskeleton.Upscaler", repo: "flathub", state: present }
+  - { package: "org.turbowarp.TurboWarp", repo: "flathub", state: present }
   # Voice chat / communication
   - { package: "com.teamspeak.TeamSpeak", repo: "flathub", state: present }
   - { package: "im.riot.Riot", repo: "flathub", state: present }
