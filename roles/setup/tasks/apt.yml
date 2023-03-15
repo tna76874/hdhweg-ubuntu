@@ -1,12 +1,22 @@
 ---
-- name: Ensure no interrupted system update
-  shell: dpkg --configure -a
-  become: yes
-  changed_when: false
-  register: apt_return
-  until: apt_return.rc | default(0) == 0
-  retries: 30
-  delay: 30
+- name: Cleanup apt block
+  block:
+    - name: ensure apt update with updated labels
+      shell: "apt-get update --allow-releaseinfo-change"
+      args:
+        warn: false
+      ignore_errors: yes
+      become: yes
+      
+
+    - name: Ensure no interrupted system update
+      shell: dpkg --configure -a
+      become: yes
+      changed_when: false
+      register: apt_return
+      until: apt_return.rc | default(0) == 0
+      retries: 30
+      delay: 30
 
 - name: Ensure ppa's states
   apt_repository:
