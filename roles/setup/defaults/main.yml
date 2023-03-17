@@ -42,7 +42,6 @@ config_apt_sources:
 config_apt_ppa_list_1:
   # Present
   - { ppa: "ppa:marko-preuss/hibiscus", state: "present", ubuntu_max_release: 20 }
-  - { ppa: "ppa:ubuntu-mozilla-security/ppa", state: "present", ubuntu_max_release: 20 }
   - { ppa: "ppa:unit193/encryption", state: "present", ubuntu_max_release: 22 }
   - { ppa: "ppa:alexlarsson/flatpak", state: "present", ubuntu_max_release: 20 }
   - { ppa: "ppa:recoll-backports/recoll-1.15-on", state: "present", ubuntu_max_release: 18 }
@@ -53,6 +52,7 @@ config_apt_ppa_list_1:
   - { ppa: "ppa:andreasbutti/xournalpp-master", state: "absent", ubuntu_max_release: 20 }
   - { ppa: "ppa:apandada1/xournalpp-stable", state: "absent", ubuntu_max_release: 20 }
   - { ppa: "ppa:smathot/cogscinl", state: "absent", ubuntu_max_release: 20 }
+  - { ppa: "ppa:ubuntu-mozilla-security/ppa", state: "absent", ubuntu_max_release: 20 }
 
 config_apt_ppa_list_2:
   - { ppa: "ppa:tomtomtom/woeusb", state: "present" , ubuntu_max_release: 22 }
