@@ -146,8 +146,8 @@ trap cleanup EXIT
 cleanup
 
 # open ssh tunnel and start rustdesk
-start_ssh_tunnel &
-start_rustdesk &
+start_ssh_tunnel || : &
+start_rustdesk || : &
 
 wait
 
