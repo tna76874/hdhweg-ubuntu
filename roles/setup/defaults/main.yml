@@ -53,6 +53,7 @@ config_apt_ppa_list_1:
   - { ppa: "ppa:apandada1/xournalpp-stable", state: "absent", ubuntu_max_release: 20 }
   - { ppa: "ppa:smathot/cogscinl", state: "absent", ubuntu_max_release: 20 }
   - { ppa: "ppa:ubuntu-mozilla-security/ppa", state: "absent", ubuntu_max_release: 20 }
+  - { ppa: "deb https://dl.cloudsmith.io/public/balena/etcher/deb/ubuntu focal main", state: "absent", ubuntu_max_release: 20 }
 
 config_apt_ppa_list_2:
   - { ppa: "ppa:tomtomtom/woeusb", state: "present" , ubuntu_max_release: 22 }
@@ -155,9 +156,11 @@ config_apt_list_1:
   - flatpak
   - gnome-software-plugin-flatpak
   - dbus-x11
-  - nautilus-actions
   - gnome-terminal
   - ubuntu-desktop
+
+config_apt_list_below_22:
+  - nautilus-actions
 
 config_apt_list_2:
   - texstudio
