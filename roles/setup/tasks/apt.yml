@@ -184,7 +184,7 @@
 
     - name: Register rustdesk url
       set_fact:
-        rustdesk_url_deb: "{{ ((rustdesk_github_releases.json | rejectattr('tag_name', 'equalto', 'nightly') | list)[0]['assets'] | rejectattr('name', 'contains', 'armhf') | selectattr('name', 'contains', '.deb') | list)[0]['browser_download_url'] }}"
+        rustdesk_url_deb: "{{ ((rustdesk_github_releases.json | rejectattr('tag_name', 'equalto', 'nightly') | list)[0]['assets'] | rejectattr('name', 'contains', 'armhf') | rejectattr('name', 'contains', 'arm64') | rejectattr('name', 'contains', 'aarch64') | selectattr('name', 'contains', '.deb') | selectattr('name', 'contains', 'x86_64') | list)[0]['browser_download_url'] }}"
 
     - name: Ensure rustdesk
       apt:
