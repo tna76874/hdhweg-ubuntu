@@ -46,7 +46,7 @@ config_apt_ppa_list_1:
   - { ppa: "ppa:alexlarsson/flatpak", state: "present", ubuntu_max_release: 20 }
   - { ppa: "ppa:recoll-backports/recoll-1.15-on", state: "present", ubuntu_max_release: 18 }
   # Choice
-  - { ppa: "ppa:pipewire-debian/pipewire-upstrshcam", state: "{{ 'present' if config_pipewire_enabled|bool else 'absent' }}", ubuntu_max_release: 22 }
+  - { ppa: "ppa:pipewire-debian/pipewire-upstream", state: "{{ 'present' if config_pipewire_enabled|bool else 'absent' }}", ubuntu_max_release: 22 }
   # Absent
   - { ppa: "ppa:nextcloud-devs/client", state: "absent", ubuntu_max_release: 20 }
   - { ppa: "ppa:andreasbutti/xournalpp-master", state: "absent", ubuntu_max_release: 20 }
