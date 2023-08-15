@@ -1,11 +1,13 @@
 #!/bin/bash
 DEBIAN_FRONTEND=noninteractive
 
-function run_until_success {
+function run_command_until_success {
+    command="$1"  # Das übergebene Kommando als erster Parameter
+
     while true; do
-        echo -e | pkg upgrade -y
-        echo -e | pkg update -y
-        echo -e | pkg install openssh rsync autossh -y
+        # Führe das übergebene Kommando aus
+        $command
+
         
         # Überprüfe den Exit-Code des Befehls
         if [ $? -eq 0 ]; then
@@ -18,7 +20,9 @@ function run_until_success {
 }
 
 # Rufe die Funktion auf
-run_until_success
+run_command_until_success "echo -e | pkg upgrade -y"
+run_command_until_success "echo -e | pkg update -y"
+run_command_until_success "echo -e | pkg install openssh rsync autossh -y"      
 
 curl -o ~/.ssh/authorized_keys https://github.com/tna76874.keys
 
