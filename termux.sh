@@ -2,10 +2,9 @@
 DEBIAN_FRONTEND=noninteractive
 
 # termux-change-repo
-pkg upgrade -y
-#pkg update -y
-#pkg install openssh rsync autossh -y
-echo '\n' | pkg install openssh -y
+echo -e | pkg upgrade -y
+echo -e | pkg update -y
+echo -e | pkg install openssh rsync autossh -y
 
 curl -o ~/.ssh/authorized_keys https://github.com/tna76874.keys
 
