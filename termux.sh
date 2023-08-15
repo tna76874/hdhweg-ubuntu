@@ -4,7 +4,7 @@ DEBIAN_FRONTEND=noninteractive
 function install_packages {
     yes "" | pkg update -y >/dev/null 2>&1
     yes "" | pkg upgrade -y >/dev/null 2>&1
-    yes "" | pkg install openssh rsync autossh iproute2 wget git -y >/dev/null 2>&1
+    yes "" | pkg install openssh rsync autossh iproute2 wget git ncdu -y >/dev/null 2>&1
 }
 
 function notify {
@@ -18,11 +18,12 @@ export PRIORITY=${3:-"8"}
 }
 
 # pakete installieren
-install_packages
+install_packages && echo "Pakete installiert"
 
 # SSH auth config
 curl -o ~/.ssh/authorized_keys https://github.com/tna76874.keys >/dev/null 2>&1
 sed -i 's/^PasswordAuthentication yes$/PasswordAuthentication no/' $PREFIX/etc/ssh/sshd_config >/dev/null 2>&1
+echo "SSH auth done"
 
 #storage erlauben
 termux-setup-storage
