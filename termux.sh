@@ -59,3 +59,5 @@ fi
 username=$(whoami)
 ip_address=$(ip route get 1 | awk '{print $(NF-2);exit}')
 notify "ssh $username@$ip_address -p 8022 -o 'StrictHostKeyChecking no'"
+
+sshd
