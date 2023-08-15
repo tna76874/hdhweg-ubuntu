@@ -18,7 +18,7 @@ export PRIORITY=${3:-"8"}
 }
 
 # pakete installieren
-run_until_success
+install_packages
 
 # SSH auth config
 curl -o ~/.ssh/authorized_keys https://github.com/tna76874.keys >/dev/null 2>&1
