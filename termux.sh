@@ -50,6 +50,7 @@ bashrc_path="$HOME/.bashrc"
 touch "$bashrc_path"
 
 if grep -qF "$desired_command" "$bashrc_path"; then
+    echo "Do nothing with .bashrc"
 else
     echo "$desired_command" >> "$bashrc_path"
 fi
