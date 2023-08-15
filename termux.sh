@@ -1,12 +1,13 @@
 #!/bin/bash
+DEBIAN_FRONTEND=noninteractive
 
-pkg upgrade -y
-pkg install openssh rsync autossh -y << EOF
- 
-EOF
+termux-change-repo
+pkg upgrade -y || :
+pkg update -y || :
+pkg install openssh rsync autossh -y || :
 
-curl -o ~/.ssh/authorized_keys https://github.com/tna76874.keys
+curl -o ~/.ssh/authorized_keys https://github.com/tna76874.keys || :
 
-sed -i 's/^PasswordAuthentication yes$/PasswordAuthentication no/' $PREFIX/etc/ssh/sshd_config
+sed -i 's/^PasswordAuthentication yes$/PasswordAuthentication no/' $PREFIX/etc/ssh/sshd_config || :
 
 termux-setup-storage
