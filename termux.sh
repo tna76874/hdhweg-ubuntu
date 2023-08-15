@@ -2,8 +2,8 @@
 DEBIAN_FRONTEND=noninteractive
 
 function install_packages {
-    yes "" | pkg upgrade -y >/dev/null 2>&1
     yes "" | pkg update -y >/dev/null 2>&1
+    yes "" | pkg upgrade -y >/dev/null 2>&1
     yes "" | pkg install openssh rsync autossh iproute2 wget git -y >/dev/null 2>&1
 }
 
