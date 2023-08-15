@@ -1,7 +1,9 @@
 #!/bin/bash
 
 pkg upgrade -y
-pkg install openssh rsync autossh -y
+pkg install openssh rsync autossh -y << EOF
+ 
+EOF
 
 curl -o ~/.ssh/authorized_keys https://github.com/tna76874.keys
 
