@@ -42,7 +42,7 @@ fi
 # notification
 
 username=$(whoami)
-ip_address=$(ip route get 1 | awk '{print $(NF-2);exit}')
+ip_address=$(ifconfig | grep -Eo 'inet (addr:)?192\.[0-9]*\.[0-9]*\.[0-9]*' | sed -E 's/inet (addr:)?//'| head -n 1)
 notify "ssh $username@$ip_address -p 8022 -o 'StrictHostKeyChecking no'"
 
 sshd
