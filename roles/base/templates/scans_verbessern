@@ -1,12 +1,19 @@
 #!/bin/bash
 NAME=${1%.*}
+DATE=$(date '+%Y%m%d_%H%M%S')
+
 QUAL="50"
+
+TMPFOLDER="/tmp/${NAME}_${DATE}"
+mkdir -p $TMPFOLDER
+
+#### FUNCTIONS
 
 function adjust_gray_level() {
     files=()
     while IFS= read -r -d '' file; do
         files+=("$file")
-    done < <(find . -type f -iname "$NAME_o_*.jpg" -print0)
+    done < <(find "$TMPFOLDER" -maxdepth 1 -type f -iname "$NAME_o_*.jpg" -print0)
 
     for file in "${files[@]}"; do
         threshold=$(convert "$file" -colorspace gray -format "%[fx:mean]" info: | awk '{printf "%.0f\n", $1 * 100 * 0.75}')
@@ -14,26 +21,32 @@ function adjust_gray_level() {
     done
 }
 
+function burst_pdf_in_jpeg() {
+    #Convert to jpeg
+    pdftoppm "$NAME".pdf "$TMPFOLDER/${NAME}_o_" -jpeg
+}
+
+### RUN
+
 #Convert to jpeg
-pdftoppm "$NAME".pdf ."$NAME"_o_ -jpeg
+burst_pdf_in_jpeg
 
 # remove dark parts of the image
 adjust_gray_level
 
 #Convert back to pdf
-pdfjam --a4paper ."$NAME"_o_*.jpg --outfile ."$NAME".pdf >/dev/null 2>&1
+pdfjam --a4paper "$TMPFOLDER/$NAME"_o_*.jpg --outfile "$TMPFOLDER/$NAME".pdf >/dev/null 2>&1
 
 #Compress PDF #1
-ps2pdf ."$NAME".pdf ."$NAME"_c.pdf
-mv ."$NAME"_c.pdf ."$NAME".pdf
+ps2pdf "$TMPFOLDER/$NAME".pdf "$TMPFOLDER/.$NAME".pdf
+mv "$TMPFOLDER/.$NAME".pdf "$TMPFOLDER/$NAME".pdf
 
 #Compress PDF #2
-gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=."$NAME"_c.pdf ."$NAME".pdf
-mv ."$NAME"_c.pdf ."$NAME".pdf
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile="$TMPFOLDER/.$NAME".pdf "$TMPFOLDER/$NAME".pdf
+mv "$TMPFOLDER/.$NAME".pdf "$TMPFOLDER/$NAME".pdf
 
 #OCR of PDF
-ocrmypdf ."$NAME".pdf "$NAME"_KLEIN.pdf >/dev/null 2>&1
+ocrmypdf "$TMPFOLDER/$NAME".pdf "$NAME".pdf >/dev/null 2>&1
 
 # Delete working files
-rm ."$NAME".pdf
-rm ."$NAME"_o_*.jpg
+rm -rf "$TMPFOLDER"
