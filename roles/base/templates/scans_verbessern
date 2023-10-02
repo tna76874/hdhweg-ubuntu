@@ -1,18 +1,33 @@
 #!/bin/bash
 NAME=${1%.*}
 QUAL="50"
-THRES="85"
+
+function adjust_gray_level() {
+    files=()
+    while IFS= read -r -d '' file; do
+        files+=("$file")
+    done < <(find . -type f -iname "$NAME_o_*.jpg" -print0)
+
+    for file in "${files[@]}"; do
+        threshold=$(convert "$file" -colorspace gray -format "%[fx:mean]" info: | awk '{printf "%.0f\n", $1 * 100 * 0.75}')
+        convert "$file" -colorspace Gray -density 300 -quality "$QUAL" -white-threshold "$threshold"% "$file"
+    done
+}
 
 #Convert to jpeg
 pdftoppm "$NAME".pdf ."$NAME"_o_ -jpeg
-#Cut dark values
-convert ."$NAME"_o_*.jpg -channel R,G,B -density 300 -quality "$QUAL" -white-threshold "$THRES"% ."$NAME"_g_%04d.jpg
+
+# remove dark parts of the image
+adjust_gray_level
+
 #Convert back to pdf
-pdfjam --a4paper ."$NAME"_g_*.jpg --outfile ."$NAME".pdf >/dev/null 2>&1
+pdfjam --a4paper ."$NAME"_o_*.jpg --outfile ."$NAME".pdf >/dev/null 2>&1
+
 #Compress PDF #1
 ps2pdf ."$NAME".pdf ."$NAME"_c.pdf
 mv ."$NAME"_c.pdf ."$NAME".pdf
-#Comporess PDF #2
+
+#Compress PDF #2
 gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=."$NAME"_c.pdf ."$NAME".pdf
 mv ."$NAME"_c.pdf ."$NAME".pdf
 
@@ -21,5 +36,4 @@ ocrmypdf ."$NAME".pdf "$NAME"_KLEIN.pdf >/dev/null 2>&1
 
 # Delete working files
 rm ."$NAME".pdf
-rm ."$NAME"_g_*.jpg
 rm ."$NAME"_o_*.jpg
