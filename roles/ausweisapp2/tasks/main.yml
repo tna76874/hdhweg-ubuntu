@@ -1,0 +1,61 @@
+---
+- name: Installiere apt-Pakete
+  become: true
+  ansible.builtin.apt:
+    name: "{{ ausweis_app_apt }}"
+    state: present
+    install_recommends: yes
+
+- name: Erstellen des Basis-Download-Pfads, wenn er nicht existiert
+  file:
+    path: "{{ scl_download_base_path }}"
+    owner: "root"
+    state: directory
+
+- name: Überprüfen, ob das Archiv bereits vorhanden ist
+  stat:
+    path: "{{ scl_driver_base_url }}/{{ scl_driver_name }}"
+  register: zip_file
+
+- name: Herunterladen des ZIP-Archivs, wenn es nicht vorhanden ist
+  become: yes
+  get_url:
+    url: "{{ scl_driver_base_url }}/{{ scl_driver_name }}"
+    dest: "{{ scl_download_base_path }}/{{ scl_driver_name }}"
+  when: not zip_file.stat.exists
+
+- name: Entpacken des ZIP-Archivs
+  become: yes
+  unarchive:
+    src: "{{ scl_download_base_path }}/{{ scl_driver_name }}"
+    dest: "{{ scl_download_extract_path }}"
+
+- name: Suche nach der Datei rekursiv
+  find:
+    paths: "{{ scl_download_extract_path }}"
+    patterns: "sclgeneric_*64bit.tar.gz"
+    recurse: yes
+  register: gefunden
+
+- name: Extrahiere den Pfad, falls Datei gefunden wurde
+  set_fact:
+    scl_driver_64_archive_path: "{{ gefunden.files[0].path if gefunden.files | length > 0 else '' }}"
+
+- name: Entpacke tar.gz-Datei
+  become: true
+  ansible.builtin.unarchive:
+    src: "{{ scl_driver_64_archive_path }}"
+    dest: "{{ scl_download_extract_path }}"
+    remote_src: true
+    extra_opts: "--strip-components=1"
+  when: scl_driver_64_archive_path != ''
+  notify:
+    - install
+
+- name: Copy Info.plist to destination
+  ansible.builtin.copy:
+    src: Info.plist
+    dest: /usr/lib/pcsc/drivers/SCLGENERIC.bundle/Contents/
+  become: true
+  notify:
+    - Restart pcscd service

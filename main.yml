@@ -147,6 +147,15 @@
   roles:
     - backscrub
 
+- name: Install ausweisapp2
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - ausweisapp2
+  roles:
+    - ausweisapp2
+
 - name: Install Gotify desktop notification
   hosts: localhost
   become: yes

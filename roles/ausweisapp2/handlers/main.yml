@@ -1,0 +1,13 @@
+---
+- name: install
+  become: true
+  shell: "./install.sh"
+  args:
+    chdir: "{{ scl_download_extract_path }}"
+  notify:
+    - Restart pcscd service
+
+- name: Restart pcscd service
+  systemd:
+    name: pcscd.service
+    state: restarted

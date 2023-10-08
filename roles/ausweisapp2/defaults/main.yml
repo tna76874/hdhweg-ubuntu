@@ -1,0 +1,18 @@
+---
+
+ausweis_app_apt:
+  - ausweisapp2
+  - qml-module-qtgraphicaleffects
+  - qml-module-qtqml-models2
+  - qml-module-qtquick-controls2
+  - qml-module-qtquick-layouts
+  - libusb-dev
+  - libifd-cyberjack6
+  - libccid
+  - libpcsclite-dev
+  - pcsc-tools
+
+scl_driver_name: Linux_Driver_Ver2.09.zip
+scl_driver_base_url: https://files.identiv.com/products/smart-card-readers/contactless/scl010-011
+scl_download_base_path: /srv/scl
+scl_download_extract_path: "{{ scl_download_base_path }}"
