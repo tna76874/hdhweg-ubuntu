@@ -270,6 +270,7 @@ config_flatpak_list_1:
   - { package: "com.github.jeromerobert.pdfarranger", repo: "flathub", state: present }
   - { package: "org.libreoffice.LibreOffice", repo: "flathub", state: present }
   - { package: "com.vscodium.codium", repo: "flathub", state: present }
+  - { package: "com.jetbrains.IntelliJ-IDEA-Community", repo: "flathub", state: present }
   - { package: "re.sonny.Junction", repo: "flathub", state: present }
   # Browser
   - { package: "org.chromium.Chromium", repo: "flathub", state: present }
