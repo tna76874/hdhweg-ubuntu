@@ -50,4 +50,5 @@
     chdir: "{{ font_path }}"
     warn: false
   changed_when: false
+  ignore_errors: true
   become: yes
