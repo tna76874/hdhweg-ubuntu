@@ -101,6 +101,7 @@
     group: "{{ user_item }}"
   loop:
     - {src: "pdf_verkleinern", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/pdf_verkleinern", mode: "0755"}
+    - {src: "pdf2px.j2", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/pdf2px", mode: "0755"}
     - {src: "scans_verbessern", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/scans_verbessern", mode: "0755"}
     - {src: "pdf_zusammenfassen", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/pdf_zusammenfassen", mode: "0755"}
     - {src: "img2pdf.sh", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/img2pdf", mode: "0755"}

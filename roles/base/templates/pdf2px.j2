@@ -1,0 +1,34 @@
+#!/bin/bash
+bname=${1%.*}
+NAME=$(date '+%Y%m%d_%H%M%S')
+
+DPI=200
+
+TMPFOLDER="/tmp/$NAME"
+mkdir -p $TMPFOLDER
+
+function showpdpi() {
+    # Ausgabe von pdfimages -list speichern
+    output=$(pdfimages -list "$1" | tail -n +3)
+
+    # Maximale Werte von x-ppi und y-ppi extrahieren
+    max_x_ppi=$(echo "$output" | awk 'BEGIN {max=0} {if ($13 > max) max=$13} END {print max}')
+    max_y_ppi=$(echo "$output" | awk 'BEGIN {max=0} {if ($14 > max) max=$14} END {print max}')
+
+    # DPI berechnen
+    DPI=$(awk "BEGIN {printf \"%.2f\", sqrt(($max_x_ppi)^2 + ($max_y_ppi)^2)}")
+
+    echo "$max_x_ppi"
+    echo "$max_y_ppi"
+    # Ergebnis ausgeben
+    echo "Die DPI des Bildes sind: $dpi"
+}
+
+pdftoppm "$1" "$TMPFOLDER/$1" -jpeg -r $DPI
+
+mv "${bname}.pdf" "${bname}_orig.pdf"
+
+convert -density "$DPI" "$TMPFOLDER/$1"*.jpg "${bname}.pdf"
+
+rm -rf "${TMPFOLDER}"
+
