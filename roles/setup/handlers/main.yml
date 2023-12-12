@@ -30,6 +30,7 @@
 
 - name: update flatpaks
   shell: "flatpak update -y"
+  ignore_errors: yes
 
 - name: unmask flatpaks
   shell: "flatpak mask --remove {{ item.package }}"
