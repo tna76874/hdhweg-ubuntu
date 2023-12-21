@@ -1,0 +1,77 @@
+#!/bin/bash
+
+show_help() {
+    echo "Usage: $0 [options]"
+    echo "Options:"
+    echo "  -b, --bic           BIC code (example: BFSWDE33BER)"
+    echo "  -rn, --recipient_name   Recipient name (example: Wikimedia Foerdergesellschaft)"
+    echo "  -i, --iban          IBAN (example: DE33100205000001194700)"
+    echo "  -a, --amount        Amount (example: 34.60)"
+    echo "  -d, --description   Description (example: Spende fuer Wikipedia)"
+    echo "  -o, --output        Output filename for QR code (example: qr_code). Defaults generated based on content"
+    echo "  -h, --help          Show this help message"
+    exit 1
+}
+
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        -b|--bic) bic="$2"; shift ;;
+        -rn|--recipient_name) recipient_name="$2"; shift ;;
+        -i|--iban) iban="$2"; shift ;;
+        -a|--amount) amount="$2"; shift ;;
+        -d|--description) description="$2"; shift ;;
+        -o|--output) output_filename="$2"; shift ;;
+        -h|--help) show_help ;;
+        *) echo "Unbekanntes Argument: $1"; show_help ;;
+    esac
+    shift
+done
+
+if ! [[ $amount =~ ^[0-9]+(\.[0-9]{1,2})?$ ]]; then
+    echo "Ungültiger Betrag. Geben Sie einen gültigen Dezimalbetrag ein."
+    show_help
+fi
+
+# Check if all required parameters are provided
+if [ -z "$bic" ] || [ -z "$recipient_name" ] || [ -z "$iban" ] || [ -z "$amount" ] || [ -z "$description" ]; then
+    echo "Fehlende Parameter. Bitte geben Sie alle erforderlichen Parameter an."
+    show_help
+fi
+
+# generate filename
+if [ -z "$output_filename" ]; then
+    sanitized_filename="${bic}_${recipient_name}_${iban}_${amount//./x}_${description}"
+    output_filename=$(echo "$sanitized_filename" | tr -cd '[:alnum:]._-' )
+fi
+
+function run_inkscape() {
+    if command -v inkscape &> /dev/null; then
+        inkscape "$@"
+    else
+        flatpak run org.inkscape.Inkscape "$@"
+    fi
+}
+
+# Erstellen des QR-Texts
+read -r -d '' qr_text <<EOF
+BCD
+001
+1
+SCT
+${bic}
+${recipient_name}
+${iban}
+EUR${amount}
+
+
+${description}
+
+EOF
+
+# Erstellen des temporären SVG-Codes
+tmp_qr=$(mktemp "./qr_code_temp.XXXXXXXXXX")
+
+# Erstellen des QR-Codes und Exportieren als PDF
+qrencode -l M -t SVG --output="$tmp_qr".svg "$qr_text" && run_inkscape "$tmp_qr".svg --export-filename=${output_filename}.pdf && rm "$tmp_qr".svg && rm "$tmp_qr"
+qrencode -l M -t PNG --output="$output_filename".png "$qr_text"
+
