@@ -43,9 +43,6 @@ alias uninstall_themes="sudo ansible-playbook {{ config_repo_folder }}/main.yml 
 # downgrade to basic software packages
 alias downgrade="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t downgrade -e config_downgrade=True"
 
-# install adblocking pihole
-alias install_pihole="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t install_pihole -e config_install_state=1"
-
 # uninstall adblocking pihole
 alias uninstall_pihole="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t uninstall_pihole -e config_install_state=0"
 

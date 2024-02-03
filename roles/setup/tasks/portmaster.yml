@@ -1,0 +1,49 @@
+- name: Führe das uname-Kommando aus, um die Kernel-Version zu überprüfen
+  command: uname -r
+  register: kernel_version
+
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: Setze Variable preflight_portmaster_kernel_valid basierend auf der Kernel-Version
+  set_fact:
+    preflight_portmaster_kernel_valid: "{{ (kernel_version.stdout.split('.')[0] | int > 5) or ((kernel_version.stdout.split('.')[0] | int == 5) and (kernel_version.stdout.split('.')[1] | int >= 7)) }}"
+    preflight_portmaster_deb_is_installed: "{{ 'portmaster' in ansible_facts.packages }}"
+    portmaster_deb_url: "https://updates.safing.io/latest/linux_amd64/packages/portmaster-installer.deb"
+
+- name: Überprüfe, ob portmaster installiert ist.
+  debug:
+    msg: "Portmaster ist bereits installiert"
+  when: preflight_portmaster_deb_is_installed
+
+- name: Ensure initial portmaster script
+  block:
+    - apt:
+        deb: "{{ portmaster_deb_url }}"
+        state: present
+      register: install_result
+
+    - name: Install missing dependencies
+      apt:
+        name: "*"
+        state: present
+      when: install_result.failed
+
+    - name: reload systemd
+      systemd:
+        daemon_reload: yes
+
+  rescue:
+    - name: Install missing dependencies
+      apt:
+        name: "*"
+        state: present
+  when: preflight_portmaster_deb_is_installed == False and preflight_portmaster_kernel_valid == True
+
+- name: Aktiviere und starte den Portmaster-Dienst
+  systemd:
+    name: portmaster
+    enabled: yes
+    state: started
+  when: preflight_portmaster_deb_is_installed == False and preflight_portmaster_kernel_valid == True

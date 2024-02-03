@@ -135,3 +135,6 @@
   when: config_mimetypes|bool
 
 - import_tasks: debloater.yml
+
+- include_tasks: portmaster.yml
+  when: portmaster_enable|default(False)|bool
