@@ -457,5 +457,4 @@ extra_roles: []
 
 
 # PORTMASTER
-portmaster_deb_url: "https://updates.safing.io/latest/linux_amd64/packages/portmaster-installer.deb"
 portmaster_enabled: 

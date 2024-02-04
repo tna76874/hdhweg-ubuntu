@@ -1,0 +1,15 @@
+{
+    "core": {
+      "expertiseLevel": "expert",
+      "apiKeys":["{{ portmaster_api_key }}?read=user&write=user"]
+    },
+    "dns": {
+      "useStaleCache": true,
+      "nameservers" : {{ portmaster_nameservers | to_json(ensure_ascii=False) }}
+    },
+    "filter": {
+      "defaultAction": "permit",
+      "customListFile": "{{ portmaster_blocklist }}" 
+    }
+  }
+  
