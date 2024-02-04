@@ -86,7 +86,6 @@
     - never
     - docker
     - bigsetup
-    - install_pihole
     - removebg
   roles:
     - docker
@@ -170,17 +169,6 @@
   roles:
     - rust
     - gotify
-
-- name: Install pihole
-  hosts: localhost
-  become: yes
-  tags: 
-    - never
-    - pihole
-    - install_pihole
-    - uninstall_pihole
-  roles:
-    - pihole
 
 - name: Run extra roles
   hosts: localhost
