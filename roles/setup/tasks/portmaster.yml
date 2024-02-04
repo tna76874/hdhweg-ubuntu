@@ -1,29 +1,25 @@
 - name: Check if linux kernel is valid for portmaster
   set_fact:
     preflight_portmaster_kernel_valid: "{{ (ansible_kernel.split('.')[0] | int > 5) or ((ansible_kernel.split('.')[0] | int == 5) and (ansible_kernel.split('.')[1] | int >= 7)) }}"
-    preflight_portmaster_deb_is_installed: False
-    portmaster_install_status: "{{ portmaster_enabled|default(True)|bool }}"
+    preflight_portmaster_deb_is_installed: "{{ 'portmaster' in ansible_facts.packages }}"
+    portmaster_install_status: "{{ portmaster_enabled is not defined or portmaster_enabled is none or portmaster_enabled }}"
 
+#### DEBUG MESSAGES ###########
 - name: Debug message
   debug:
     msg: "{{ 'Valid kernel for portmaster' if preflight_portmaster_kernel_valid else 'Invalid kernel for portmaster' }}"
   when: portmaster_debug|default(False)
 
-- name: Check installation status
-  block:
-    - name: Gather the package facts
-      ansible.builtin.package_facts:
-        manager: auto
+- name: Debug message
+  debug:
+    msg: "{{ 'Portmaster is installied' if preflight_portmaster_deb_is_installed else 'Portmaster is not installied' }}"
+  when: portmaster_debug|default(False)
 
-    - name: Check if portmaster is installed
-      set_fact:
-        preflight_portmaster_deb_is_installed: "{{ 'portmaster' in ansible_facts.packages }}"
-
-    - name: Debug message
-      debug:
-        msg: "{{ 'Portmaster is installied' if preflight_portmaster_deb_is_installed else 'Portmaster is not installied' }}"
-      when: portmaster_debug|default(False)
-  when: preflight_portmaster_kernel_valid
+- name: Debug message
+  debug:
+    msg: "Installation status: {{ portmaster_install_status }}"
+  when: portmaster_debug|default(False)
+#################################
 
 - name: Ensure initial portmaster script
   block:
@@ -55,6 +51,8 @@
     enabled: yes
     state: started
   when: preflight_portmaster_deb_is_installed == False and preflight_portmaster_kernel_valid == True and portmaster_install_status == True
+
+########### UNINSTALL ###########
 
 - name: Uninstall portmaster
   block:
