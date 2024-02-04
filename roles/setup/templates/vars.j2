@@ -69,3 +69,6 @@ extra_roles:
       key: "{{ thisrole.key }}"
 {% endfor %}
 {% endif %}
+
+# portmaster
+portmaster_enabled: {{ portmaster_enabled|default(None) }}

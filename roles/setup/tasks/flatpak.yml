@@ -8,10 +8,26 @@
     - { repo: "https://dl.flathub.org/repo/flathub.flatpakrepo", name: "flathub", state: "present" }
     - { repo: "https://flathub.org/beta-repo/flathub-beta.flatpakrepo", name: "flathub-beta", state: "present" }
 
-- name: Ensure verify flatpaks
-  shell: "flatpak repair"
-  become: yes
-  when: verify_flatpak|default(False)
+# UPDATING FOR EACH PACKAGE
+# - name: update flatpaks
+#   shell: "flatpak update {{ item.package }} -y"
+#   with_items: "{{ config_flatpak_list }}"
+#   when: "(item.version is not defined) and (item.state=='present')"
+
+# - name: repair flatpak
+#   shell: "flatpak repair"
+#   become: yes
+
+- name: Update and repair flatpaks
+  block:
+    - name: update flatpaks
+      shell: "flatpak update -y"
+      become: yes
+  rescue:
+    - name: repair flatpak
+      shell: "flatpak repair"
+      become: yes
+  ignore_errors: yes
 
 - name: Ensure flatpak packages
   flatpak:
@@ -32,7 +48,6 @@
   assert: { that: true, quiet: true }
   changed_when: true
   notify:
-    - update flatpaks
     - unmask flatpaks
     - update flatpak versions
   when: "'deploy' not in ansible_run_tags"

@@ -1,21 +1,29 @@
-- name: Führe das uname-Kommando aus, um die Kernel-Version zu überprüfen
-  command: uname -r
-  register: kernel_version
-
-- name: Gather the package facts
-  ansible.builtin.package_facts:
-    manager: auto
-
-- name: Setze Variable preflight_portmaster_kernel_valid basierend auf der Kernel-Version
+- name: Check if linux kernel is valid for portmaster
   set_fact:
-    preflight_portmaster_kernel_valid: "{{ (kernel_version.stdout.split('.')[0] | int > 5) or ((kernel_version.stdout.split('.')[0] | int == 5) and (kernel_version.stdout.split('.')[1] | int >= 7)) }}"
-    preflight_portmaster_deb_is_installed: "{{ 'portmaster' in ansible_facts.packages }}"
-    portmaster_deb_url: "https://updates.safing.io/latest/linux_amd64/packages/portmaster-installer.deb"
+    preflight_portmaster_kernel_valid: "{{ (ansible_kernel.split('.')[0] | int > 5) or ((ansible_kernel.split('.')[0] | int == 5) and (ansible_kernel.split('.')[1] | int >= 7)) }}"
+    preflight_portmaster_deb_is_installed: False
+    portmaster_install_status: "{{ portmaster_enabled|default(True)|bool }}"
 
-- name: Überprüfe, ob portmaster installiert ist.
+- name: Debug message
   debug:
-    msg: "Portmaster ist bereits installiert"
-  when: preflight_portmaster_deb_is_installed
+    msg: "{{ 'Valid kernel for portmaster' if preflight_portmaster_kernel_valid else 'Invalid kernel for portmaster' }}"
+  when: portmaster_debug|default(False)
+
+- name: Check installation status
+  block:
+    - name: Gather the package facts
+      ansible.builtin.package_facts:
+        manager: auto
+
+    - name: Check if portmaster is installed
+      set_fact:
+        preflight_portmaster_deb_is_installed: "{{ 'portmaster' in ansible_facts.packages }}"
+
+    - name: Debug message
+      debug:
+        msg: "{{ 'Portmaster is installied' if preflight_portmaster_deb_is_installed else 'Portmaster is not installied' }}"
+      when: portmaster_debug|default(False)
+  when: preflight_portmaster_kernel_valid
 
 - name: Ensure initial portmaster script
   block:
@@ -39,11 +47,23 @@
       apt:
         name: "*"
         state: present
-  when: preflight_portmaster_deb_is_installed == False and preflight_portmaster_kernel_valid == True
+  when: preflight_portmaster_deb_is_installed == False and preflight_portmaster_kernel_valid == True and portmaster_install_status == True
 
 - name: Aktiviere und starte den Portmaster-Dienst
   systemd:
     name: portmaster
     enabled: yes
     state: started
-  when: preflight_portmaster_deb_is_installed == False and preflight_portmaster_kernel_valid == True
+  when: preflight_portmaster_deb_is_installed == False and preflight_portmaster_kernel_valid == True and portmaster_install_status == True
+
+- name: Uninstall portmaster
+  block:
+    - name: Ensure portmaster package is absent
+      apt:
+        name: portmaster
+        state: absent
+
+    - name: reload systemd
+      systemd:
+        daemon_reload: yes
+  when: preflight_portmaster_deb_is_installed == True and preflight_portmaster_kernel_valid == True and portmaster_install_status == False

@@ -22,16 +22,6 @@
   when: config_pipewire_enabled|bool
   ignore_errors: yes
 
-# UPDATING FOR EACH PACKAGE
-# - name: update flatpaks
-#   shell: "flatpak update {{ item.package }} -y"
-#   with_items: "{{ config_flatpak_list }}"
-#   when: "(item.version is not defined) and (item.state=='present')"
-
-- name: update flatpaks
-  shell: "flatpak update -y"
-  ignore_errors: yes
-
 - name: unmask flatpaks
   shell: "flatpak mask --remove {{ item.package }}"
   with_items: "{{ config_flatpak_list }}"
