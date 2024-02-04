@@ -9,7 +9,9 @@
     },
     "filter": {
       "defaultAction": "permit",
-      "customListFile": "{{ portmaster_blocklist }}" 
+      "customListFile": "{{ portmaster_blocklist }}",
+      "blockInbound": true,
+      "blockLocal": false
     }
   }
   
