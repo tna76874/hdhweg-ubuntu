@@ -10,42 +10,14 @@
       - software-properties-common
     state: present
 
-- name: Install apt keyrings directory
-  become: yes
-  file:
-    path: /etc/apt/keyrings
-    state: directory
-    mode: '0755'
-
-- name: Add Docker GPG apt Key
-  become: yes
+- name: Ensure Docker Key is present
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
 
-- name: Download Docker GPG Key
-  get_url:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    dest: /etc/apt/keyrings/docker.asc
-
-- name: Change permissions of Docker GPG Key
-  file:
-    path: /etc/apt/keyrings/docker.asc
-    mode: '0644'
-
-- name: Set Docker repository fact
-  set_fact:
-    docker_repository: "deb [arch={{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }} signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
-
-- name: Ensure Docker repository file
-  copy:
-    content: |
-      {{ docker_repository }}
-    dest: /etc/apt/sources.list.d/docker.list
-
 - name: Ensure Docker Repository is present
   apt_repository:
-    repo: "{{ docker_repository }}"
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_facts['lsb']['codename'] }} stable
     state: present
     filename: docker
 
@@ -61,12 +33,9 @@
       - docker-ce
       - docker-ce-cli
       - containerd.io
-      - docker-buildx-plugin
-      - docker-compose-plugin
       - python3
       - python3-pip
     state: present
-    update_cache: true
 
 - name: Ensure pip packages
   pip:
@@ -77,48 +46,13 @@
   loop:
     - { name: "pip", executable: "pip3", state: "latest"}
     - { name: "requests", executable: "pip3", state: "latest"}
-    - { name: "github3.py", executable: "pip3", state: "latest"}
-    - { name: "docker-compose", executable: "pip3", state: "absent"}
 
-- name: Get latest Docker Compose release tag
-  community.general.github_release:
-    user: docker
-    repo: compose
-    action: latest_release
-  register: compose_release
-
-- name: Check if docker-compose binary exists
-  ansible.builtin.stat:
-    path: /usr/local/bin/docker-compose
-  register: docker_compose_binary
-
-- name: Set docker_compose_upgrade_required if docker-compose is not installed
-  set_fact:
-    docker_compose_upgrade_required: true
-  when: not docker_compose_binary.stat.exists
-
-- name: Get Docker Compose version
-  shell: /usr/local/bin/docker-compose version
-  register: docker_compose_version_output
-  when: docker_compose_binary.stat.exists
-
-- name: Parse Docker Compose version
-  set_fact:
-    docker_compose_version: "{{ docker_compose_version_output.stdout.split(' ')[-1] }}"
-  when: docker_compose_binary.stat.exists
-
-- name: Compare Docker Compose versions
-  set_fact:
-    docker_compose_upgrade_required: "{{ docker_compose_version is version_compare(compose_release.tag, '<') }}"
-  when: docker_compose_binary.stat.exists
-
-- name: Ensure Docker Compose binary
-  ansible.builtin.uri:
-    url: "https://github.com/docker/compose/releases/download/{{ compose_release.tag }}/docker-compose-linux-{{ ansible_architecture }}"
-    dest: /usr/local/bin/docker-compose
-    mode: 'ugo+rx'
-  become: yes
-  when: docker_compose_upgrade_required
+- name: Ensure docker-compose not installed with pip
+  pip:
+    name: docker-compose
+    executable: pip3
+    state: absent
+  become: true
 
 - name: Determine existing sudo users
   shell: 'grep sudo /etc/group | cut -d: -f4 | tr , "\n"'
@@ -133,41 +67,26 @@
     state: present
   with_items: '{{ sudo_users.stdout_lines }}'
 
+##GETTING COMPOSE BINARY
+- name: Query compose tags from github
+  uri:
+    url: https://api.github.com/repos/docker/compose/releases?page_size=10000
+    return_content: true
+  register: compose_github_tags
+  ignore_errors: yes                                          
 
-## Pruning unused docker images
-- name: Prune docker stuff
-  community.docker.docker_prune:
-    containers: yes
-    images: yes
-    networks: no
-    volumes: no
-    builder_cache: yes
-  when: docker_prune_images|default(False)|bool
+- name: Register compose_tag
+  set_fact:
+    compose_tag:  "{{ (compose_github_tags.json | rejectattr('name', 'contains', '-') | selectattr('name', 'contains', 'v2') | list)[0]['name'] }}"
 
+- name: Get compose binary github url
+  set_fact:
+    compose_bin_url:  "{{ (((compose_github_tags.json | selectattr('name', 'equalto', compose_tag) | list)[0]['assets']) | selectattr('name', 'equalto', 'docker-compose-linux-x86_64') | list)[0]['browser_download_url']  }}"
 
-## GETTING COMPOSE BINARY
-- name: getting latest compose binary
-  block:
-    - name: Query compose tags from github
-      uri:
-        url: https://api.github.com/repos/docker/compose/releases?page_size=10000
-        return_content: true
-      register: compose_github_tags
-      ignore_errors: yes
-
-    - name: Register compose_tag
-      set_fact:
-        compose_tag:  "{{ (compose_github_tags.json | rejectattr('name', 'contains', '-') | selectattr('name', 'contains', 'v2') | list)[0]['name'] }}"
-
-    - name: Get compose binary github url
-      set_fact:
-        compose_bin_url:  "{{ (((compose_github_tags.json | selectattr('name', 'equalto', compose_tag) | list)[0]['assets']) | selectattr('name', 'equalto', 'docker-compose-linux-x86_64') | list)[0]['browser_download_url']  }}"
-
-    - name: Install docker-compose from official github repo
-      get_url:
-        url : "{{ compose_bin_url }}"
-        dest: /usr/local/bin/docker-compose
-        mode: 'u+x,g+x'
-        group: 'docker'
-      become: yes
-  when: lastest_compose|default(False)|bool
+- name: Install docker-compose from official github repo
+  get_url:
+    url : "{{ compose_bin_url }}"
+    dest: /usr/local/bin/docker-compose
+    mode: 'u+x,g+x'
+    group: 'docker'
+  become: yes
