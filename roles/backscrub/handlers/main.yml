@@ -98,6 +98,7 @@
     - "./install-client"
     - "./install-video"
     - "./install-sound"
+    - "./install-dkms {{ droidcam_resoultion.width }} {{ droidcam_resoultion.height }}"
 
 - name: ensure v4l2loopback_dc is loaded
   modprobe:
