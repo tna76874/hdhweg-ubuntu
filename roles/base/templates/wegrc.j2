@@ -1,47 +1,47 @@
 # run the main playbook to ensure updated packages and proper configs
-alias update="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup -e config_generate_config_file=1 -e recompile_shc=1"
+alias update="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t setup -e config_generate_config_file=1 -e recompile_shc=1"
 
 # run the base playbook to ensure proper configs
-alias update_config="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t base -e recompile_shc=1"
+alias update_config="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t base -e recompile_shc=1"
 
 # run the main playbook to ensure updated packages and proper configs including latest rtw89_module
-alias wifi_update="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup -e ensure_rtw89_module=True"
+alias wifi_update="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t setup -e ensure_rtw89_module=True"
 
 # run the main playbook + enhanced packages
-alias bigupdate="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t bigsetup -e config_extended_software=yes"
+alias bigupdate="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t bigsetup -e config_extended_software=yes"
 
 # install docker
-alias install_docker="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t docker"
+alias install_docker="sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t docker"
 
 # install webcam tools
-alias install_webcam="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t webcam"
+alias install_webcam="sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t webcam"
 
 # install fritzbox tools
-alias install_fritzbox="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t fritzbox"
+alias install_fritzbox="sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t fritzbox"
 
 # install rembg
-alias install_rembg="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup -e enable_rembg=True"
+alias install_rembg="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t setup -e enable_rembg=True"
 
 # install removebg API
-alias install_removebgapi="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t removebg"
+alias install_removebgapi="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t removebg"
 
 # install gotify-desktop. Append server and token: -e gotify_host=myserver -e gotify_token=mytoken
-alias install_gotify="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t gotify"
+alias install_gotify="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t gotify"
 
 # install widgets
-alias install_widgets="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t widgets -e widget_force_install=1"
+alias install_widgets="sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t widgets -e widget_force_install=1"
 
 # install themes
-alias install_themes="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t themes,widgets -e widget_force_install=1"
+alias install_themes="sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t themes,widgets -e widget_force_install=1"
 
 # install ausweisapp
-alias install_ausweisapp="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t ausweisapp2"
+alias install_ausweisapp="sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t ausweisapp2"
 
 # uninstall whitesur gdm and theme
-alias uninstall_themes="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t themes -e uninstall=True"
+alias uninstall_themes="sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t themes -e uninstall=True"
 
 # downgrade to basic software packages
-alias downgrade="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t downgrade -e config_downgrade=True"
+alias downgrade="sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t downgrade -e config_downgrade=True"
 
 # build fakecam docker image
 alias build_fakecam="docker-compose -f /srv/webcam/fakecam/docker-compose.yml --env-file /srv/webcam/fakecam/docker_defaults.env build --no-cache --pull"
@@ -50,10 +50,10 @@ alias build_fakecam="docker-compose -f /srv/webcam/fakecam/docker-compose.yml --
 alias reinstall="wget -qO setup.sh {{ config_repo_setup }} && chmod +x setup.sh  && sudo bash setup.sh && rm setup.sh"
 
 # uninstall this playbook from system
-alias uninstall="sudo git -C {{ config_repo_folder }} pull && sudo ansible-playbook {{ config_repo_folder }}/main.yml -t base -e config_uninstall_playbook=yes"
+alias uninstall="sudo git -C {{ config_repo_folder }} pull && sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t base -e config_uninstall_playbook=yes"
 
 # disable tracker to reduce system load
-alias disable_tracker="sudo ansible-playbook {{ config_repo_folder }}/main.yml -t base -e config_disable_tracker=True"
+alias disable_tracker="sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t base -e config_disable_tracker=True"
 
 # get flatpak commit infos
 alias flatpakinfo="flatpak remote-info --log flathub"
@@ -62,8 +62,8 @@ alias flatpakinfo="flatpak remote-info --log flathub"
 alias cssh='ssh -o StrictHostKeyChecking=accept-new -o ProxyCommand="/usr/local/bin/cloudflared access ssh --hostname %h"'
 
 # support buttons in favorites
-alias update_support='sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup -e config_generate_config_file=1 -e config_show_support_in_favorites=1'
-alias update_support_hide='sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook {{ config_repo_folder }}/main.yml -t setup -e config_generate_config_file=1 -e config_show_support_in_favorites=0'
+alias update_support='sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t setup -e config_generate_config_file=1 -e config_show_support_in_favorites=1'
+alias update_support_hide='sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t setup -e config_generate_config_file=1 -e config_show_support_in_favorites=0'
 
 # edit config file
 alias edit_config='sudo gedit /root/.config/vars_sysconfig.yml'

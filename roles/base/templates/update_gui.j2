@@ -27,9 +27,9 @@ done
 
 # run playbook
 if [[ "$SHUTDOWN" -eq "1" ]]; then
-  sudo -S /bin/bash -c 'sudo /usr/bin/git -C {{ config_repo_folder }}  pull||:; sudo /usr/bin/ansible-playbook {{ config_repo_folder }}/main.yml -t setup && systemctl {{ shutdown_after_update_systemctl_cmd }}'
+  sudo -S /bin/bash -c 'sudo /usr/bin/git -C {{ config_repo_folder }}  pull||:; sudo /usr/bin/ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t setup && systemctl {{ shutdown_after_update_systemctl_cmd }}'
 else
-  sudo -S /bin/bash -c 'sudo /usr/bin/git -C {{ config_repo_folder }}  pull||:; sudo /usr/bin/ansible-playbook {{ config_repo_folder }}/main.yml -t setup'
+  sudo -S /bin/bash -c 'sudo /usr/bin/git -C {{ config_repo_folder }}  pull||:; sudo /usr/bin/ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t setup'
 fi
 
 # run cleanup
