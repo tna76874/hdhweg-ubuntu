@@ -13,13 +13,6 @@
     state: latest
     install_recommends: yes
 
-- name: Ensure latest manim docker image
-  docker_image:
-    name: manimcommunity/manim:latest
-    source: pull
-  ignore_errors: yes
-  when: '"docker-ce" in ansible_facts.packages'
-
 - name: Ensure pip packages
   pip:
     name: "{{ item.name }}"
@@ -42,6 +35,13 @@
     - { name: "docker==6.1.3", executable: "pip3", state: "present"}
     - { name: "docker-compose", executable: "pip3", state: "{{ 'latest' if  docker_compose_pip_enabled | default(True) | bool else 'absent' }}"}
   ignore_errors: yes
+
+- name: Ensure latest manim docker image
+  docker_image:
+    name: manimcommunity/manim:latest
+    source: pull
+  ignore_errors: yes
+  when: '"docker-ce" in ansible_facts.packages and pull_manim|default(False)'
 
 - name: Ensure steam-devices if steam present
   block:
