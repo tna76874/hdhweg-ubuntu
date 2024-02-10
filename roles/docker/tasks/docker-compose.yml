@@ -55,7 +55,7 @@
 
 - name: Ensure Docker Compose binary
   ansible.builtin.uri:
-    url: "https://github.com/docker/compose/releases/download/{{ compose_release.tag }}/docker-compose-linux-{{ ansible_architecture }}"
+    url: "https://github.com/docker/compose/releases/download/{{ compose_release.tag }}/docker-compose-linux-{{ docker_compose_arch }}"
     dest: /usr/local/bin/docker-compose
     mode: 'ugo+rx'
   become: yes
