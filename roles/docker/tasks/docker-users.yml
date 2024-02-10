@@ -1,8 +1,4 @@
 ---
-- name: Determine existing sudo users
-  shell: 'grep sudo /etc/group | cut -d: -f4 | tr , "\n"'
-  changed_when: false 
-  register: sudo_users
 
 - name: Ensure Users are in Docker group
   user:
