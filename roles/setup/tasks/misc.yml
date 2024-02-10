@@ -33,6 +33,8 @@
     - { name: "git+https://github.com/tna76874/mdl.git", executable: "pip3", state: "latest"}
     - { name: "git+https://github.com/tna76874/renamer.git", executable: "pip3", state: "latest"}
     - { name: "envelope", executable: "pip3", state: "latest"}
+    - { name: "paramiko", executable: "pip3", state: "latest"}
+    - { name: "cryptography", executable: "pip3", state: "latest"}
   ignore_errors: yes
 
 - name: Ensure steam-devices if steam present
