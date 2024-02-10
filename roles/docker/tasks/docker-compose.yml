@@ -1,0 +1,62 @@
+---
+- name: Ensure pip packages
+  pip:
+    name: "{{ item.name }}"
+    executable: "{{ item.executable }}"
+    state: "{{ item.state }}"
+  become: true
+  loop:
+    - { name: "github3.py", executable: "pip3", state: "latest"}
+
+- name: Get latest Docker Compose release tag
+  community.general.github_release:
+    user: docker
+    repo: compose
+    action: latest_release
+  register: compose_release
+
+- name: Check if docker-compose binary exists
+  ansible.builtin.stat:
+    path: /usr/local/bin/docker-compose
+  register: docker_compose_binary
+
+- name: Set docker_compose_upgrade_required if docker-compose is not installed
+  set_fact:
+    docker_compose_upgrade_required: true
+  when: not docker_compose_binary.stat.exists
+
+- name: Check version
+  block:
+  - name: Get Docker Compose version
+    shell: /usr/local/bin/docker-compose version
+    register: docker_compose_version_output
+    when: docker_compose_binary.stat.exists
+
+  - name: Parse Docker Compose version
+    set_fact:
+      docker_compose_version: "{{ docker_compose_version_output.stdout.split(' ')[-1] }}"
+    when: docker_compose_binary.stat.exists
+
+  - name: Compare Docker Compose versions
+    set_fact:
+      docker_compose_upgrade_required: "{{ docker_compose_version is version_compare(compose_release.tag, '<') }}"
+    when: docker_compose_binary.stat.exists
+  
+  rescue:
+    - name: do update docker-compose
+      set_fact:
+        docker_compose_upgrade_required: true
+
+    - name: Delete docker-compose binary
+      file:
+        path: /usr/local/bin/docker-compose
+        state: absent
+  become: yes
+
+- name: Ensure Docker Compose binary
+  ansible.builtin.uri:
+    url: "https://github.com/docker/compose/releases/download/{{ compose_release.tag }}/docker-compose-linux-{{ ansible_architecture }}"
+    dest: /usr/local/bin/docker-compose
+    mode: 'ugo+rx'
+  become: yes
+  when: docker_compose_upgrade_required|default(False)
