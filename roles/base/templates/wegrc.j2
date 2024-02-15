@@ -55,6 +55,9 @@ alias uninstall="sudo git -C {{ config_repo_folder }} pull && sudo ansible-playb
 # disable tracker to reduce system load
 alias disable_tracker="sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t base -e config_disable_tracker=True"
 
+# system prune container images and volumes
+alias prune_container="docker system prune -a --volumes && podman system prune -a --volumes"
+
 # get flatpak commit infos
 alias flatpakinfo="flatpak remote-info --log flathub"
 
