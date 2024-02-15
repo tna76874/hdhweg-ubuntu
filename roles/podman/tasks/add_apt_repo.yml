@@ -5,6 +5,15 @@
     url: "{{ podman_apt_pub_key }}"
     state: present
 
+- name: Ensure duplicate source files absent
+  file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+    - /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
+    - /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list.save
+  register: duplicate_list_removed
+
 - name: Ubuntu | Add podman repository
   become: true
   become_user: root
@@ -16,7 +25,7 @@
 - name: Ubuntu | Upgrade System before install
   apt:
     upgrade: dist
-  when: podman_apt_repo.changed
+  when: podman_apt_repo.changed or duplicate_list_removed.changed
 
 # Conmon requires libglib2.0 to be installed however, the ppa packages do not
 # include it as a dependency. This is an upstream packaging bug and this breaks
