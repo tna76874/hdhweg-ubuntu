@@ -11,15 +11,15 @@ with the key: localaccess
 }
 
 pull_latest_image() {
-/usr/local/bin/docker-compose -f {{ removebg_dir }}/docker-compose.yml pull
+{{ compose_bin }} -f {{ removebg_dir }}/docker-compose.yml pull
 }
 
 startup() {
-/usr/local/bin/docker-compose -f {{ removebg_dir }}/docker-compose.yml up
+{{ compose_bin }} -f {{ removebg_dir }}/docker-compose.yml up
 }
 
 cleanup(){
-/usr/local/bin/docker-compose -f {{ removebg_dir }}/docker-compose.yml down
+{{ compose_bin }} -f {{ removebg_dir }}/docker-compose.yml down
 }
 trap cleanup EXIT
 

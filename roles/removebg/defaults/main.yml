@@ -1,7 +1,7 @@
 ---
 removebg_backend: "cpu"
 gpu_enabled: "{{ False if removebg_backend=='cpu' else True }}"
-removebg_docker_image: "anodev/carvekit"
+removebg_docker_image: "docker.io/anodev/carvekit"
 removebg_docker_image_tag: "latest-{{ 'cuda' if gpu_enabled|bool else 'cpu' }}"
 
 removebg_bin: "/usr/local/bin/removebg"
@@ -9,6 +9,10 @@ removebg_api_key: "localaccess"
 
 removebg_dir: "/srv/removebg"
 
+use_poman: True
+
+compose_bin: "{{ '/usr/local/bin/podman-compose' if use_poman else '/usr/local/bin/docker-compose' }}"
+container_bin: "{{ '/usr/local/bin/podman' if use_poman else '/usr/local/bin/docker' }}"
 
 ##building env
 npm_image: "node"
