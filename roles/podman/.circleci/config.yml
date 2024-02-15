@@ -1,0 +1,17 @@
+---
+jobs:
+  test:
+    docker:
+      - image: quay.io/mongodb-build/molecule
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run: mv ~/project ~/$CIRCLE_PROJECT_REPONAME
+      - run: echo "cd ~/$CIRCLE_PROJECT_REPONAME" >> $BASH_ENV
+      - run: molecule test
+version: 2
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test

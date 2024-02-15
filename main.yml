@@ -90,6 +90,17 @@
   roles:
     - docker
 
+- name: Install Podman
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - podman
+    - setup
+    - removebg
+  roles:
+    - podman
+
 - name: Install removebg API
   hosts: localhost
   become: yes

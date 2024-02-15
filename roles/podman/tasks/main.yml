@@ -1,0 +1,30 @@
+---
+
+### Installation
+
+- name: Ensure /etc/containers exists
+  become: true
+  become_user: root
+  file:
+    state: directory
+    path: /etc/containers
+
+# Podman uses this, on at least Ubuntu, to do port publishing.
+- name: Ensure iptables is installed
+  become: true
+  become_user: root
+  package:
+    name: iptables
+    state: present
+
+- name: Include tasks for Red Hat OS family
+  include_tasks: redhat.yml
+  when: (ansible_distribution == 'Fedora' and ansible_distribution_major_version is version('28', '>=')) or
+        (ansible_distribution in ['RedHat', 'CentOS'] and ansible_distribution_major_version is version('7', '>='))
+
+- name: Include tasks for Ubuntu
+  include_tasks: ubuntu.yml
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install podman-compose
+  include_tasks: pip.yml

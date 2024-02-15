@@ -1,0 +1,10 @@
+---
+- include_tasks: add_apt_repo.yml
+  when: ansible_distribution_version is version('20.10', '<')
+
+- name: Ubuntu | Install podman suite of tools
+  become: true
+  become_user: root
+  apt:
+    name: "{{ podman_tools }}"
+    update_cache: yes

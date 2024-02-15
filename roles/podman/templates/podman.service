@@ -1,0 +1,69 @@
+[Unit]
+Description={{ service.description | default("A podman service") }}
+{% if service.target is defined %}
+After={{ service.after | join(',') }}
+{% endif %}
+
+[Service]
+Type=simple
+TimeoutStartSec={{ service.timeout_start_sec | default("5m") }}
+{% if service.user is defined %}
+User={{ service.user }}
+{% endif %}
+{% if service.group is defined %}
+Group={{ service.group }}
+{% endif %}
+
+ExecStartPre=-/usr/bin/podman rm "{{ __podman_service_name }}"
+ExecStart=/usr/bin/podman run \
+                          --name {{ __podman_service_name }} \
+                          {% if service.hostname is defined %}
+                          --hostname {{ service.hostname }} \
+                          {% endif %}
+                          {% if service.network is defined %}
+                          --network {{ service.network }} \
+                          {% endif %}
+                          {% if service.publish is defined %}
+                          {% for publish in service.publish %}
+                          --publish {{ publish }} \
+                          {% endfor %}
+                          {% endif %}
+                          {% if service.volumes is defined %}
+                          {% for volume in service.volumes %}
+                          -v {{ volume }} \
+                          {% endfor %}
+                          {% endif %}
+                          {% if service.secrets is defined %}
+                          {% for secret in service.secrets %}
+                          --secret name={{ secret.name }}\
+                            {% if secret.type is defined %},type={{ secret.type }}{% endif %}\
+                            {% if secret.target is defined %},target={{ secret.target }}{% endif %}\
+                            {% if secret.uid is defined %},uid={{ secret.uid }}{% endif %}\
+                            {% if secret.gid is defined %},gid={{ secret.gid }}{% endif %}\
+                            {% if secret.mode is defined %},mode={{ secret.mode }}{% endif %} \
+                          {% endif %}
+                          {% endfor %}
+                          {% if service.env_vars is defined %}
+                          {% for env in service.env_vars %}
+                          -e {{ env }} \
+                          {% endfor %}
+                          {% endif %}
+                          {% if service.flags is defined %}
+                          {% for flag in service.flags %}
+                          {{ flag }} \
+                          {% endfor %}
+                          {% endif %}
+                          {{ service.image_name }}:{{ service.image_tag | default('latest') }}
+
+ExecReload=-/usr/bin/podman stop "{{ __podman_service_name }}"
+ExecReload=-/usr/bin/podman rm "{{ __podman_service_name }}"
+ExecStop=-/usr/bin/podman stop "{{ __podman_service_name }}"
+Restart={{ service.restart | default('always') }}
+RestartSec={{ service.restart_sec | default(30) }}
+
+{% if service.install is defined %}
+[Install]
+{% if service.install.wanted_by is defined %}
+WantedBy={{ service.install.wanted_by | join(',') }}
+{% endif %}
+{% endif %}
