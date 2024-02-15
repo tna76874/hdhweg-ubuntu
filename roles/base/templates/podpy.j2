@@ -1,0 +1,57 @@
+#!/bin/bash
+function generate_token() {
+    openssl rand -hex 32
+}
+
+function pull_image() {
+    podman pull "$1" > /dev/null 2>&1 || :
+}
+
+function start_java() {
+    IMAGE="ghcr.io/tna76874/schoolnotebookjava:latest"
+    TOKEN=$(generate_token)
+    PPORT=8888
+    echo "Pulling ${IMAGE} . . ."
+    pull_image ${IMAGE}
+    xdg-open "http://localhost:${PPORT}/?token=${TOKEN}" &
+    podman run -it -p 127.0.0.1:${PPORT}:8888 ${IMAGE} jupyter notebook --NotebookApp.default_url=/lab/ --ip=0.0.0.0 --port=8888 --NotebookApp.token="${TOKEN}"
+}
+
+function start_info() {
+    IMAGE="ghcr.io/tna76874/notebooks-school:latest"
+    TOKEN=$(generate_token)
+    PPORT=8889
+    echo "Pulling ${IMAGE} . . ."
+    pull_image ${IMAGE}
+    xdg-open "http://localhost:${PPORT}/?token=${TOKEN}" &
+    podman run -it -p 127.0.0.1:${PPORT}:8888 ${IMAGE} jupyter notebook --NotebookApp.default_url=/lab/ --ip=0.0.0.0 --port=8888 --NotebookApp.token="${TOKEN}"
+}
+
+function start_xampp() {
+    IMAGE="ghcr.io/tna76874/podman-xampp:latest"
+    TOKEN=$(generate_token)
+    PPORTA=8890
+    PPORTB=8891
+    echo "Pulling ${IMAGE} . . ."
+    pull_image ${IMAGE}
+    xdg-open  "http://localhost:${PPORTA}/phpmyadmin/" &
+    xdg-open  "http://localhost:8888/?token=${TOKEN}" &
+    podman run -it -p 127.0.0.1:${PPORTA}:80 -p 127.0.0.1:${PPORTB}:8888 -e JUPYTER_TOKEN=${TOKEN} ${IMAGE}
+}
+
+case "$1" in
+    "java")
+        start_java
+        ;;
+    "info")
+        start_info 
+        ;;
+    "xampp")
+        start_xampp 
+        ;;
+    *)
+        echo "Ungültiges Argument. Bitte geben Sie einen gültigen Schlüssel als Argument ein."
+        exit 1
+        ;;
+esac
+
