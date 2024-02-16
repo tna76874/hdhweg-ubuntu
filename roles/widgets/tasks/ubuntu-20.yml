@@ -1,0 +1,71 @@
+---
+- name: Set widges variables
+  set_fact:
+    config_widgets:
+      - {url: "https://github.com/eonpatapon/gnome-shell-extension-caffeine.git", preq: "", ensure: "caffeine@patapon.info" ,folder: "caffeine", install: "./update-locale.sh; glib-compile-schemas --strict --targetdir=caffeine@patapon.info/schemas/ caffeine@patapon.info/schemas", version: "master"}
+      - {url: "https://github.com/hedayaty/NetSpeed.git", preq: "", ensure: "netspeed@hedayaty.gmail.com" ,folder: "netspeed", install: "cp po/nl.po po/nl_NL.po; make; mkdir -p netspeed@hedayaty.gmail.com; rm -rf netspeed@hedayaty.gmail.com; unzip netspeed@hedayaty.gmail.com.zip -d netspeed@hedayaty.gmail.com", version: "master"}
+      - {url: "https://github.com/kgshank/gse-sound-output-device-chooser.git", preq: "", ensure: "sound-output-device-chooser@kgshank.net" , folder: "sound", version: "master"}
+      - {url: "https://github.com/neffo/bing-wallpaper-gnome-extension.git", preq: "", ensure: "BingWallpaper@ineffable-gmail.com" , install: "sh buildzip.sh; mkdir -p BingWallpaper@ineffable-gmail.com; rm -rf BingWallpaper@ineffable-gmail.com; unzip BingWallpaper@ineffable-gmail.com.zip -d BingWallpaper@ineffable-gmail.com", folder: "wallpaper", version: "master"}
+      - {url: "https://github.com/fer-moreira/floating-dock.git", preq: "", ensure: "dash-to-dock@micxgx.gmail.com" , install: "make; make zip-file; mkdir -p dash-to-dock@micxgx.gmail.com; rm -rf dash-to-dock@micxgx.gmail.com; unzip *.zip -d dash-to-dock@micxgx.gmail.com; rm *.zip", folder: "dock", version: "1ef8889f85623f6cda849e4ebea71f8582d20bc8"}
+      - {url: "https://github.com/petres/gnome-shell-extension-extensions.git", preq: "", ensure: "extensions@abteil.org" , folder: "extensions", version: "master"}
+      - {url: "https://github.com/martin31821/cpupower.git", preq: "Intel", install: "make install install-tool PREFIX=/usr", folder: "cpu", version: "master"}
+      
+- name: Ensure packages
+  apt:
+    name:
+      - gettext
+      - sassc
+      - libglib2.0-dev-bin
+      - gnome-tweaks
+      - gnome-shell-extensions
+      - make
+      - eslint
+    state: latest
+  when: not uninstall | bool
+
+- name: Getting CPU information
+  shell: cat /proc/cpuinfo | grep "model name"
+  register: cpu_info
+  changed_when: false
+
+- name: Ensure git repos
+  block:
+  - name: Ensure git repos gnome shell extensions
+    ansible.builtin.git:
+      repo: "{{ item.url }}"
+      dest: "/srv/widgets/{{ item.folder }}"
+      clone: yes
+      update: yes
+      force: yes
+      version: "{{ item.version }}"
+      refspec: '+refs/tags/*:refs/tags/*'
+    with_items: "{{ config_widgets }}"
+    notify:
+      - make extensions
+
+  rescue:
+  - name: Delete git repos
+    file:
+      state: absent
+      path: "/srv/widgets/{{ item.folder }}"
+    loop: "{{ config_widgets }}"
+
+  - name: Ensure git repos gnome shell extensions
+    ansible.builtin.git:
+      repo: "{{ item.url }}"
+      dest: "/srv/widgets/{{ item.folder }}"
+      clone: yes
+      update: yes
+      force: yes
+      version: "{{ item.version }}"
+      refspec: '+refs/tags/*:refs/tags/*'
+    with_items: "{{ config_widgets }}"
+    notify:
+      - make extensions
+
+- name: Ensure Make state
+  assert: { that: true, quiet: true }
+  changed_when: true
+  notify:
+    - make extensions
+  when: widget_force_install|bool
