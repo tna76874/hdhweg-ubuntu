@@ -3,13 +3,9 @@
   block:
     - name: ensure apt update with updated labels
       shell: "apt-get update --allow-releaseinfo-change"
-      args:
-        warn: false
       ignore_errors: yes
       become: yes
-      when: ansible_distribution_version is version('20.04', '<=')
-
-      
+      #when: ansible_distribution_version is version('20.04', '<=')
 
     - name: Ensure no interrupted system update
       shell: dpkg --configure -a
@@ -19,6 +15,8 @@
       until: apt_return.rc | default(0) == 0
       retries: 30
       delay: 30
+  ignore_errors: yes
+  become: yes
 
 - name: Ensure ppa's states
   apt_repository:
