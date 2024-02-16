@@ -1,0 +1,74 @@
+---
+- name: Set config_themes variable
+  set_fact:
+    config_themes:
+      - url: "https://github.com/vinceliuice/Orchis-theme.git"
+        folder: "orchis"
+        install: "./install.sh"
+        version: "edf2643881bf3b50ce1e06e4591c4aeffa1bef32"
+      - url: "https://github.com/vinceliuice/WhiteSur-icon-theme.git"
+        folder: "whitesur_icon"
+        install: "./install.sh"
+        version: "3561f77420a001c736438539105705da1a13b9eb"
+      - url: "https://github.com/vinceliuice/WhiteSur-gtk-theme.git"
+        uninstall: "./install.sh -r; ./tweaks.sh -g -r"
+        folder: "whitesur"
+        install: "./install.sh; ./install.sh -N mojave; ./tweaks.sh -F -s; ./tweaks.sh -g; ./install.sh -i manjaro; ./tweaks.sh -d;"
+        version: "aab74d3cbc8922352a80df34b5af33ceffed274f"
+
+- name: Checking OS
+  fail:
+    msg: Please use Ubuntu 22
+  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 22
+
+- name: Determine existing users
+  shell: 'cat /etc/passwd | grep /bin/bash | grep -v root | grep -v guest | cut -d: -f1'
+  changed_when: false 
+  register: ubuntu_users
+
+- name: Ensure user theme state
+  shell: "gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com"
+  become_user: "{{ item }}"
+  changed_when: false
+  with_items: "{{ ubuntu_users.stdout_lines }}"
+  when: not uninstall | bool
+
+- name: Ensure packages
+  apt:
+    name:
+      - gettext
+      - sassc
+      - libglib2.0-dev-bin
+      - gnome-tweaks
+      - gnome-shell-extensions
+    state: latest
+  when: not uninstall | bool
+
+- name: Ensure git repos themes
+  ansible.builtin.git:
+    repo: "{{ item.url }}"
+    dest: "/srv/themes/{{ item.folder }}"
+    clone: yes
+    update: yes
+    force: yes
+    version: "{{ item.version }}"
+  with_items: "{{ config_themes }}"
+  when: not uninstall | bool
+
+- name: Install themes
+  shell: "{{ item.install }}"
+  args:
+    chdir: "/srv/themes/{{ item.folder }}"
+  become: yes
+  changed_when: false
+  with_items: "{{ config_themes }}"
+  when: item.install is defined and not uninstall | bool
+
+- name: Uninstall themes
+  shell: "{{ item.uninstall }}"
+  args:
+    chdir: "/srv/themes/{{ item.folder }}"
+  become: yes
+  changed_when: false
+  with_items: "{{ config_themes }}"
+  when: item.uninstall is defined and uninstall | bool
