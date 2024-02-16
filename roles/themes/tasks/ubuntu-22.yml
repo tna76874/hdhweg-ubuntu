@@ -6,15 +6,15 @@
         folder: "orchis"
         install: "./install.sh"
         version: "edf2643881bf3b50ce1e06e4591c4aeffa1bef32"
+      - url: "https://github.com/vinceliuice/WhiteSur-gtk-theme.git"
+        uninstall: "./install.sh -r; ./tweaks.sh -g -r"
+        folder: "whitesur"
+        install: "./install.sh; ./install.sh -N mojave; ./tweaks.sh -F -s; ./tweaks.sh -g; ./install.sh -i ubuntu; ./tweaks.sh -d; ./tweaks.sh -F;"
+        version: "aab74d3cbc8922352a80df34b5af33ceffed274f"
       - url: "https://github.com/vinceliuice/WhiteSur-icon-theme.git"
         folder: "whitesur_icon"
         install: "./install.sh"
         version: "3561f77420a001c736438539105705da1a13b9eb"
-      - url: "https://github.com/vinceliuice/WhiteSur-gtk-theme.git"
-        uninstall: "./install.sh -r; ./tweaks.sh -g -r"
-        folder: "whitesur"
-        install: "./install.sh; ./install.sh -N mojave; ./tweaks.sh -F -s; ./tweaks.sh -g; ./install.sh -i manjaro; ./tweaks.sh -d;"
-        version: "aab74d3cbc8922352a80df34b5af33ceffed274f"
 
 - name: Checking OS
   fail:
