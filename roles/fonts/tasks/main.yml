@@ -5,7 +5,7 @@
     state: directory
 
 - name: Glob files
-  command: "ls {{ font_path }}"
+  shell: "ls {{ font_path }}"
   register: found_files
   changed_when: false
 
@@ -48,7 +48,6 @@
   shell: "rm -rf *.pdf *.txt"
   args:
     chdir: "{{ font_path }}"
-    warn: false
   changed_when: false
   ignore_errors: true
   become: yes

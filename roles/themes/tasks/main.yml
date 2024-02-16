@@ -1,8 +1,8 @@
 ---
 - name: Checking OS
   fail:
-    msg: Please use Ubuntu 20
-  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 20
+    msg: Please use Ubuntu 22
+  when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int < 22
 
 - name: Determine existing users
   shell: 'cat /etc/passwd | grep /bin/bash | grep -v root | grep -v guest | cut -d: -f1'
