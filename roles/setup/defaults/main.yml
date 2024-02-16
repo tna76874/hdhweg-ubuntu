@@ -42,7 +42,7 @@ config_apt_sources:
 config_apt_ppa_list_1:
   # Present
   - { ppa: "ppa:marko-preuss/hibiscus", state: "present", ubuntu_max_release: 20 }
-  - { ppa: "ppa:unit193/encryption", state: "present", ubuntu_max_release: 22 }
+  - { ppa: "ppa:unit193/encryption", state: "present", ubuntu_max_release: 20 }
   - { ppa: "ppa:alexlarsson/flatpak", state: "present", ubuntu_max_release: 20 }
   - { ppa: "ppa:recoll-backports/recoll-1.15-on", state: "present", ubuntu_max_release: 18 }
   # Choice
