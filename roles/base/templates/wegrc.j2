@@ -32,7 +32,7 @@ alias install_gotify="sudo git -C {{ config_repo_folder }} pull; sudo ansible-pl
 alias install_widgets="sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t widgets -e widget_force_install=1"
 
 # install themes
-alias install_themes="sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t themes,widgets -e widget_force_install=1"
+alias install_themes="sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t themes"
 
 # install ausweisapp
 alias install_ausweisapp="sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t ausweisapp2"
