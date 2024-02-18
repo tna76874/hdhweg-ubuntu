@@ -1,0 +1,34 @@
+---
+- name: Hold tracker packages
+  become: yes
+  ansible.builtin.dpkg_selections:
+    name: "{{ item }}"
+    state: hold
+  with_items:
+    - tracker
+    - tracker-extract
+    - tracker-miner-fs
+  ignore_errors: yes
+
+- name: Ubuntu 22 operations
+  block:
+  - name: Change permissions for tracker executables
+    become: yes
+    file:
+      path: "{{ item }}"
+      mode: -x
+    with_items:
+      - /usr/libexec/tracker-extract-3
+      - /usr/libexec/tracker-miner-fs-3
+    ignore_errors: yes
+
+  - name: Reset tracker database
+    become: yes
+    command: tracker3 reset --filesystem --rss
+    ignore_errors: yes
+
+  - name: Terminate tracker daemon
+    become: yes
+    command: tracker3 daemon --terminate
+    ignore_errors: yes
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('22.04', '>=')

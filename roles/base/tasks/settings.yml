@@ -57,6 +57,9 @@
   ignore_errors: yes
   become: yes
 
+
+- include_tasks: disable_tracker.yml
+
 - include_tasks: user_operations.yml
   loop: "{{ ubuntu_users.stdout_lines }}"
   loop_control:
