@@ -15,11 +15,12 @@ trap cleanup EXIT
 
 ## collecting args
 SHUTDOWN=0
-while getopts ':s' opt
+while getopts ':ts' opt
 do
 case "$opt" in
    's')SHUTDOWN=1;
        ;;
+   't') echo "test"; exit 0 ;;
     *) echo -e "Invalid parameter";
        ;;
 esac
