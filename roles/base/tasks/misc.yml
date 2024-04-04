@@ -151,6 +151,7 @@
     - { file: "epc.j2", destination: "/usr/local/bin/epc", owner: "root", mode: "0755" }
     - { file: "podpy.j2", destination: "/usr/local/bin/podpy", owner: "root", mode: "0755" }
     - { file: "rt.sh.j2", destination: "/usr/local/bin/rt", owner: "root", mode: "0755" }
+    - { file: "shrinkscan.sh.j2", destination: "/usr/local/bin/shrinkscan", owner: "root", mode: "0755" }
 
 ########### ENSURING UPDATE EXECUTABLE WITH SETUID ###########
 - name: ENSURING UPDATE EXECUTABLE WITH SETUID

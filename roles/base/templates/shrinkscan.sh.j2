@@ -1,0 +1,106 @@
+#!/bin/bash
+
+# Überprüfen, ob mindestens zwei Argumente übergeben wurden
+if [ "$#" -lt 1 ]; then
+    echo "Bitte geben Sie eine Datei an"
+    exit 1
+fi
+
+# Eingabedatei und Optionen extrahieren
+input_file="$1"
+quality=${2:-"50"}
+
+# Überprüfen, ob die Eingabedatei existiert
+if [ ! -f "$input_file" ]; then
+    echo "Die Datei '$input_file' existiert nicht."
+    exit 1
+fi
+
+# Erstellen eines temporären Verzeichnisses
+temp_dir=$(mktemp -d)
+
+function adjust_gray_level() {
+    files=()
+    while IFS= read -r -d '' file; do
+        files+=("$file")
+    done < <(find "$temp_dir" -maxdepth 1 -type f -iname "*.jpg" -print0)
+
+    for file in "${files[@]}"; do
+        threshold=$(convert "$file" -colorspace gray -format "%[fx:mean]" info: | awk '{printf "%.0f\n", $1 * 100 * 0.75}')
+        convert "$file" -colorspace Gray -density 300 -quality "$quality" -white-threshold "$threshold"% "$file"
+    done
+}
+
+# Funktion zum Aufräumen des temporären Verzeichnisses
+cleanup_temp_dir() {
+    rm -rf "$temp_dir"
+    echo "Cleanup temp dir"
+}
+
+# Falle einrichten, um das temporäre Verzeichnis aufzuräumen, wenn das Skript beendet oder unterbrochen wird
+trap cleanup_temp_dir EXIT
+
+# Define ppm temp files
+temp_ppm_file="$temp_dir/$(basename "${input_file%.pdf}").ppm"
+
+# Convert to jpeg
+pdftoppm "$input_file" "$temp_ppm_file"_o_ -jpeg
+
+if [ $? -ne 0 ]; then
+    echo "Error converting to jpg"
+    exit 1
+fi
+
+# remove dark parts of the image
+adjust_gray_level
+
+if [ $? -ne 0 ]; then
+    echo "Error adjusting gray levels"
+    exit 1
+fi
+
+#Convert back to pdf
+temp_pdf_one="$temp_dir/$(basename "${input_file%.pdf}")_pdf1.pdf"
+pdfjam --a4paper "$temp_ppm_file"_o_*.jpg --outfile "$temp_pdf_one" >/dev/null 2>&1
+
+if [ $? -ne 0 ]; then
+    echo "Error pdf convert"
+    exit 1
+fi
+
+# Compress PDF #1
+temp_pdf_two="$temp_dir/$(basename "${input_file%.pdf}")_pdf2.pdf"
+ps2pdf "$temp_pdf_one" "$temp_pdf_two"
+
+if [ $? -ne 0 ]; then
+    echo "Error compress #1"
+    exit 1
+fi
+
+# Compress PDF #2
+temp_pdf_three="$temp_dir/$(basename "${input_file%.pdf}")_pdf3.pdf"
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile="$temp_pdf_three" "$temp_pdf_two"
+
+if [ $? -ne 0 ]; then
+    echo "Error compress #2"
+    exit 1
+fi
+
+# Aufrufen des Skripts /usr/local/bin/rt auf das Ergebnis
+/usr/local/bin/rt "$temp_pdf_three"
+
+if [ $? -ne 0 ]; then
+    echo "Error on OCR"
+    exit 1
+fi
+
+export_orig_file="$(dirname "$input_file")/$(basename "${input_file%.pdf}")_orig.pdf"
+
+if [ $? -eq 0 ]; then
+    echo "Successful optimized scanned PDF with color threshold and OCR."
+    # Kopieren und Speichern der Originaldatei
+    mv "$input_file" "$export_orig_file"
+    mv "$temp_pdf_three" "$input_file"
+fi
+
+
