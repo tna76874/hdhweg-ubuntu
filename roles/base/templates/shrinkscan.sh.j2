@@ -40,11 +40,22 @@ cleanup_temp_dir() {
 # Falle einrichten, um das temporäre Verzeichnis aufzuräumen, wenn das Skript beendet oder unterbrochen wird
 trap cleanup_temp_dir EXIT
 
+# Perform init OCR to deskew
+temp_first_ocr="$temp_dir/$(basename "${input_file%.pdf}").deskew.pdf"
+cp "$input_file" "$temp_first_ocr"
+/usr/local/bin/rt "$temp_first_ocr"
+
+if [ $? -ne 0 ]; then
+    echo "Error on OCR"
+    exit 1
+fi
+
 # Define ppm temp files
 temp_ppm_file="$temp_dir/$(basename "${input_file%.pdf}").ppm"
 
 # Convert to jpeg
-pdftoppm "$input_file" "$temp_ppm_file"_o_ -jpeg
+echo "Extracting images from PDF"
+pdftoppm "$temp_first_ocr" "$temp_ppm_file"_o_ -jpeg
 
 if [ $? -ne 0 ]; then
     echo "Error converting to jpg"
@@ -52,6 +63,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # remove dark parts of the image
+echo "Adjust gray levels on every page to remove background"
 adjust_gray_level
 
 if [ $? -ne 0 ]; then
@@ -60,6 +72,7 @@ if [ $? -ne 0 ]; then
 fi
 
 #Convert back to pdf
+echo "Converting back into PDF and compress"
 temp_pdf_one="$temp_dir/$(basename "${input_file%.pdf}")_pdf1.pdf"
 pdfjam --a4paper "$temp_ppm_file"_o_*.jpg --outfile "$temp_pdf_one" >/dev/null 2>&1
 
@@ -87,7 +100,8 @@ if [ $? -ne 0 ]; then
 fi
 
 # Aufrufen des Skripts /usr/local/bin/rt auf das Ergebnis
-/usr/local/bin/rt "$temp_pdf_three"
+echo "Run OCR without deskew"
+/usr/local/bin/rt "$temp_pdf_three" --nodeskew
 
 if [ $? -ne 0 ]; then
     echo "Error on OCR"

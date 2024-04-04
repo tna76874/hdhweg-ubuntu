@@ -18,6 +18,15 @@ cleanup_temp_dir() {
 # Falle einrichten, um das temporäre Verzeichnis aufzuräumen, wenn das Skript beendet oder unterbrochen wird
 trap cleanup_temp_dir EXIT
 
+# Überprüfen, ob das Argument --nodeskew vorhanden ist
+nodeskew_flag=false
+for arg in "$@"; do
+    if [ "$arg" == "--nodeskew" ]; then
+        nodeskew_flag=true
+        break
+    fi
+done
+
 # Schleife über alle Eingabedateien
 for input_file in "$@"; do
     # Überprüfen, ob die Eingabedatei existiert
@@ -37,9 +46,14 @@ for input_file in "$@"; do
     # Definieren Sie den temporären Ausgabedateinamen für die OCR
     temp_ocr_pdf="$temp_dir/$(basename "${input_file%.pdf}").ocr.pdf"
     
-    # Ausführen von ocrmypdf mit OCR und Deskew
-    echo "Run OCR on $input_file ..."
-    ocrmypdf -l deu --force-ocr --deskew "$init_file" "$temp_ocr_pdf"
+    # Ausführen von ocrmypdf mit OCR
+    if [ "$nodeskew_flag" = true ]; then
+        echo "Run OCR without deskew on $input_file ..."
+        ocrmypdf -l deu --force-ocr --clean "$init_file" "$temp_ocr_pdf"
+    else
+        echo "Run OCR on $input_file ..."
+        ocrmypdf -l deu --force-ocr --deskew --clean "$init_file" "$temp_ocr_pdf"
+    fi
     
     # Überprüfen, ob ocrmypdf erfolgreich ausgeführt wurde
     if [ $? -ne 0 ]; then
