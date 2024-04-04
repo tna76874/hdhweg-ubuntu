@@ -1,0 +1,76 @@
+#!/bin/bash
+
+# Überprüfen, ob mindestens eine Eingabedatei angegeben wurde
+if [ "$#" -lt 1 ]; then
+    echo "Bitte geben Sie mindestens eine Eingabedatei an."
+    exit 1
+fi
+
+# Erstellen eines temporären Verzeichnisses
+temp_dir=$(mktemp -d)
+
+# Funktion zum Aufräumen des temporären Verzeichnisses
+cleanup_temp_dir() {
+    #rm -rf "$temp_dir"
+    echo "Cleanup temp dir"
+}
+
+# Falle einrichten, um das temporäre Verzeichnis aufzuräumen, wenn das Skript beendet oder unterbrochen wird
+trap cleanup_temp_dir EXIT
+
+# Schleife über alle Eingabedateien
+for input_file in "$@"; do
+    # Überprüfen, ob die Eingabedatei existiert
+    if [ ! -f "$input_file" ]; then
+        echo "Die Datei '$input_file' existiert nicht."
+        continue
+    fi
+    
+    # Definieren Sie den Ausgabedateinamen für das Original
+    orig_file="$(dirname "$input_file")/$(basename "${input_file%.pdf}")_orig.pdf"
+    
+    # Kopieren und Speichern der Originaldatei
+    mv "$input_file" "$orig_file"
+    
+    ### OCR
+    # Definieren Sie den temporären Ausgabedateinamen für die OCR
+    temp_ocr_pdf="$temp_dir/$(basename "${input_file%.pdf}").ocr.pdf"
+    
+    # Ausführen von ocrmypdf mit OCR und Deskew
+    echo "Run OCR on $input_file ..."
+    ocrmypdf -l deu --deskew "$orig_file" "$temp_ocr_pdf"
+    
+    # Überprüfen, ob ocrmypdf erfolgreich ausgeführt wurde
+    if [ $? -ne 0 ]; then
+        echo "Fehler beim Ausführen von OCR für '$input_file'."
+        continue
+    fi
+
+    ## PS2PDF
+    # Definieren Sie den temporären Ausgabedateinamen für ps2pdf
+    temp_pdf_ps2pdf="$temp_dir/$(basename "${input_file%.pdf}").ps2pdf.pdf"
+    
+    # Ausführen von ps2pdf
+    echo "Run ps2pdf on $temp_ocr_pdf ..."
+    ps2pdf "$temp_ocr_pdf" "$temp_pdf_ps2pdf" > /dev/null 2>&1
+
+    # Überprüfen, ob ps2pdf erfolgreich ausgeführt wurde
+    if [ $? -ne 0 ]; then
+        echo "Fehler beim Ausführen von ps2pdf für '$temp_ocr_pdf'."
+        continue
+    fi
+
+    ## MUCLEAN    
+    # Ausgabedateiname für clean festlegen
+    temp_muclean="$temp_dir/$(basename "${input_file%.pdf}").muclean.pdf"
+    
+    # Ausführen des clean-Prozesses
+    echo "Run mutool on $temp_pdf_ps2pdf ..."
+    mutool clean "$temp_pdf_ps2pdf" "$input_file" > /dev/null 2>&1
+    
+    # Überprüfen, ob der clean-Prozess erfolgreich ausgeführt wurde
+    if [ $? -eq 0 ]; then
+        echo "OCR, ps2pdf und mutool wurden erfolgreich auf '$input_file' angewendet."
+    fi
+
+done
