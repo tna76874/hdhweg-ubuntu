@@ -39,7 +39,7 @@ for input_file in "$@"; do
     
     # Ausführen von ocrmypdf mit OCR und Deskew
     echo "Run OCR on $input_file ..."
-    ocrmypdf -l deu --force-ocr --deskew "$orig_file" "$temp_ocr_pdf"
+    ocrmypdf -l deu --force-ocr --deskew "$init_file" "$temp_ocr_pdf"
     
     # Überprüfen, ob ocrmypdf erfolgreich ausgeführt wurde
     if [ $? -ne 0 ]; then
