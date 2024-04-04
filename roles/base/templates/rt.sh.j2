@@ -29,6 +29,11 @@ done
 
 # Schleife über alle Eingabedateien
 for input_file in "$@"; do
+    # Überprüfen, ob die Eingabedatei gleich "--nodeskew" ist
+    if [ "$input_file" = "--nodeskew" ]; then
+        continue
+    fi
+
     # Überprüfen, ob die Eingabedatei existiert
     if [ ! -f "$input_file" ]; then
         echo "Die Datei '$input_file' existiert nicht."
