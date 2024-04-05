@@ -45,7 +45,7 @@ start_rustdesk() {
     sleep 1
     /usr/bin/rustdesk --password $RUSTDESK_PASSWORD | grep -q "Done!">/dev/null 2>&1 &
     # Sending access data
-    /usr/local/bin/gotify -e "ID: $RUSTDESK_ID \n\nPW:$RUSTDESK_PASSWORD" "RustDesk Request"
+    /usr/local/bin/gotify "ID: $RUSTDESK_ID PW:$RUSTDESK_PASSWORD" "RustDesk Request"
 }
 
 # start teamviewer daemon and optionally set PW
