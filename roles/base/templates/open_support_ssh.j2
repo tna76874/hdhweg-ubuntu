@@ -106,7 +106,7 @@ function cleanup()
     rm -f /tmp/ctun
     # cleanup rustdesk sessions. Set long random PW to cleanup system access
     /usr/bin/rustdesk --password $RUSTDESK_CLEANUP_PASSWORD | grep -q "Done!" || :
-    sudo killall rustdesk 2>&1 || :
+    sudo killall rustdesk >/dev/null 2>&1 || :
     # print message
     echo -e "\e[32mSystem access cleaned up.\e[0m"
 }
