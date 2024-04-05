@@ -18,8 +18,10 @@ services:
   mdl:
     image: {{ mdl_image }}:{{ mdl_tag }}
     command: >
-      /usr/local/bin/mdl --config /config --download /download/movies --title --imdb 7 --run && \
-      /usr/local/bin/mdl --config /config --download /download/series --version 
+      sh -c "      
+      /usr/local/bin/mdl --configdir /config --download /download/movies --version &&
+      /usr/local/bin/mdl --configdir /config --download /download/movies --title --imdb 7 --run
+      "
     volumes:
       - ./config/mdl:/config
       - ./media:/download
