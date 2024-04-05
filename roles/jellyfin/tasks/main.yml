@@ -17,8 +17,6 @@
     recurse: "{{ item.r }}"
   loop:
     - { path: "{{ project_root }}", owner: "{{ user_uid }}", r: "yes" }
-    - { path: "{{ project_root }}/{{ media_dir_movies }}", owner: "{{ user_uid }}", r: "no" }
-    - { path: "{{ project_root }}/{{ media_dir_series }}", owner: "{{ user_uid }}", r: "no" }
 
 - name: init templates
   template:
