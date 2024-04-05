@@ -18,6 +18,9 @@ shutdown_containers() {
 # Führe shutdown_containers aus, wenn das Skript beendet wird
 trap shutdown_containers EXIT
 
+# ensure permissions
+sudo chown -R {{ user_uid }}:{{ user_uid }} {{ project_root }} || :
+
 # Starte Container
 $compose_base down
 $compose_base pull
