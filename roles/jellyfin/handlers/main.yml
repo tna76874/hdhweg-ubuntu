@@ -11,7 +11,6 @@
     - { file: "env.j2", destination: "{{ project_root }}/.env", owner: "{{ server_user }}", mode: "0755" }
   notify:
     - compose down
-    - compose up
 
 - name: compose down
   docker_compose:
