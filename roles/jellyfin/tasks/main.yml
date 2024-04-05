@@ -1,0 +1,44 @@
+---
+- name: Check .env file
+  stat: 
+    path: "{{ project_root }}/.env"
+  register: env_file
+  changed_when: not env_file.stat.exists
+  notify:
+    - init env
+
+######################################
+
+- name: Ensure directories
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    state: directory
+    recurse: "{{ item.r }}"
+  loop:
+    - { path: "{{ project_root }}", owner: "{{ user_uid }}", r: "yes" }
+    - { path: "{{ project_root }}/{{ media_dir_movies }}", owner: "{{ user_uid }}", r: "yes" }
+    - { path: "{{ project_root }}/{{ media_dir_series }}", owner: "{{ user_uid }}", r: "yes" }
+
+- name: init templates
+  template:
+    src: "{{ item.file }}"
+    dest: "{{ item.destination }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "{{ item.mode }}"
+  become: yes
+  loop:
+    - { file: "docker-compose.j2", destination: "{{ project_root }}/docker-compose.yml", owner: "{{ user_uid }}", mode: "0755" }
+    - { file: "jellyfin.j2", destination: "/usr/local/bin/jellyfin", owner: "root", mode: "0755" }
+  notify:
+    - compose down
+
+- name: Compose restart state
+  assert: { that: true, quiet: true }
+  changed_when: true
+  notify:
+    - compose down
+
+- name: Flush handlers
+  meta: flush_handlers

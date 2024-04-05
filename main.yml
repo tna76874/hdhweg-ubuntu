@@ -139,6 +139,15 @@
   roles:
     - mbz
 
+- name: Deploy jellyfin
+  hosts: localhost
+  become: yes
+  tags: 
+    - never
+    - jellyfin
+  roles:
+    - jellyfin
+
 - name: Deploy fritzbox tools
   hosts: localhost
   become: yes

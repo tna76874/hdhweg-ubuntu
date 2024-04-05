@@ -1,0 +1,31 @@
+---
+
+mdl_image: ghcr.io/tna76874/mdl
+mdl_tag: latest
+
+jellyfin_tag: 
+# ensure docker-compose gets restarted on every run
+pull_compose: yes
+# docker-compose project name
+docker_config_project: jellyfin-mdl
+# start docker by default
+start_compose: false
+restart_compose: false
+# running user
+server_user: root
+user_uid: 1000
+# project root
+
+#Docker execution settings
+compose_executable: "/usr/local/bin/docker-compose"
+compose_base: "{{ compose_executable }} -f {{ project_root }}/docker-compose.yml"
+compose_base_cmd: "{{ compose_executable }} -f {{ project_root }}/docker-compose.yml exec -T"
+
+# env
+compose_config_tcp_port: "8096"
+
+# dir config
+media_dir: media
+media_dir_movies: "{{ media_dir }}/movies"
+media_dir_series: "{{ media_dir }}/series"
+

@@ -1,0 +1,38 @@
+---
+- name: init env
+  template:
+    src: "{{ item.file }}"
+    dest: "{{ item.destination }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.owner }}"
+    mode: "{{ item.mode }}"
+  become: yes
+  loop:
+    - { file: "env.j2", destination: "{{ project_root }}/.env", owner: "{{ server_user }}", mode: "0755" }
+  notify:
+    - compose down
+    - compose up
+
+- name: compose down
+  docker_compose:
+    project_src: "{{ project_root }}"
+    state: absent
+  ignore_errors: yes
+
+- name: compose up
+  docker_compose:
+    project_src: "{{ project_root }}"
+    state: present
+    pull: False
+  notify:
+    - wait for
+
+- name: wait for
+  uri:
+    url: "http://localhost:{{ compose_config_tcp_port }}"
+    validate_certs: no
+    status_code: [200,412]
+  register: result
+  until: result.status == 200
+  retries: 40
+  delay: 10

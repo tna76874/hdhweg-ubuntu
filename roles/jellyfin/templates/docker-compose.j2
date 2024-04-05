@@ -1,0 +1,28 @@
+---
+version: "3.8"
+services:
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: {{docker_config_project}}-jellyfin
+    environment:
+      - PUID={{ user_uid }}
+      - PGID={{ user_uid }}
+      - TZ=Etc/UTC
+    volumes:
+      - ./config/jellyfin:/config
+      - ./{{media_dir_movies}}:/data/movies
+      - ./{{media_dir_series}}:/data/series
+    ports:
+      - 127.0.0.1:{{ compose_config_tcp_port }}:8096
+
+  mdl:
+    image: {{ mdl_image }}:{{ mdl_tag }}
+    command: >
+      /usr/local/bin/mdl --config /config --download /download/movies --title --imdb 7 --run && \
+      /usr/local/bin/mdl --config /config --download /download/series --version 
+    volumes:
+      - ./config/mdl:/config
+      - ./media:/download
+    environment:
+      - PUID={{ user_uid }}
+      - PGID={{ user_uid }}

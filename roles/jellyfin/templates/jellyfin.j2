@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Überprüfe, ob das Skript als root ausgeführt wird
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 
+   exit 1
+fi
+
+# Setze die compose_base Variable
+compose_base="{{ compose_executable }} -f {{ project_root }}/docker-compose.yml"
+
+# Funktion zum Herunterfahren von Containern
+shutdown_containers() {
+    echo "Shutting down containers..."
+    $compose_base down
+}
+
+# Führe shutdown_containers aus, wenn das Skript beendet wird
+trap shutdown_containers EXIT
+
+# Starte Container
+$compose_base down
+$compose_base pull
+$compose_base up
