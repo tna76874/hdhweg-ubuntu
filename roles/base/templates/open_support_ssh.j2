@@ -8,8 +8,6 @@ fi
 
 # define variables
 SSHKEYS="{{ config_tunnel_ssh_keys }}"
-JITSISERVER="https://meet.jit.si"
-RANDID=$(( $RANDOM % 100000 + 10000 ))
 
 # define functions
 ## countdown function
@@ -124,9 +122,9 @@ function start_ssh_tunnel() {
 
     # getting URL from cloudflared and send via gotify
     check_for_url
-    /usr/local/bin/gotify "cssh root@$TURL $JITSISERVER/$RANDID" "SSH Tunnel Request"
+    /usr/local/bin/gotify "cssh root@$TURL" "SSH Tunnel Request"
 
-    echo -e "Support request ssh channel is initalized.\n\nOpen in Browser for Meeting:\n$JITSISERVER/$RANDID\n\nAccess Endpoint for Support:\n$TURL\n\n"
+    echo -e "Support request ssh channel is initalized.\n\nAccess Endpoint for Support:\n$TURL\n\n"
 }
 
 ######################################
