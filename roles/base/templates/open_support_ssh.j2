@@ -8,6 +8,9 @@ fi
 
 # define variables
 SSHKEYS="{{ config_tunnel_ssh_keys }}"
+RUSTDESK_ID=$(/usr/bin/rustdesk --get-id)
+RUSTDESK_PASSWORD=`pwgen 12 1`
+RUSTDESK_CLEANUP_PASSWORD=`pwgen 64 1`
 
 # define functions
 ## countdown function
@@ -36,11 +39,13 @@ function confirm() {
 
 # start rustdesk
 start_rustdesk() {
-    # starting rustdesk
+    # start rustdesk
     /usr/bin/rustdesk >/dev/null 2>&1 &
+    # setting rustdesk pw
+    sleep 1
+    /usr/bin/rustdesk --password $RUSTDESK_PASSWORD | grep -q "Done!">/dev/null 2>&1 &
     # Sending access data
-    RD=`head -n 2 /root/.config/rustdesk/RustDesk.toml`
-    /usr/local/bin/gotify "$RD" "RustDesk Request"
+    /usr/local/bin/gotify "ID: $RUSTDESK_ID \n\nPW:$RUSTDESK_PASSWORD" "RustDesk Request"
 }
 
 # start teamviewer daemon and optionally set PW
@@ -99,7 +104,8 @@ function cleanup()
     rm -f /root/.ssh/authorized_keys_temp
     # cleanup temporary logfile from screen session dump
     rm -f /tmp/ctun
-    # cleanup rustdesk sessions
+    # cleanup rustdesk sessions. Set long random PW to cleanup system access
+    /usr/bin/rustdesk --password $RUSTDESK_CLEANUP_PASSWORD | grep -q "Done!"
     sudo killall rustdesk
     # print message
     echo -e "\e[32mSystem access cleaned up.\e[0m"
