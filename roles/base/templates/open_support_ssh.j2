@@ -105,7 +105,7 @@ function cleanup()
     # cleanup temporary logfile from screen session dump
     rm -f /tmp/ctun
     # cleanup rustdesk sessions. Set long random PW to cleanup system access
-    /usr/bin/rustdesk --password $RUSTDESK_CLEANUP_PASSWORD | grep -q "Done!"
+    /usr/bin/rustdesk --password $RUSTDESK_CLEANUP_PASSWORD | grep -q "Done!" || :
     sudo killall rustdesk
     # print message
     echo -e "\e[32mSystem access cleaned up.\e[0m"
