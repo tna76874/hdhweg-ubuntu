@@ -8,8 +8,8 @@
 - name: Check the Host System
   hosts: localhost
   become: yes
-  tags:
-    - always
+  # tags:
+  #   - always
   tasks:
     - name: Verify the Operating System
       block:
