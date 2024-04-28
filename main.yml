@@ -16,7 +16,7 @@
         - name: Check Ubuntu Version
           fail:
             msg: "The playbook only supports Ubuntu versions between 20.04 and 24.04"
-          when: (ansible_distribution != 'Ubuntu') or (ansible_distribution == 'Ubuntu' and not (ansible_distribution_version is version('20', '<=', '24.04')))
+          when: (ansible_distribution != 'Ubuntu') or (ansible_distribution == 'Ubuntu' and not (ansible_distribution_version | version_compare('20.04', '>=') and ansible_distribution_version | version_compare('24.04', '<=')))
       rescue:
         - name: End the Playbook
           meta: end_play
