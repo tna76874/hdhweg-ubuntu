@@ -7,13 +7,16 @@
 
 - name: Check the Host System
   hosts: localhost
+  become: yes
+  tags:
+    - always
   tasks:
     - name: Verify the Operating System
       block:
         - name: Check Ubuntu Version
           fail:
-            msg: "The playbook only supports Ubuntu versions between 20.04 and 24"
-          when: (ansible_distribution != 'Ubuntu') or (ansible_distribution == 'Ubuntu' and (ansible_distribution_version is version('20.04', '<', '24') or ansible_distribution_version is version('24', '<', '24')))
+            msg: "The playbook only supports Ubuntu versions between 20.04 and 24.04"
+          when: (ansible_distribution != 'Ubuntu') or (ansible_distribution == 'Ubuntu' and not (ansible_distribution_version is version('20', '<=', '24.04')))
       rescue:
         - name: End the Playbook
           meta: end_play
