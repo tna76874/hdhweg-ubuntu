@@ -76,3 +76,28 @@
   ignore_errors: yes
   become: yes
   when: "'com.valvesoftware.Steam' in flatpak_installed_list"
+
+- name: WoeUSB
+  block:
+    - name: Install necessary WoeUSB-ng dependencies
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - git
+        - p7zip-full
+        - python3-pip
+        - python3-wxgtk4.0
+        - grub2-common
+        - grub-pc-bin
+
+    - name: Ensure WoeUSB-ng
+      pip:
+        name: "{{ item.name }}"
+        executable: "{{ item.executable }}"
+        state: "{{ item.state }}"
+      become: true
+      loop:
+        - { name: "WoeUSB-ng", executable: "pip3", state: "latest"}
+  ignore_errors: true
+  become: yes

@@ -212,6 +212,28 @@
   when: "'deploy' not in ansible_run_tags"
 
 
+### MAX USER WATCHES ####
+
+- name: Max user watches
+  block:
+    - name: Check current max_user_watches value
+      command: cat /proc/sys/fs/inotify/max_user_watches
+      register: current_max_user_watches
+
+    - name: Ensure the desired value is in /etc/sysctl.conf
+      lineinfile:
+        path: /etc/sysctl.conf
+        line: 'fs.inotify.max_user_watches={{ var_max_user_watches|default(524288) }}'
+        state: present
+
+    - name: Load the new value
+      command: sudo sysctl -p
+      when: current_max_user_watches.stdout != "{{ var_max_user_watches }}"
+      
+  become: yes
+  ignore_errors: yes
+
+
 ##############################################################
 
 - name: Triggering upgrade handler
