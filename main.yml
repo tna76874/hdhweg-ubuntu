@@ -5,6 +5,19 @@
     - community.general
     - community.crypto
 
+- name: Check the Host System
+  hosts: localhost
+  tasks:
+    - name: Verify the Operating System
+      block:
+        - name: Check Ubuntu Version
+          fail:
+            msg: "The playbook only supports Ubuntu versions between 20.04 and 24"
+          when: ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('20.04', '>=', '24')
+      rescue:
+        - name: End the Playbook
+          meta: end_play
+
 - name: Import local configs
   hosts: localhost
   become: yes
