@@ -116,27 +116,30 @@
     install_recommends: yes
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int == 20
 
-- name: Query duplicati releases from github
-  uri:                                                               
-    url: https://api.github.com/repos/duplicati/duplicati/releases
-    return_content: true                                             
-  register: duplicati_source   
-  ignore_errors: yes                                          
+- name: duplicati
+  block:
+  - name: Query duplicati releases from github
+    uri:                                                               
+      url: https://api.github.com/repos/duplicati/duplicati/releases
+      return_content: true                                             
+    register: duplicati_source   
+    ignore_errors: yes                                          
 
-- name: Register duplicati beta url
-  set_fact:
-    duplicati_beta:  "{{ duplicati_source.json | selectattr('tag_name', 'contains', '_beta_') | list }}"
-  ignore_errors: yes
+  - name: Register duplicati beta url
+    set_fact:
+      duplicati_beta:  "{{ duplicati_source.json | selectattr('tag_name', 'contains', '_beta_') | list }}"
+    ignore_errors: yes
 
-- name: Register duplicati deb url
-  set_fact:
-    duplicati_deb:  "{{ duplicati_beta[0]['assets'] | selectattr('browser_download_url', 'contains', 'all.deb') | list }}"
-  ignore_errors: yes
+  - name: Register duplicati deb url
+    set_fact:
+      duplicati_deb:  "{{ duplicati_beta[0]['assets'] | selectattr('browser_download_url', 'contains', 'all.deb') | list }}"
+    ignore_errors: yes
 
-- name: Ensure duplicati
-  apt:
-    deb: "{{ duplicati_deb[0]['browser_download_url'] }}"
-  ignore_errors: yes
+  - name: Ensure duplicati
+    apt:
+      deb: "{{ duplicati_deb[0]['browser_download_url'] }}"
+    ignore_errors: yes
+  when: duplicati_ensured|default(False)
 
 - name: Ensure TeamViewer
   apt:
