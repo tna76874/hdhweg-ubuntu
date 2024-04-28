@@ -56,8 +56,8 @@ config_apt_ppa_list_1:
   - { ppa: "deb https://dl.cloudsmith.io/public/balena/etcher/deb/ubuntu focal main", state: "absent", ubuntu_max_release: 20 }
 
 config_apt_ppa_list_2:
-  - { ppa: "ppa:tomtomtom/woeusb", state: "present" , ubuntu_max_release: 22 }
-  - { ppa: "ppa:cubic-wizard/release", state: "present", ubuntu_max_release: 22 }
+  - { ppa: "ppa:tomtomtom/woeusb", state: "present" , ubuntu_max_release: 24 }
+  - { ppa: "ppa:cubic-wizard/release", state: "present", ubuntu_max_release: 24 }
 
 config_apt_list_1:
   - qrencode
@@ -189,6 +189,7 @@ config_apt_list_2:
   - virtualbox-guest-additions-iso
   - virtualbox-ext-pack
   - woeusb
+  - cubic
   - build-essential
   - git-lfs
   - esptool
