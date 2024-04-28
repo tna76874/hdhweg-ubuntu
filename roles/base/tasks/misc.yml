@@ -220,16 +220,19 @@
       command: cat /proc/sys/fs/inotify/max_user_watches
       register: current_max_user_watches
 
+    - name: Set default value if var_max_user_watches is not defined
+      set_fact:
+        var_max_user_watches: 524288
+
     - name: Ensure the desired value is in /etc/sysctl.conf
       lineinfile:
         path: /etc/sysctl.conf
-        line: 'fs.inotify.max_user_watches={{ var_max_user_watches|default(524288) }}'
+        line: 'fs.inotify.max_user_watches={{ var_max_user_watches }}'
         state: present
 
     - name: Load the new value
       command: sudo sysctl -p
       when: current_max_user_watches.stdout != "{{ var_max_user_watches }}"
-      
   become: yes
   ignore_errors: yes
 
