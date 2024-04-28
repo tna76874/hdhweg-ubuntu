@@ -57,7 +57,7 @@ config_apt_ppa_list_1:
 
 config_apt_ppa_list_2:
   - { ppa: "ppa:tomtomtom/woeusb", state: "absent" , ubuntu_max_release: 22 }
-  - { ppa: "ppa:cubic-wizard/release", state: "present", ubuntu_max_release: 24 }
+  - { ppa: "ppa:cubic-wizard/release", state: "absent", ubuntu_max_release: 22 }
 
 config_apt_list_1:
   - qrencode
@@ -188,7 +188,6 @@ config_apt_list_2:
   - virtualbox-dkms
   - virtualbox-guest-additions-iso
   - virtualbox-ext-pack
-  - cubic
   - build-essential
   - git-lfs
   - esptool
@@ -224,6 +223,7 @@ config_apt_list_absent:
   - nextcloud-client
   - nautilus-wipe
   - breitbandmessung
+  - cubic
 
 config_apt_pipewire:
   - pipewire
