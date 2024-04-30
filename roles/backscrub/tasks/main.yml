@@ -7,7 +7,7 @@
 - name: Ensure obs-studio ppa
   apt_repository:
     repo: ppa:obsproject/obs-studio
-    state: "{{ 'present' when obs_enabled else 'absent' }}"
+    state: "{{ 'present' if obs_enabled else 'absent' }}"
     filename: obsstudio
 
 - name: Update apt
@@ -43,7 +43,7 @@
     name:
       - obs-studio
     state: latest
-    state: "{{ 'latest' when obs_enabled else 'absent' }}"
+    state: "{{ 'latest' if obs_enabled else 'absent' }}"
     install_recommends: yes
 
 
