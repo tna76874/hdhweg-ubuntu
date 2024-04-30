@@ -8,6 +8,8 @@ droidcam_zip_file: "{{ backscrub_root_dir }}/droidcam.zip"
 
 droidcam_resoultion: { width: "960", height: "720"}
 
+obs_enabled: False
+
 backscrub_folders:
   obs: "{{ backscrub_root_dir }}/obs-studio"
   obsv4l2: "{{ backscrub_root_dir }}/obs-v4l2"

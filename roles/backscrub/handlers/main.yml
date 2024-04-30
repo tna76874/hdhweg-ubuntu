@@ -11,6 +11,7 @@
     - "cmake -DLIBOBS_INCLUDE_DIR={{ backscrub_folders.obs }}/libobs -DCMAKE_INSTALL_PREFIX=/usr {{ backscrub_folders.obsv4l2 }}"
     - "make -j4"
     - "make install"
+  when: obs_enabled
 
 - name: cleanup backscrub tmpdir
   file:
