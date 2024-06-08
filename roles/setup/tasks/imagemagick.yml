@@ -1,0 +1,16 @@
+---
+- name: Ensure policy
+  block:
+    - name: Überprüfe, ob die Datei existiert
+      stat:
+        path: "{{ image_policy_file }}"
+      register: file_stat
+
+    - name: Update ImageMagick resource limits in policy.xml
+      lineinfile:
+        path: "{{ image_policy_file }}"
+        regexp: '^  <policy domain="{{ item.domain }}" name="{{ item.name }}" value=".*"/>'
+        line: '  <policy domain="{{ item.domain }}" name="{{ item.name }}" value="{{ item.value }}"/>'
+      loop: "{{ resource_limits }}"
+      when: file_stat.stat.exists
+  ignore_errors: yes

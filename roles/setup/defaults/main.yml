@@ -458,3 +458,12 @@ extra_roles: []
 
 # PORTMASTER
 portmaster_enabled: 
+
+
+# IMAGEMAGICK LIMITS
+resource_limits:
+  - domain: resource
+    name: memory
+    value: 2GiB
+
+image_policy_file: /etc/ImageMagick-6/policy.xml

@@ -137,3 +137,5 @@
 - import_tasks: debloater.yml
 
 - include_tasks: portmaster.yml
+
+- include_tasks: imagemagick.yml
