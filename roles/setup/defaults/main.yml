@@ -475,4 +475,4 @@ image_policy_file: /etc/ImageMagick-6/policy.xml
 # Notenbildung
 nvo:
   venv: /usr/local/notenbildung
-  commit: 75cc7a0b4be641a5f20651abcc7d33d49c2ae7d7
+  commit: 3866255d118374c6e2df742adff9ecbb534cff70
