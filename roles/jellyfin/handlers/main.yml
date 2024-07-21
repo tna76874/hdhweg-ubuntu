@@ -13,13 +13,13 @@
     - compose down
 
 - name: compose down
-  docker_compose_v2:
+  docker_compose:
     project_src: "{{ project_root }}"
     state: absent
   ignore_errors: yes
 
 - name: compose up
-  docker_compose_v2:
+  docker_compose:
     project_src: "{{ project_root }}"
     state: present
     pull: False
