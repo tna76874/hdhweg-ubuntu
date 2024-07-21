@@ -1,6 +1,4 @@
 ---
 - name: update cache
   shell: "fc-cache -vf"
-  args:
-    warn: false
   become: yes
