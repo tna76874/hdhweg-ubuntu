@@ -13,7 +13,6 @@
   shell: "wget {{ item.url }} -O - | gunzip -c > {{ item.name }}"
   args:
     chdir: "{{ font_path }}"
-    warn: false
   become: yes
   loop: "{{ font_list }}"
   when: item.name not in found_files.stdout_lines and item.type=="gz"
@@ -25,7 +24,6 @@
   shell: "wget {{ item.url }} -O font.zip; unzip -o font.zip; rm font.zip; {{ item.cmd }}"
   args:
     chdir: "{{ font_path }}"
-    warn: false
   become: yes
   loop: "{{ font_list }}"
   when: item.name not in found_files.stdout_lines and item.type=="zip"
