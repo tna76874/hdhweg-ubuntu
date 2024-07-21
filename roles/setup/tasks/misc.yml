@@ -24,7 +24,7 @@
       loop:
         - { name: "mat2", executable: "pip3", state: "latest"}
         - { name: "virtualenv", executable: "pip3", state: "absent"}
-        - { name: "git+https://github.com/tna76874/mdl.git", executable: "pip3", state: "latest"}
+        - { name: "git+https://github.com/tna76874/mdl.git", executable: "pip3", state: "absent"}
         - { name: "git+https://github.com/tna76874/renamer.git", executable: "pip3", state: "latest"}
         - { name: "envelope", executable: "pip3", state: "latest"}
         - { name: "paramiko", executable: "pip3", state: "latest"}
@@ -37,17 +37,11 @@
         - { name: "docker-compose", executable: "pip3", state: "{{ 'latest' if  docker_compose_pip_enabled | default(True) | bool else 'absent' }}"}
       ignore_errors: yes
 
-- name: Notenbildungs Modul
+- name: Ensure venvs
   block:
-    - name: Ensure venv
-      command: "python3 -m venv {{ nvo.venv }}"
-      args:
-        creates: "{{ nvo.venv }}"
-
-    - name: Ensure package
-      pip:
-        name: "git+https://github.com/tna76874/notentransparenz.git@{{ nvo.commit }}"
-        virtualenv: "{{ nvo.venv }}"
+    - name: Ensure venvs
+      include_tasks: install_venv.yml
+      loop: "{{ python_venvs }}"
   ignore_errors: yes
 
 - name: Ensure latest manim docker image

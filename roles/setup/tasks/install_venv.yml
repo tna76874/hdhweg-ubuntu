@@ -1,0 +1,20 @@
+# install_venv.yml
+- name: Ensure venv
+  command: "python3 -m venv {{ item.venv }}"
+  args:
+    creates: "{{ item.venv }}"
+
+- name: Ensure package
+  pip:
+    name: "{{ item.git }}@{{ item.commit }}"
+    virtualenv: "{{ item.venv }}"
+  ignore_errors: yes
+
+- name: Ensure cli wrapper
+  copy:
+    content: |
+      #!/bin/bash
+      source {{ item.venv }}/bin/activate
+      {{ item.cli }} "$@"
+    dest: "/usr/local/bin/{{ item.cli }}"
+    mode: 0755

@@ -472,7 +472,15 @@ resource_limits:
 
 image_policy_file: /etc/ImageMagick-6/policy.xml
 
-# Notenbildung
-nvo:
-  venv: /usr/local/notenbildung
-  commit: 92def6cf4d986082cd5a4e82dbdba007e2f7fcd9
+# pip venvs
+python_venv_base_dir: /usr/local/customenvs
+python_venvs:
+  - venv: "{{ python_venv_base_dir }}/notenbildung"
+    git: git+https://github.com/tna76874/notentransparenz.git
+    commit: 92def6cf4d986082cd5a4e82dbdba007e2f7fcd9
+    cli: notenbildung
+
+  - venv: "{{ python_venv_base_dir }}/mdl"
+    git: git+https://github.com/tna76874/mdl.git
+    commit: 0d87f7ce61269b2a87b0f2467d81d3ea23945f95
+    cli: mdl
