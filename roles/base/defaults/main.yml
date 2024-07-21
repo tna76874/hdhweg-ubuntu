@@ -80,4 +80,3 @@ shc_binaries:
   - { file: "update_gui.j2", root: "/usr/local/bin/", name: "update_gui", owner: "root", mode: "0755", binmode: "4750" }
   - { file: "open_ap.j2", root: "/usr/local/bin/", name: "open_ap", owner: "root", mode: "0755", binmode: "4750" }
   - { file: "start_teamviewer.j2", root: "/usr/local/bin/", name: "start_teamviewer", owner: "root", mode: "0755", binmode: "4750" }
-

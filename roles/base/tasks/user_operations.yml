@@ -102,6 +102,7 @@
   loop:
     - {src: "rt.sh.j2", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/ocrpdf", mode: "0755"}
     - {src: "pdf_verkleinern", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/pdf_verkleinern", mode: "0755"}
+    - {src: "noten_berechnen", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/noten_berechnen", mode: "0755"}
     - {src: "pdf2px.j2", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/pdf2px", mode: "0755"}
     - {src: "shrinkscan.sh.j2", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/scans_verbessern", mode: "0755"}
     - {src: "pdf_zusammenfassen", dest: "/home/{{ user_item }}/.local/share/nautilus/scripts/pdf_zusammenfassen", mode: "0755"}

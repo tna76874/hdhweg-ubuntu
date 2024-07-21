@@ -144,6 +144,7 @@ config_apt_list_1:
   - libreoffice-common
   - python3
   - python3-pip
+  - python3-venv
   - simple-scan
   - usb-creator-gtk
   - gnome-tweaks
@@ -470,3 +471,8 @@ resource_limits:
     value: 8GiB
 
 image_policy_file: /etc/ImageMagick-6/policy.xml
+
+# Notenbildung
+nvo:
+  venv: /usr/local/notenbildung
+  commit: 75cc7a0b4be641a5f20651abcc7d33d49c2ae7d7

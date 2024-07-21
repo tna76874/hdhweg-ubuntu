@@ -1,0 +1,4 @@
+#!/bin/bash
+source /usr/local/notenbildung/bin/activate
+
+notenbildung -f "$1"

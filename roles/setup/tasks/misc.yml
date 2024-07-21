@@ -13,26 +13,41 @@
     state: latest
     install_recommends: yes
 
-- name: Ensure pip packages
-  pip:
-    name: "{{ item.name }}"
-    executable: "{{ item.executable }}"
-    state: "{{ item.state }}"
-  become: true
-  loop:
-    - { name: "mat2", executable: "pip3", state: "latest"}
-    - { name: "virtualenv", executable: "pip3", state: "latest"}
-    - { name: "git+https://github.com/tna76874/mdl.git", executable: "pip3", state: "latest"}
-    - { name: "git+https://github.com/tna76874/renamer.git", executable: "pip3", state: "latest"}
-    - { name: "envelope", executable: "pip3", state: "latest"}
-    - { name: "paramiko", executable: "pip3", state: "latest"}
-    - { name: "cryptography", executable: "pip3", state: "latest"}
-    - { name: "requests<2.29.0", executable: "pip3", state: "present"}
-    - { name: "urllib3<2.0", executable: "pip3", state: "present"}
-    - { name: "github3.py", executable: "pip3", state: "latest"}
-    - { name: "docker-py", executable: "pip3", state: "absent"}
-    - { name: "docker==6.1.3", executable: "pip3", state: "present"}
-    - { name: "docker-compose", executable: "pip3", state: "{{ 'latest' if  docker_compose_pip_enabled | default(True) | bool else 'absent' }}"}
+- name: Python Stuff
+  block:
+    - name: Ensure pip packages
+      pip:
+        name: "{{ item.name }}"
+        executable: "{{ item.executable }}"
+        state: "{{ item.state }}"
+      become: true
+      loop:
+        - { name: "mat2", executable: "pip3", state: "latest"}
+        - { name: "virtualenv", executable: "pip3", state: "absent"}
+        - { name: "git+https://github.com/tna76874/mdl.git", executable: "pip3", state: "latest"}
+        - { name: "git+https://github.com/tna76874/renamer.git", executable: "pip3", state: "latest"}
+        - { name: "envelope", executable: "pip3", state: "latest"}
+        - { name: "paramiko", executable: "pip3", state: "latest"}
+        - { name: "cryptography", executable: "pip3", state: "latest"}
+        - { name: "requests<2.29.0", executable: "pip3", state: "present"}
+        - { name: "urllib3<2.0", executable: "pip3", state: "present"}
+        - { name: "github3.py", executable: "pip3", state: "latest"}
+        - { name: "docker-py", executable: "pip3", state: "absent"}
+        - { name: "docker==6.1.3", executable: "pip3", state: "present"}
+        - { name: "docker-compose", executable: "pip3", state: "{{ 'latest' if  docker_compose_pip_enabled | default(True) | bool else 'absent' }}"}
+      ignore_errors: yes
+
+- name: Notenbildungs Modul
+  block:
+    - name: Ensure venv
+      command: "python3 -m venv {{ nvo.venv }}"
+      args:
+        creates: "{{ nvo.venv }}"
+
+    - name: Ensure package
+      pip:
+        name: "git+https://github.com/tna76874/notentransparenz.git@{{ nvo.commit }}"
+        virtualenv: "{{ nvo.venv }}"
   ignore_errors: yes
 
 - name: Ensure latest manim docker image
