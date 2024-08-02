@@ -288,7 +288,7 @@ config_flatpak_list_1:
   - { package: "org.gnome.Gnote", repo: "flathub", state: present }
   - { package: "com.mattjakeman.ExtensionManager", repo: "flathub", state: present }
   - { package: "io.kopia.KopiaUI", repo: "flathub", state: present }
-  - { package: "org.cryptomator.Cryptomator", repo: "flathub", state: present, version: "b67ebb62b0b557129eec0ba67b4cb5e4711518034431272102f57f52c0f57cea" }
+  - { package: "org.cryptomator.Cryptomator", repo: "flathub", state: present, version: "bc6f8aa1923adf461b14e17a79382f4796a4c4f8cf99bdff8aea270c724bf341" }
   - { package: "io.github.peazip.PeaZip", repo: "flathub", state: present }
   - { package: "com.nextcloud.desktopclient.nextcloud", repo: "flathub", state: present }
   # Game
