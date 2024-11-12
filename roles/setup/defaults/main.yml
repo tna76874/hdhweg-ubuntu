@@ -11,7 +11,7 @@ config_rembg_repo: { url: "https://github.com/danielgatis/rembg.git", version: '
 
 # linuxrouter commit
 
-config_linuxrouter_commit: "f8cbf5eded1d912ea686f08d2214afed5ed0cd5e"
+config_linuxrouter_commit: "e7ecf8707d04cfcf5d9bb8363b9e3f717f58889f"
 
 # extended software package
 config_extended_software: false
