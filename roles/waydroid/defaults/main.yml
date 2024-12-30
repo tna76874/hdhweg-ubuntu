@@ -1,0 +1,3 @@
+---
+waydroid_enabled: true
+enable_wayland: "{{ waydroid_enabled }}"

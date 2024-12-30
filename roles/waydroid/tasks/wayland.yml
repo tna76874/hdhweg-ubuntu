@@ -1,0 +1,11 @@
+  - name: Ensure GDM3 is installed
+    apt:
+      name: gdm3
+      state: present
+
+  - name: Set WaylandEnable in GDM3 configuration
+    lineinfile:
+      path: /etc/gdm3/custom.conf
+      regexp: '^WaylandEnable='
+      line: 'WaylandEnable={{ "true" if enable_wayland else "false" }}'
+    notify: Restart GDM3

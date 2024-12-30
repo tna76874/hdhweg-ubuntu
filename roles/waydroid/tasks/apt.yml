@@ -1,0 +1,21 @@
+---
+- name: Validate the codename from Ansible facts
+  ansible.builtin.fail:
+    msg: "Unsupported distribution codename: {{ ansible_distribution_release }}"
+  when: ansible_distribution_release not in ['mantic', 'focal', 'jammy', 'kinetic', 'lunar', 'noble', 'oracular', 'bookworm', 'bullseye', 'trixie', 'sid']
+
+- name: Add Waydroid GPG key
+  ansible.builtin.apt_key:
+    url: https://repo.waydro.id/waydroid.gpg
+    state: present
+
+- name: Add Waydroid repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/waydroid.gpg] https://repo.waydro.id/ {{ ansible_distribution_release }} main"
+    state: present
+    filename: waydroid
+
+- name: Update apt cache if not recently updated
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 3600

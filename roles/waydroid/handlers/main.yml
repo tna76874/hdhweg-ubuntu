@@ -1,0 +1,17 @@
+---
+- name: Reload UFW
+  ufw:
+    state: reloaded
+  notify: Restart Waydroid Container
+
+- name: Restart GDM3
+  become: yes
+  systemd:
+    name: gdm3
+    state: restarted
+  notify: Restart Waydroid Container
+
+- name: Restart Waydroid Container
+  systemd:
+    name: waydroid-container
+    state: restarted

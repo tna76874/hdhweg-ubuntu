@@ -1,0 +1,22 @@
+---
+- name: Configure UFW to allow necessary ports
+  ignore_errors: yes
+  block:
+    - name: Create UFW application rule file for Waydroid
+      copy:
+        dest: /etc/ufw/applications.d/waydroid
+        content: |
+          [Waydroid]
+          title=Waydroid Application
+          description=Allow Waydroid traffic
+          ports=53,67/tcp
+      notify: Reload UFW
+
+    - name: Allow Waydroid application in UFW
+      ufw:
+        rule: allow
+        name: Waydroid
+      notify: Reload UFW
+
+    - name: Allow FORWARD in UFW
+      command: ufw default allow FORWARD

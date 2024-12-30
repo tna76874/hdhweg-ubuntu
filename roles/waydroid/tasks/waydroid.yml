@@ -1,0 +1,17 @@
+---
+- name: Update apt cache if not recently updated
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install Waydroid
+  apt:
+    name: waydroid
+    state: "{{ 'present' if waydroid_enabled else 'absent' }}"
+
+- name: Enable and start Waydroid container
+  when: waydroid_enabled
+  systemd:
+    name: waydroid-container
+    enabled: yes
+    state: started

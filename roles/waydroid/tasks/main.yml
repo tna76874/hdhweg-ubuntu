@@ -1,0 +1,15 @@
+---
+- name: Include apt configuration tasks
+  include_tasks: apt.yml
+
+- name: Ensure Wayland state
+  include_tasks: wayland.yml
+
+- name: Ensure waydroid state
+  include_tasks: waydroid.yml
+
+- name: Ensure firewall state
+  include_tasks: firewall.yml
+
+
+
