@@ -194,6 +194,15 @@
   roles:
     - ausweisapp2
 
+- name: Install waydroid
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - waydroid
+  roles:
+    - waydroid
+
 - name: Install Gotify desktop notification
   hosts: localhost
   become: yes

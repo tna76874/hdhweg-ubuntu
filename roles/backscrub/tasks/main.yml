@@ -42,7 +42,6 @@
   apt:
     name:
       - obs-studio
-    state: latest
     state: "{{ 'latest' if obs_enabled else 'absent' }}"
     install_recommends: yes
 

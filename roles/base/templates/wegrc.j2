@@ -16,6 +16,9 @@ alias install_docker="sudo ansible-playbook -i {{ config_repo_folder }}/inventor
 # install webcam tools
 alias install_webcam="sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t webcam"
 
+# install waydroid
+alias install_waydroid="sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t waydroid"
+
 # install fritzbox tools
 alias install_fritzbox="sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t fritzbox"
 
