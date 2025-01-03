@@ -118,27 +118,27 @@
 
 - name: duplicati
   block:
-  - name: Query duplicati releases from github
-    uri:                                                               
-      url: https://api.github.com/repos/duplicati/duplicati/releases
-      return_content: true                                             
-    register: duplicati_source   
-    ignore_errors: yes                                          
+    - name: Query Duplicati releases from GitHub
+      uri:
+        url: https://api.github.com/repos/duplicati/duplicati/releases
+        return_content: true
+      register: duplicati_source
+      ignore_errors: yes
 
-  - name: Register duplicati beta url
-    set_fact:
-      duplicati_beta:  "{{ duplicati_source.json | selectattr('tag_name', 'contains', '_beta_') | list }}"
-    ignore_errors: yes
+    - name: Register Duplicati beta URL
+      set_fact:
+        duplicati_beta: "{{ duplicati_source.json | selectattr('tag_name', 'search', '_beta_') | list }}"
+      ignore_errors: yes
 
-  - name: Register duplicati deb url
-    set_fact:
-      duplicati_deb:  "{{ duplicati_beta[0]['assets'] | selectattr('browser_download_url', 'contains', 'all.deb') | list }}"
-    ignore_errors: yes
+    - name: Register Duplicati deb URL
+      set_fact:
+        duplicati_deb: "{{ duplicati_beta[0]['assets'] | selectattr('browser_download_url', 'search', 'linux-x64-gui.deb') | list }}"
+      ignore_errors: yes
 
-  - name: Ensure duplicati
-    apt:
-      deb: "{{ duplicati_deb[0]['browser_download_url'] }}"
-    ignore_errors: yes
+    - name: Ensure Duplicati is installed
+      apt:
+        deb: "{{ duplicati_deb[0]['browser_download_url'] }}"
+      ignore_errors: yes
   when: duplicati_ensured|default(False)
 
 - name: Ensure TeamViewer
