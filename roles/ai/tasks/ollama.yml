@@ -1,10 +1,12 @@
 ---
-- name: Gather service facts
-  service_facts:
+- name: Check if Ollama is installed using which
+  command: which ollama
+  register: ollama_command
+  ignore_errors: true
 
-- name: Check if Ollama service is running
+- name: Set fact for Ollama installation check
   set_fact:
-    ollama_running: "{{ 'ollama.service' in services and services['ollama.service'].state == 'running' }}"
+    ollama_installed: "{{ ollama_command.rc == 0 }}"
 
 - name: Install ollama
   block:
@@ -17,7 +19,7 @@
     - name: Execute the installation script
       command: /tmp/install_ollama.sh
       register: install_output
-  when: ollama_enabled and not ollama_running
+  when: ollama_enabled and not ollama_installed
 
 - name: Ensure Ollama service is in the desired state
   service:
