@@ -12,5 +12,5 @@ webui_service_name: open-webui
 webui_service_dir: /srv/webui
 webui_service_dir_data: "{{ webui_service_dir }}/data"
 webui_service_dir_home: "{{ webui_service_dir }}/home"
-webui_container_image: ghcr.io/open-webui/open-webui:main
-webui_container_dir: ghcr.io/open-webui/open-webui:main
+webui_container_image_tag: main
+webui_container_image: ghcr.io/open-webui/open-webui:{{ webui_container_image_tag }}
