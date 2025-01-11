@@ -1,14 +1,6 @@
 ---
 - name: Ensure webui
   block:
-  - name: Ensure directory for custom home exists
-    ansible.builtin.file:
-      path: "{{ webui_service_dir_home }}"
-      state: directory
-      owner: "{{ ai_service_user }}"
-      group: "{{ ai_service_group }}"
-      mode: '0750'
-
   - name: Ensure group "{{ ai_service_group }}" exists
     ansible.builtin.group:
       name: "{{ ai_service_group }}"
@@ -22,6 +14,14 @@
       home: "{{ webui_service_dir_home }}"
       create_home: true
       state: present
+
+  - name: Ensure directory for custom home exists
+    ansible.builtin.file:
+      path: "{{ webui_service_dir_home }}"
+      state: directory
+      owner: "{{ ai_service_user }}"
+      group: "{{ ai_service_group }}"
+      mode: '0750'
 
   - name: Ensure directorys exists
     ansible.builtin.file:
