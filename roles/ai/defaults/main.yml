@@ -1,7 +1,7 @@
 ---
 ai_enabled: true
-ollama_enabled: "{{ ai_enabled }}"
-webui_enabled: "{{ ai_enabled }}"
+ollama_enabled: "{{ ai_enabled|bool }}"
+webui_enabled: "{{ ai_enabled|bool }}"
 
 ai_service_user: ai
 ai_service_group: ai

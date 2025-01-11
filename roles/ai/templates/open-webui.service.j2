@@ -17,6 +17,8 @@ ExecStart=/usr/bin/podman run --rm \
   --env PORT={{ webui_port }} \
   {{ webui_container_image }}
 
+ExecStop=/usr/bin/podman stop {{ webui_service_name }}
+
 Restart=always
 
 [Install]

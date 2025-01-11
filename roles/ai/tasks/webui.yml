@@ -1,57 +1,61 @@
 ---
-- name: Ensure directory for custom home exists
-  ansible.builtin.file:
-    path: "{{ webui_service_dir_home }}"
-    state: directory
-    owner: "{{ ai_service_user }}"
-    group: "{{ ai_service_group }}"
-    mode: '0750'
+- name: Ensure webui
+  block:
+  - name: Ensure directory for custom home exists
+    ansible.builtin.file:
+      path: "{{ webui_service_dir_home }}"
+      state: directory
+      owner: "{{ ai_service_user }}"
+      group: "{{ ai_service_group }}"
+      mode: '0750'
 
-- name: Ensure group "{{ ai_service_group }}" exists
-  ansible.builtin.group:
-    name: "{{ ai_service_group }}"
-    state: present
+  - name: Ensure group "{{ ai_service_group }}" exists
+    ansible.builtin.group:
+      name: "{{ ai_service_group }}"
+      state: present
 
-- name: Ensure user "{{ ai_service_user }}" exists
-  ansible.builtin.user:
-    name: "{{ ai_service_user }}"
-    group: "{{ ai_service_group }}"
-    shell: /usr/sbin/nologin
-    home: "{{ webui_service_dir_home }}"
-    create_home: true
-    state: present
+  - name: Ensure user "{{ ai_service_user }}" exists
+    ansible.builtin.user:
+      name: "{{ ai_service_user }}"
+      group: "{{ ai_service_group }}"
+      shell: /usr/sbin/nologin
+      home: "{{ webui_service_dir_home }}"
+      create_home: true
+      state: present
 
-- name: Ensure directorys exists
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: directory
-    owner: "{{ ai_service_user }}"
-    group: "{{ ai_service_group }}"
-    mode: '0750'
-  loop:
-    - "{{ webui_service_dir_data }}"
-    - "{{ webui_service_dir_home }}"
+  - name: Ensure directorys exists
+    ansible.builtin.file:
+      path: "{{ item }}"
+      state: directory
+      owner: "{{ ai_service_user }}"
+      group: "{{ ai_service_group }}"
+      mode: '0750'
+    loop:
+      - "{{ webui_service_dir_data }}"
+      - "{{ webui_service_dir_home }}"
 
-- name: Create Podman systemd service file
-  ansible.builtin.template:
-    src: open-webui.service.j2
-    dest: "/etc/systemd/system/{{ webui_service_name }}.service"
-    owner: root
-    group: root
-    mode: '0644'
+  - name: Create Podman systemd service file
+    ansible.builtin.template:
+      src: open-webui.service.j2
+      dest: "/etc/systemd/system/{{ webui_service_name }}.service"
+      owner: root
+      group: root
+      mode: '0644'
+    notify: restart webui
 
-- name: Pull container image
-  ansible.builtin.command:
-    cmd: "podman pull {{ webui_container_image }}"
-  become: yes
-  become_user: "{{ ai_service_user }}"
+  - name: Pull container image
+    ansible.builtin.command:
+      cmd: "podman pull {{ webui_container_image }}"
+    become: yes
+    become_user: "{{ ai_service_user }}"
 
-- name: Reload systemd
-  ansible.builtin.systemd:
-    daemon_reload: yes
+  - name: Reload systemd
+    ansible.builtin.systemd:
+      daemon_reload: yes
+  when: webui_enabled
 
-- name: Enable and start the service
+- name: Ensure webui service is in the desired state
   ansible.builtin.systemd:
     name: "{{ webui_service_name }}"
-    enabled: true
-    state: started
+    enabled: "{{ webui_enabled | ternary(true, false) }}"
+    state: "{{ 'started' if webui_enabled else 'stopped' }}"

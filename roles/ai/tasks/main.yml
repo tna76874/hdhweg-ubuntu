@@ -1,6 +1,11 @@
 ---
+- name: Ensure ollama state
+  include_tasks: ollama.yml
+
 - name: Ensure webui state
   include_tasks: webui.yml
+
+
 
 
 
