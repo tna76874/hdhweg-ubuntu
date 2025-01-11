@@ -19,6 +19,9 @@ alias install_webcam="sudo ansible-playbook -i {{ config_repo_folder }}/inventor
 # install waydroid
 alias install_waydroid="sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t waydroid"
 
+# install ai llm tools
+alias install_ai="sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t ai"
+
 # install fritzbox tools
 alias install_fritzbox="sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t fritzbox"
 
@@ -196,7 +199,7 @@ git config --global alias.doc "log --color --graph --pretty=format:'%Creset %s %
 dgit () {
     # render README.md, if found
     pandoc README.md -V geometry:margin=1.5cm -o ./.README.pdf > /dev/null 2>&1 || echo "No README.md found."
-    
+
     # render commit graph to PDF
     reponame=$(basename `git rev-parse --show-toplevel`)
     { echo "$reponame" ;date ; echo -e '\n'; git doc; } | aha -w | wkhtmltopdf -q -s A4 - ./.commits.pdf > /dev/null 2>&1
@@ -220,7 +223,7 @@ install_jellyfin() {
         echo "Bitte Installationsverzeichnis angeben: install_jellyfin /mein/jellyfin"
         return 1
     fi
-    
+
     # Setzen des Projektwurzelverzeichnisses
     local PROJECT_ROOT=$1
 

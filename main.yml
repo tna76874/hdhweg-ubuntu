@@ -152,7 +152,7 @@
 - name: Install mbz tool
   hosts: localhost
   become: yes
-  tags: 
+  tags:
     - never
     - mbz
   roles:
@@ -161,7 +161,7 @@
 - name: Deploy jellyfin
   hosts: localhost
   become: yes
-  tags: 
+  tags:
     - never
     - jellyfin
   roles:
@@ -202,6 +202,15 @@
     - waydroid
   roles:
     - waydroid
+
+- name: Install ai interface
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - ai
+  roles:
+    - ai
 
 - name: Install Gotify desktop notification
   hosts: localhost

@@ -1,0 +1,16 @@
+---
+ai_enabled: true
+ollama_enabled: "{{ ai_enabled }}"
+webui_enabled: "{{ ai_enabled }}"
+
+ai_service_user: ai
+ai_service_group: ai
+
+## webui settings
+webui_port: 8080
+webui_service_name: open-webui
+webui_service_dir: /srv/webui
+webui_service_dir_data: "{{ webui_service_dir }}/data"
+webui_service_dir_home: "{{ webui_service_dir }}/home"
+webui_container_image: ghcr.io/open-webui/open-webui:main
+webui_container_dir: ghcr.io/open-webui/open-webui:main
