@@ -41,7 +41,9 @@
       owner: root
       group: root
       mode: '0644'
-    notify: restart webui
+    notify:
+      - reload systemd
+      - restart webui
 
   - name: Pull container image
     ansible.builtin.command:

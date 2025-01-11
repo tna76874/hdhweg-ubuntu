@@ -6,6 +6,11 @@ webui_enabled: "{{ ai_enabled|bool }}"
 ai_service_user: ai
 ai_service_group: ai
 
+## ollama settings
+ollama_models:
+  - qwen2.5-coder:7b
+  - llama3.2:latest
+
 ## webui settings
 webui_port: 8080
 webui_service_name: open-webui

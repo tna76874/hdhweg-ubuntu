@@ -21,6 +21,14 @@
       register: install_output
   when: ollama_enabled and not ollama_installed
 
+- name: Ensure ollama settings
+  block:
+    - name: Pull models
+      command: ollama pull {{ item }}
+      loop: "{{ ollama_models }}"
+      ignore_errors: true
+  when: ollama_enabled
+
 - name: Ensure Ollama service is in the desired state
   service:
     name: ollama
