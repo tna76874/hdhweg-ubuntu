@@ -7,8 +7,8 @@ Type=simple
 User={{ ai_service_user }}
 Group={{ ai_service_group }}
 
-ExecStartPre=/usr/bin/podman pull {{ webui_container_image }}
-ExecStartPre=/usr/bin/podman rm -f {{ webui_service_name }}
+ExecStartPre=/usr/bin/podman pull {{ webui_container_image }} ||:
+ExecStartPre=/usr/bin/podman rm -f {{ webui_service_name }} ||:
 
 ExecStart=/usr/bin/podman run --rm \
   --name {{ webui_service_name }} \
