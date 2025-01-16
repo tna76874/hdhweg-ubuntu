@@ -9,7 +9,7 @@ ai_service_group: ai
 ## ollama settings
 ollama_models:
   - qwen2.5-coder:3b
-  - llama3.2:latest:3b
+  - llama3.2:3b
 
 ## webui settings
 webui_port: 8080
