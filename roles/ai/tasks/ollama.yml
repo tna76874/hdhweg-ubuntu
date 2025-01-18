@@ -19,7 +19,7 @@
     - name: Execute the installation script
       command: /tmp/install_ollama.sh
       register: install_output
-  when: ollama_enabled and not ollama_installed
+  when: ollama_enabled|bool and not ollama_installed
 
 - name: Ensure ollama settings
   block:
@@ -27,10 +27,10 @@
       command: ollama pull {{ item }}
       loop: "{{ ollama_models }}"
       ignore_errors: true
-  when: ollama_enabled
+  when: ollama_enabled|bool
 
-- name: Ensure Ollama service is in the desired state
+- name: "Ensure Ollama service is in the desired state: {{ ollama_enabled|bool | ternary('started', 'stopped') }}"
   service:
     name: ollama
-    state: "{{ 'started' if ollama_enabled else 'stopped' }}"
-    enabled: "{{ ollama_enabled | ternary(true, false) }}"
+    state: "{{ ollama_enabled|bool | ternary('started', 'stopped') }}"
+    enabled: "{{ ollama_enabled|bool | ternary(true, false) }}"

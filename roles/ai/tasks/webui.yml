@@ -54,10 +54,10 @@
   - name: Reload systemd
     ansible.builtin.systemd:
       daemon_reload: yes
-  when: webui_enabled
+  when: webui_enabled|bool
 
-- name: Ensure webui service is in the desired state
+- name: "Ensure webui service is in the desired state: {{ webui_enabled|bool | ternary('started', 'stopped') }}"
   ansible.builtin.systemd:
     name: "{{ webui_service_name }}"
-    enabled: "{{ webui_enabled | ternary(true, false) }}"
-    state: "{{ 'started' if webui_enabled else 'stopped' }}"
+    enabled: "{{ webui_enabled|bool | ternary(true, false) }}"
+    state: "{{ webui_enabled|bool | ternary('started', 'stopped') }}"
