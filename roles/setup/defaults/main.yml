@@ -290,7 +290,7 @@ config_flatpak_list_1:
   - { package: "io.kopia.KopiaUI", repo: "flathub", state: present }
   - { package: "org.cryptomator.Cryptomator", repo: "flathub", state: present, version: "bc6f8aa1923adf461b14e17a79382f4796a4c4f8cf99bdff8aea270c724bf341" }
   - { package: "io.github.peazip.PeaZip", repo: "flathub", state: present }
-  - { package: "com.nextcloud.desktopclient.nextcloud", repo: "flathub", state: present, version: "1bad0a8f54092f3b70beb10407d79dc20b18cc6d6fc44f28ec305dd9bcf5b595" }
+  - { package: "com.nextcloud.desktopclient.nextcloud", repo: "flathub", state: present }
   # Game
   - { package: "com.teeworlds.Teeworlds", repo: "flathub", state: present }
 
