@@ -7,7 +7,7 @@ Type=simple
 User={{ ai_service_user }}
 Group={{ ai_service_group }}
 
-TimeoutStartSec=600
+TimeoutStartSec=1800
 TimeoutStopSec=30
 
 ExecStartPre=/bin/sh -c '/usr/bin/podman pull {{ webui_container_image }} || true'
