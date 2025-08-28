@@ -12,7 +12,7 @@
       - ffmpeg
     state: latest
     install_recommends: yes
-    ignore_errors: yes
+  ignore_errors: yes
 
 - name: Python Stuff
   block:
