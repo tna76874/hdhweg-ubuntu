@@ -36,14 +36,32 @@
       skip: true
 
 - name: Ensure git repo
-  ansible.builtin.git:
-    repo: "{{ config_repo_url }}"
-    dest: "{{ config_repo_folder }}"
-    clone: yes
-    update: yes
-  changed_when: false
-  ignore_errors: yes
-  when: config_ensure_repo|bool
+  block:
+    - name: Clone or update repo
+      ansible.builtin.git:
+        repo: "{{ config_repo_url }}"
+        dest: "{{ config_repo_folder }}"
+        clone: yes
+        update: yes
+      changed_when: false
+      when: config_ensure_repo | bool
+
+  rescue:
+    - name: Remove broken repo folder
+      ansible.builtin.file:
+        path: "{{ config_repo_folder }}"
+        state: absent
+      when: config_ensure_repo | bool
+
+    - name: Fresh clone repo after failure
+      ansible.builtin.git:
+        repo: "{{ config_repo_url }}"
+        dest: "{{ config_repo_folder }}"
+        clone: yes
+        update: yes
+      changed_when: false
+      when: config_ensure_repo | bool
+
 
 - name: Ensure root .config dir
   file:
