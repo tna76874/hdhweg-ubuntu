@@ -1,1 +1,1 @@
-wget -qO setup.sh https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/setup.sh && chmod +x setup.sh && sudo bash setup.sh deploy && rm setup.sh && source "/root/.wegrc"
+wget -qO setup.sh https://raw.githubusercontent.com/tna76874/ubuntu-desktop/master/setup.sh && chmod +x setup.sh && sudo bash setup.sh deploy && rm setup.sh && source "/root/.wegrc"

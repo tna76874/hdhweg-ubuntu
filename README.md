@@ -30,7 +30,7 @@ If you have prepared your installation-stick, you [install](https://ubuntu.com/t
 When everything is done, you log into your Ubuntu account and open a terminal (shortcut Ctrl+Alt+T). Copy the whole content of the box beneath, paste it into the console and press enter. This will download the setup-skript and install all [basic packages](roles/setup/defaults/main.yml) including firewall configurations. For this setup you must enter again your password in the console - don't be confused that there is not shown anything when typing.
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/tna76874/hdhweg-ubuntu/master/install | bash
+wget -qO- https://raw.githubusercontent.com/tna76874/ubuntu-desktop/master/install | bash
 ```
 
 OPTIONAL: When you want to install [additional software packages](roles/setup/defaults/main.yml) execute:

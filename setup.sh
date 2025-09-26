@@ -18,7 +18,7 @@ sudo apt update > /dev/null 2>&1
 sudo apt install git ansible -y > /dev/null 2>&1
 
 #clone the playbook repository
-git clone https://github.com/tna76874/hdhweg-ubuntu.git ${REPODIR} > /dev/null 2>&1
+git clone https://github.com/tna76874/ubuntu-desktop.git ${REPODIR} > /dev/null 2>&1
 
 # run the playbook to set up the system
 cd ${REPODIR}
