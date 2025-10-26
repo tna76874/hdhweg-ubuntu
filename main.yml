@@ -203,6 +203,18 @@
   roles:
     - waydroid
 
+- name: Install LM Studio
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - base
+    - setup
+    - bigsetup
+    - lmstudio
+  roles:
+    - lmstudio
+
 - name: Install ai interface
   hosts: localhost
   become: yes

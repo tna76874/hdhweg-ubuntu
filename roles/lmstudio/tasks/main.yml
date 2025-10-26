@@ -1,0 +1,134 @@
+---
+- name: Preflight
+  block:
+    - name: Fail if Ubuntu version is too old
+      assert:
+        that:
+          - ansible_distribution == "Ubuntu"
+          - ansible_distribution_version is version('22.04', '>')
+        fail_msg: >
+          Diese Rolle erfordert Ubuntu neuer als 22.04 (z. B. 22.10 oder höher).
+        success_msg: "Ubuntu-Version ist ausreichend neu."
+
+    - name: Ensure LM Studio directory exists
+      file:
+        path: /opt/lmstudio
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+      become: yes
+
+- name: Parse latest version infos
+  block:
+    - name: Get latest LM Studio redirect header
+      uri:
+        url: "https://lmstudio.ai/download/latest/linux/x64"
+        method: HEAD
+        return_content: no
+        follow_redirects: no
+        status_code: [200, 302]
+      register: lmstudio_redirect
+
+    - name: Extract version and filename
+      set_fact:
+        lmstudio_download_url: "{{ lmstudio_redirect.location }}"
+        lmstudio_filename: "{{ lmstudio_redirect.location | basename }}"
+        lmstudio_version: "{{ lmstudio_filename | regex_search('LM-Studio-(.+)-x64\\.AppImage', '\\1') }}"
+
+    - name: Debug version info
+      debug:
+        msg:
+          - "Version: {{ lmstudio_version }}"
+          - "Download URL: {{ lmstudio_download_url }}"
+          - "Filename: {{ lmstudio_filename }}"
+
+- name: Ensure appimage
+  block:
+    - name: Check if LM Studio AppImage already exists
+      stat:
+        path: "/opt/lmstudio/{{ lmstudio_filename }}"
+      register: lmstudio_appimage_stat
+
+    - name: Download LM Studio AppImage
+      get_url:
+        url: "{{ lmstudio_download_url }}"
+        dest: "/opt/lmstudio/{{ lmstudio_filename }}"
+        mode: '0755'
+        owner: root
+        group: root
+      when: not lmstudio_appimage_stat.stat.exists
+
+    - name: Create symlink to latest LM Studio
+      file:
+        src: "/opt/lmstudio/{{ lmstudio_filename }}"
+        dest: "/opt/lmstudio/LM-Studio-latest.AppImage"
+        state: link
+        force: yes
+      become: yes
+
+- name: Cleanup old versions 
+  block:
+    - name: Find all LM Studio AppImages
+      find:
+        paths: /opt/lmstudio
+        patterns: "LM-Studio-*-x64.AppImage"
+        file_type: file
+      register: lmstudio_files
+      become: yes
+
+    - name: Extract versions from filenames
+      set_fact:
+        lmstudio_versions: >-
+          {{
+            lmstudio_files.files
+            | map(attribute='path')
+            | map('basename')
+            | map('regex_search', 'LM-Studio-(.+)-x64\\.AppImage')
+            | select('defined')
+            | list
+          }}
+
+    - name: Sort versions descending
+      set_fact:
+        lmstudio_versions_sorted: "{{ lmstudio_versions | sort(attribute='split', reverse=True) }}"
+
+    - name: Remove old LM Studio versions (keep last 2)
+      file:
+        path: "/opt/lmstudio/LM-Studio-{{ item }}-x64.AppImage"
+        state: absent
+      loop: "{{ lmstudio_versions_sorted[2:] }}"
+      when: lmstudio_versions_sorted | length > 2
+      become: yes
+
+- name: Ensure desktop shortcut
+  block:
+    - name: Check if LM Studio icon exists
+      stat:
+        path: "{{ lmstudio_icon_path }}"
+      register: lmstudio_icon_stat
+      become: yes
+
+    - name: Download LM Studio icon if not present
+      get_url:
+        url: "{{ lmstudio_icon_url }}"
+        dest: "{{ lmstudio_icon_path }}"
+        owner: root
+        group: root
+        mode: '0644'
+      when: not lmstudio_icon_stat.stat.exists
+      become: yes
+
+    - name: Create LM Studio desktop entry (system-wide)
+      template:
+        src: LM-Studio.desktop.j2
+        dest: /usr/share/applications/LM-Studio.desktop
+        owner: root
+        group: root
+        mode: '0644'
+      become: yes
+
+    - name: Update desktop database
+      command: update-desktop-database /usr/share/applications
+      changed_when: false
+      become: yes

@@ -1,0 +1,15 @@
+---
+galaxy_info:
+  author: your_name
+  description: Installiert LM Studio (lokales LLM GUI) auf Ubuntu-Systemen neuer als 22.04.
+  license: MIT
+  min_ansible_version: 2.9
+  platforms:
+    - name: Ubuntu
+      versions:
+        - 22.10
+        - 23.04
+        - 23.10
+        - 24.04
+        - 24.10
+        - 25.04
