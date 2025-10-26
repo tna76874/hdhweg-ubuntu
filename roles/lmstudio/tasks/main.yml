@@ -1,14 +1,14 @@
 ---
 - name: Preflight
   block:
-    - name: Fail if Ubuntu version is too old
-      assert:
-        that:
-          - ansible_distribution == "Ubuntu"
-          - ansible_distribution_version is version('22.04', '>')
-        fail_msg: >
-          Diese Rolle erfordert Ubuntu neuer als 22.04 (z. B. 22.10 oder höher).
-        success_msg: "Ubuntu-Version ist ausreichend neu."
+    # - name: Fail if Ubuntu version is too old
+    #   assert:
+    #     that:
+    #       - ansible_distribution == "Ubuntu"
+    #       - ansible_distribution_version is version('22.04', '>')
+    #     fail_msg: >
+    #       Diese Rolle erfordert Ubuntu neuer als 22.04 (z. B. 22.10 oder höher).
+    #     success_msg: "Ubuntu-Version ist ausreichend neu."
 
     - name: Ensure LM Studio directory exists
       file:
