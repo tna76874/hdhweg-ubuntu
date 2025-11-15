@@ -157,8 +157,14 @@
     - portmaster
     - setup
     - bigsetup
-  roles:
-    - portmaster
+  tasks:
+    - block:
+        - name: Include Portmaster role
+          include_role:
+            name: portmaster
+      rescue:
+        - debug:
+            msg: "Portmaster installation failed, but continuing..."
 
 - name: Deploy fritzbox tools
   hosts: localhost

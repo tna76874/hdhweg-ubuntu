@@ -1,7 +1,3 @@
-- name: Portmaster set base path
-  set_fact:
-    portmaster_base_path: "/opt/safing/portmaster"
-
 - name: Portmaster variables
   set_fact:
     preflight_portmaster_kernel_valid: "{{ (ansible_kernel.split('.')[0] | int > 5) or ((ansible_kernel.split('.')[0] | int == 5) and (ansible_kernel.split('.')[1] | int >= 7)) }}"
@@ -12,21 +8,6 @@
         if ('portmaster' in ansible_facts.packages and ansible_facts.packages.portmaster | length > 0)
         else None)
       }}
-    generated_api_key: "{{ lookup('password', '/dev/null length=50 chars=ascii_letters,digits') }}"
-    portmaster_group: portmasteruser
-    portmaster_api_key_file: "{{ portmaster_base_path }}/API_KEY"
-    portmaster_config_file: "{{ portmaster_base_path }}/config.json"
-    portmaster_blocklist: "{{ portmaster_base_path }}/blocklist.txt"
-    portmaster_install_status: "{{ portmaster_enabled is not defined or portmaster_enabled is none or portmaster_enabled | bool }}"
-    portmaster_nameservers:
-      - "dot://dns.quad9.net?ip=9.9.9.9&name=Quad9&blockedif=empty"
-      - "dot://dns.quad9.net?ip=149.112.112.112&name=Quad9&blockedif=empty"
-      - "dot://cloudflare-dns.com?ip=1.1.1.2&name=Cloudflare&blockedif=zeroip"
-      - "dot://cloudflare-dns.com?ip=1.0.0.2&name=Cloudflare&blockedif=zeroip"
-    portmaster_blocked_cc:
-      - CN
-      - RU
-      - IR
 
 #### DEBUG MESSAGES #############
 - name: Debug messages

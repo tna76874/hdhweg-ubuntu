@@ -1,4 +1,23 @@
 ---
-portmaster_major_version: 1
+portmaster_major_version: 2
 
 portmaster_debug: false
+
+portmaster_base_path: "/opt/safing/portmaster"
+
+generated_api_key: "{{ lookup('password', '/dev/null length=50 chars=ascii_letters,digits') }}"
+portmaster_group: portmasteruser
+portmaster_api_key_file: "{{ portmaster_base_path }}/API_KEY"
+portmaster_config_file: "{{ portmaster_base_path }}/config.json"
+portmaster_blocklist: "{{ portmaster_base_path }}/blocklist.txt"
+portmaster_install_status: "{{ portmaster_enabled is not defined or portmaster_enabled is none or portmaster_enabled | bool }}"
+portmaster_nameservers:
+  - "dot://dns.quad9.net?ip=9.9.9.9&name=Quad9&blockedif=empty"
+  - "dot://dns.quad9.net?ip=149.112.112.112&name=Quad9&blockedif=empty"
+  - "dot://cloudflare-dns.com?ip=1.1.1.2&name=Cloudflare&blockedif=zeroip"
+  - "dot://cloudflare-dns.com?ip=1.0.0.2&name=Cloudflare&blockedif=zeroip"
+
+portmaster_blocked_cc:
+  - CN
+  - RU
+  - IR
