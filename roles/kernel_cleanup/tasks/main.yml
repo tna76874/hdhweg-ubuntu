@@ -27,25 +27,29 @@
       - "Old kernels to remove: {{ old_kernels }}"
       - "Kernels to keep: {{ kept_kernels + ['linux-image-' + current_kernel.stdout] }}"
 
-- name: Confirm before removing old kernels
-  ansible.builtin.pause:
-    prompt: "Do you really want to remove the old kernels? Type 'yes' to continue"
-  register: confirm_removal
+- name: REMOVE KERNELS
+  block:
+    - name: Confirm before removing old kernels
+      ansible.builtin.pause:
+        prompt: "Do you really want to remove the old kernels? Type 'yes' to continue"
+      register: confirm_removal
 
-- name: Abort if user did not confirm
-  ansible.builtin.fail:
-    msg: "Aborting kernel cleanup as user did not confirm."
-  when: confirm_removal.user_input != 'yes'
+    - name: Abort if user did not confirm
+      ansible.builtin.fail:
+        msg: "Aborting kernel cleanup as user did not confirm."
+      when: confirm_removal.user_input != 'yes'
 
-- name: Remove old kernels
-  ansible.builtin.apt:
-    name: "{{ item }}"
-    state: absent
-    purge: yes
-  loop: "{{ old_kernels }}"
+    - name: Remove old kernels
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: absent
+        purge: yes
+      loop: "{{ old_kernels }}"
+      when: old_kernels | length > 0
+
+    - name: Autoremove unused packages
+      ansible.builtin.apt:
+        autoremove: yes
+        purge: yes
   when: old_kernels | length > 0
 
-- name: Autoremove unused packages
-  ansible.builtin.apt:
-    autoremove: yes
-    purge: yes
