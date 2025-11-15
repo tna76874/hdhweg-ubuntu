@@ -222,7 +222,6 @@
   become: yes
   tags:
     - never
-    - base
     - setup
     - bigsetup
     - lmstudio
