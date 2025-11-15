@@ -1,0 +1,21 @@
+- name: Ensure V1 url
+  set_fact:
+    portmaster_deb_url: "https://updates.safing.io/latest/linux_amd64/packages/portmaster-installer.deb"
+  when: portmaster_major_version | int == 1
+
+- name: Ensure V2 url
+  block:
+    - name: Query releases from github
+      uri:
+        url: https://api.github.com/repos/safing/portmaster/releases/latest
+        return_content: true
+      register: github_latest_release
+
+    - name: Registering release tag
+      set_fact:
+        portmaster_release_version: "{{ github_latest_release['json']['tag_name'].replace('v','') }}"
+
+    - name: Portmaster url
+      set_fact:
+        portmaster_deb_url: "https://updates.safing.io/latest/linux_amd64/packages/Portmaster_{{ portmaster_release_version }}_amd64.deb"
+  when: portmaster_major_version | int == 2

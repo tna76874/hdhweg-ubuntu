@@ -1,0 +1,72 @@
+---
+- name: Preflight Checks
+  block:
+  - name: Gather Package facts
+    package_facts:
+      manager: auto
+    ignore_errors: yes
+
+  - name: Get installed Portmaster version
+    set_fact:
+      portmaster_installed_version: >-
+        {{
+          (ansible_facts.packages.portmaster[0].version
+          if ('portmaster' in ansible_facts.packages and ansible_facts.packages.portmaster | length > 0)
+          else None)
+        }}
+
+  - name: Parse installed Portmaster major version
+    set_fact:
+      portmaster_installed_major_version: >-
+        {{
+          (portmaster_installed_version.split('~')[0].split('.')[0] | trim | int)
+          if portmaster_installed_version
+          else None
+        }}
+
+  - name: Set portmaster_is_v1 / portmaster_is_v2 based on major version
+    set_fact:
+      portmaster_is_v1: "{{ (portmaster_installed_major_version|int == 1) if portmaster_installed_major_version is not none else False }}"
+      portmaster_is_v2: "{{ (portmaster_installed_major_version|int == 2) if portmaster_installed_major_version is not none else False }}"
+
+  - name: Determine if portmaster has to be uninstalled first
+    set_fact:
+      portmaster_needs_uninstall: "{{ (portmaster_installed_major_version|int != portmaster_major_version | int) if portmaster_installed_major_version is not none else False }}"
+
+  - name: Debug installed version and type
+    debug:
+      msg:
+        - "Installed version: {{ portmaster_installed_version }}"
+        - "Major version: {{ portmaster_installed_major_version }}"
+        - "Is v1? {{ portmaster_is_v1 }}"
+        - "Is v2? {{ portmaster_is_v2 }}"
+    when: portmaster_debug|default(False)
+
+#####
+
+- name: Uninstall portmaster
+  block:
+    - name: Ensure portmaster package is absent
+      apt:
+        name: portmaster
+        state: absent
+
+    - name: reload systemd
+      systemd:
+        daemon_reload: yes
+
+    - name: Gather Package facts
+      package_facts:
+        manager: auto
+      ignore_errors: yes
+  when: portmaster_needs_uninstall | bool == True
+
+#####
+
+- name: Setting download urls
+  include_tasks: portmaster_url.yml
+
+- name: Ensure Portmaster
+  include_tasks: portmaster.yml
+
+

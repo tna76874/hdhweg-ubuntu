@@ -6,13 +6,18 @@
   set_fact:
     preflight_portmaster_kernel_valid: "{{ (ansible_kernel.split('.')[0] | int > 5) or ((ansible_kernel.split('.')[0] | int == 5) and (ansible_kernel.split('.')[1] | int >= 7)) }}"
     preflight_portmaster_deb_is_installed: "{{ 'portmaster' in ansible_facts.packages }}"
+    portmaster_installed_version: >-
+      {{
+        (ansible_facts.packages.portmaster[0].version
+        if ('portmaster' in ansible_facts.packages and ansible_facts.packages.portmaster | length > 0)
+        else None)
+      }}
     generated_api_key: "{{ lookup('password', '/dev/null length=50 chars=ascii_letters,digits') }}"
-    portmaster_deb_url: "https://updates.safing.io/latest/linux_amd64/packages/portmaster-installer.deb"
     portmaster_group: portmasteruser
     portmaster_api_key_file: "{{ portmaster_base_path }}/API_KEY"
     portmaster_config_file: "{{ portmaster_base_path }}/config.json"
     portmaster_blocklist: "{{ portmaster_base_path }}/blocklist.txt"
-    portmaster_install_status: "{{ portmaster_enabled is not defined or portmaster_enabled is none or portmaster_enabled }}"
+    portmaster_install_status: "{{ portmaster_enabled is not defined or portmaster_enabled is none or portmaster_enabled | bool }}"
     portmaster_nameservers:
       - "dot://dns.quad9.net?ip=9.9.9.9&name=Quad9&blockedif=empty"
       - "dot://dns.quad9.net?ip=149.112.112.112&name=Quad9&blockedif=empty"
@@ -30,6 +35,7 @@
       - "{{ 'Valid kernel for portmaster' if preflight_portmaster_kernel_valid else 'Invalid kernel for portmaster' }}"
       - "{{ 'Portmaster is installed' if preflight_portmaster_deb_is_installed else 'Portmaster is not installed' }}"
       - "Installation status: {{ portmaster_install_status }}"
+      - "Portmaster version: {{ portmaster_installed_version }}"
   when: portmaster_debug|default(False)
 
 #################################
@@ -89,11 +95,13 @@
       file:
         path: "{{ portmaster_base_path }}/portmaster-start"
         mode: 0750
+      when: portmaster_major_version | int == 1
 
     - name: Set the group for portmaster-start to portmasteruser
       file:
         path: "{{ portmaster_base_path }}/portmaster-start"
         group: "{{ portmaster_group }}"
+      when: portmaster_major_version | int == 1
   when: preflight_portmaster_kernel_valid == True and portmaster_install_status == True
 
 - name: Ensure portmaster config / API
@@ -126,8 +134,8 @@
         group: root
         mode: '0600'
       loop:
-        - {src: portmaster.json, dest: "{{ portmaster_config_file }}"}
-        - {src: portmaster_blocklist.txt, dest: "{{ portmaster_blocklist }}"}
+        - {src: portmaster.json.j2, dest: "{{ portmaster_config_file }}"}
+        - {src: portmaster_blocklist.txt.j2, dest: "{{ portmaster_blocklist }}"}
       notify:
         - reload portmaster
 

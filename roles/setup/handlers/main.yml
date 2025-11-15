@@ -63,8 +63,3 @@
   shell: dpkg-reconfigure libdvd-pkg -f noninteractive
   become: yes
   ignore_errors: yes
-
-- name: reload portmaster
-  systemd:
-    name: portmaster
-    state: restarted
