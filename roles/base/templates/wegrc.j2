@@ -4,6 +4,9 @@ alias update="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook -
 # run the base playbook to ensure proper configs
 alias update_config="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t base -e recompile_shc=1"
 
+# run the kernel cleanup playbook to remove old kernels safely
+alias kernel_cleanup="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t kernel_cleanup"
+
 # run the main playbook to ensure updated packages and proper configs including latest rtw89_module
 alias wifi_update="sudo git -C {{ config_repo_folder }} pull; sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t setup -e ensure_rtw89_module=True"
 
@@ -214,19 +217,3 @@ dgit () {
     ( rm ./.commits.pdf > /dev/null 2>&1 ) || :
 }
 export -f dgit
-
-############################################################################
-
-install_jellyfin() {
-    # Überprüfen, ob das Projektwurzelverzeichnis als Argument übergeben wurde
-    if [ -z "$1" ]; then
-        echo "Bitte Installationsverzeichnis angeben: install_jellyfin /mein/jellyfin"
-        return 1
-    fi
-
-    # Setzen des Projektwurzelverzeichnisses
-    local PROJECT_ROOT=$1
-
-    # Ausführen des Ansible-Befehls mit dem angegebenen Projektwurzelverzeichnis
-    sudo ansible-playbook -i {{ config_repo_folder }}/inventory {{ config_repo_folder }}/main.yml -t jellyfin -e project_root=$PROJECT_ROOT
-}

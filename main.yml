@@ -54,6 +54,21 @@
   roles:
     - extra
 
+- name: Purge Kernels
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - kernel_cleanup
+  tasks:
+    - block:
+        - name: Include kernel_cleanup role
+          include_role:
+            name: kernel_cleanup
+      rescue:
+        - debug:
+            msg: "kernel_cleanup failed, but continuing..."
+
 - name: Maintenance script
   hosts: localhost
   become: yes

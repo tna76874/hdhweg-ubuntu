@@ -1,0 +1,51 @@
+---
+- name: Get current running kernel
+  ansible.builtin.shell: uname -r
+  register: current_kernel
+  changed_when: false
+
+- name: Show current running kernel
+  ansible.builtin.debug:
+    msg: "Current running kernel is {{ current_kernel.stdout }}"
+
+- name: Get sorted list of kernels
+  ansible.builtin.shell: "dpkg --list 'linux-image-*' | awk '/^ii/ && $2 ~ /^linux-image-[0-9]/ {print $2}' | sort -V"
+  register: installed_kernels
+
+- name: Filter out current kernel
+  ansible.builtin.set_fact:
+    kernels_excluding_current: "{{ installed_kernels.stdout_lines | difference(['linux-image-' + current_kernel.stdout]) }}"
+
+- name: Select kernels to remove (keep last {{ kernels_to_keep }})
+  ansible.builtin.set_fact:
+    old_kernels: "{{ kernels_excluding_current[:-kernels_to_keep] }}"
+    kept_kernels: "{{ kernels_excluding_current[-kernels_to_keep:] }}"
+
+- name: Show kernels
+  ansible.builtin.debug:
+    msg:
+      - "Old kernels to remove: {{ old_kernels }}"
+      - "Kernels to keep: {{ kept_kernels + ['linux-image-' + current_kernel.stdout] }}"
+
+- name: Confirm before removing old kernels
+  ansible.builtin.pause:
+    prompt: "Do you really want to remove the old kernels? Type 'yes' to continue"
+  register: confirm_removal
+
+- name: Abort if user did not confirm
+  ansible.builtin.fail:
+    msg: "Aborting kernel cleanup as user did not confirm."
+  when: confirm_removal.user_input != 'yes'
+
+- name: Remove old kernels
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: absent
+    purge: yes
+  loop: "{{ old_kernels }}"
+  when: old_kernels | length > 0
+
+- name: Autoremove unused packages
+  ansible.builtin.apt:
+    autoremove: yes
+    purge: yes
