@@ -201,9 +201,18 @@
   become: yes
   tags:
     - never
+    - base
+    - setup
+    - bigsetup
     - lmstudio
-  roles:
-    - lmstudio
+  tasks:
+    - block:
+        - name: Include LM Studio role
+          include_role:
+            name: lmstudio
+      rescue:
+        - debug:
+            msg: "LM Studio installation failed, but continuing..."
 
 - name: Install ai interface
   hosts: localhost

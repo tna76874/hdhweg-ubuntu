@@ -67,6 +67,8 @@
         force: yes
       become: yes
 
+###########
+
 - name: Cleanup old versions 
   block:
     - name: Find all LM Studio AppImages
@@ -84,14 +86,18 @@
             lmstudio_files.files
             | map(attribute='path')
             | map('basename')
-            | map('regex_search', 'LM-Studio-(.+)-x64\\.AppImage')
+            | map('regex_search', 'LM-Studio-(.+?)-x64\.AppImage')
             | select('defined')
             | list
           }}
 
+    - name: DEBUG show installed LM Studio versions
+      debug:
+        var: lmstudio_versions
+
     - name: Sort versions descending
       set_fact:
-        lmstudio_versions_sorted: "{{ lmstudio_versions | sort(attribute='split', reverse=True) }}"
+        lmstudio_versions_sorted: "{{ lmstudio_versions | sort(reverse=True) }}"
 
     - name: Remove old LM Studio versions (keep last 2)
       file:
@@ -100,6 +106,8 @@
       loop: "{{ lmstudio_versions_sorted[2:] }}"
       when: lmstudio_versions_sorted | length > 2
       become: yes
+
+###########
 
 - name: Ensure desktop shortcut
   block:
