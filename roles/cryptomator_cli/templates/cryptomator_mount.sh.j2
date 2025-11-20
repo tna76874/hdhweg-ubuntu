@@ -1,31 +1,63 @@
 #!/bin/bash
 
-# Wrapper script to mount Cryptomator vault
+# Wrapper script to mount Cryptomator vault as a background daemon
 
 set -e
 
 # Default values
 mount_point=""
-volume_name=""
 vault_dir=""
+kill_mount=false
+
+PIDFILE_DIR="{{ cryptomator_cli_base_dir }}"  # Speicherort für PID-Dateien
 
 usage() {
-  echo "Usage: $0 -m <mount_point> -d <vault_directory>"
+  echo "Usage: $0 -m <mount_point> -d <vault_directory> [-k] [-h]"
+  echo "  -m  Mount point"
+  echo "  -d  Vault directory"
+  echo "  -k  Kill existing mount"
+  echo "  -h  Show this help"
   exit 1
 }
 
 # Parse options
-while getopts "m:d:h" opt; do
+while getopts "m:d:kh" opt; do
   case "$opt" in
     m) mount_point="$OPTARG" ;;
     d) vault_dir="$OPTARG" ;;
+    k) kill_mount=true ;;
     h) usage ;;
     *) usage ;;
   esac
 done
 
+if [[ -z "$mount_point" ]]; then
+  usage
+fi
+
+PIDFILE="$PIDFILE_DIR/cryptomator_$(basename "$mount_point").pid"
+
+# Kill existing mount
+if $kill_mount; then
+  if [[ -f "$PIDFILE" ]]; then
+    PID=$(cat "$PIDFILE")
+    echo "Stopping mount process $PID..."
+    kill "$PID" || true
+    sleep 1
+    if mountpoint -q "$mount_point"; then
+      echo "Unmounting $mount_point..."
+      fusermount -u "$mount_point"
+    fi
+    rm -f "$PIDFILE"
+    echo "Mount stopped."
+  else
+    echo "No PID file found for mount $mount_point."
+  fi
+  exit 0
+fi
+
 # Check required options
-if [[ -z "$mount_point" || -z "$vault_dir" ]]; then
+if [[ -z "$vault_dir" ]]; then
   usage
 fi
 
@@ -40,9 +72,20 @@ if [[ ! -f "$PASSFILE" ]]; then
   exit 1
 fi
 
-# Unlock and mount
+# Prüfen, ob bereits gemountet
+if mountpoint -q "$mount_point"; then
+  echo "Mount point $mount_point is already mounted. Skipping mount."
+  exit 0
+fi
+
+# Start mount in background without logging
+echo "Starting Cryptomator mount at $mount_point..."
 "{{ cryptomator_cli_binary_path }}" unlock \
   --password:file="$PASSFILE" \
   --mounter=org.cryptomator.frontend.fuse.mount.LinuxFuseMountProvider \
   --mountPoint="$mount_point" \
-  "$vault_dir"
+  "$vault_dir" &
+
+PID=$!
+echo "$PID" > "$PIDFILE"
+echo "Mount process started in background with PID $PID."
