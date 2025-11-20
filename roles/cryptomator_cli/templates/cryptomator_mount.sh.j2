@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# Wrapper script to mount Cryptomator vault
+
+set -e
+
+# Default values
+mount_point=""
+volume_name=""
+vault_dir=""
+
+usage() {
+  echo "Usage: $0 -m <mount_point> -v <volume_name> -d <vault_directory>"
+  exit 1
+}
+
+# Parse options
+while getopts "m:v:d:h" opt; do
+  case "$opt" in
+    m) mount_point="$OPTARG" ;;
+    v) volume_name="$OPTARG" ;;
+    d) vault_dir="$OPTARG" ;;
+    h) usage ;;
+    *) usage ;;
+  esac
+done
+
+# Check required options
+if [[ -z "$mount_point" || -z "$volume_name" || -z "$vault_dir" ]]; then
+  usage
+fi
+
+# Ensure the mount point exists
+mkdir -p "$mount_point"
+
+# Path to password file
+PASSFILE="{{ vault_key_path }}"
+
+if [[ ! -f "$PASSFILE" ]]; then
+  echo "Vault key file $PASSFILE not found!"
+  exit 1
+fi
+
+# Unlock and mount
+"{{ cryptomator_cli_binary_path }}" unlock \
+  --password:file="$PASSFILE" \
+  --mounter=org.cryptomator.frontend.fuse.mount.LinuxFuseMountProvider \
+  --mountPoint="$mount_point" \
+  --volumeName="$volume_name" \
+  "$vault_dir"

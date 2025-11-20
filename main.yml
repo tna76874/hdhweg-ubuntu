@@ -265,3 +265,18 @@
     - extra
   roles:
     - extra
+
+- name: Install cryptomator cli
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - cryptomator
+  tasks:
+    - block:
+        - name: Include cryptomator role
+          include_role:
+            name: cryptomator_cli
+      rescue:
+        - debug:
+            msg: "cryptomator installation failed, but continuing..."

@@ -1,0 +1,116 @@
+---
+
+# -------------------------------------------------------
+# Ensure unzip is installed
+# -------------------------------------------------------
+- name: Ensure unzip is installed
+  package:
+    name: unzip
+    state: present
+
+# -------------------------------------------------------
+# Fetch latest version if not defined or none
+# -------------------------------------------------------
+- name: Fetch latest Cryptomator CLI release info
+  uri:
+    url: "{{ cryptomator_cli_api_url }}"
+    method: GET
+    return_content: yes
+    status_code: 200
+  when: cryptomator_cli_version is none or cryptomator_cli_version is not defined
+  register: cryptomator_release_json
+
+- name: Extract latest version from GitHub API
+  set_fact:
+    cryptomator_cli_version: "{{ cryptomator_release_json.json.tag_name }}"
+  when: cryptomator_cli_version is none or cryptomator_cli_version is not defined
+
+# -------------------------------------------------------
+# Build paths
+# -------------------------------------------------------
+- name: Set versioned install directory
+  set_fact:
+    cryptomator_cli_install_dir: "{{ cryptomator_cli_base_dir }}/{{ cryptomator_cli_version }}"
+
+- name: Set binary folder fact
+  set_fact:
+    cryptomator_cli_bin_dir: "{{ cryptomator_cli_install_dir }}/cryptomator-cli/bin"
+
+- name: Build download URL
+  set_fact:
+    cryptomator_cli_download_url: >-
+      https://github.com/cryptomator/cli/releases/download/{{ cryptomator_cli_version }}/cryptomator-cli-{{ cryptomator_cli_version }}-{{ cryptomator_cli_arch }}.zip
+
+# -------------------------------------------------------
+# PRE-CHECK: Check if version folder already exists
+# -------------------------------------------------------
+- name: Check whether version directory already exists
+  stat:
+    path: "{{ cryptomator_cli_install_dir }}"
+  register: cryptomator_cli_version_dir
+
+# -------------------------------------------------------
+# INSTALL BLOCK: Only if version folder does not exist
+# -------------------------------------------------------
+- block:
+
+    - name: Ensure versioned install directory exists
+      file:
+        path: "{{ cryptomator_cli_install_dir }}"
+        state: directory
+        mode: "0755"
+
+    - name: Download Cryptomator CLI
+      get_url:
+        url: "{{ cryptomator_cli_download_url }}"
+        dest: "/tmp/cryptomator-cli.zip"
+        mode: "0644"
+
+    - name: Extract Cryptomator CLI into versioned folder
+      unarchive:
+        src: "/tmp/cryptomator-cli.zip"
+        dest: "{{ cryptomator_cli_install_dir }}"
+        remote_src: yes
+
+    - name: Ensure binary is executable
+      file:
+        path: "{{ cryptomator_cli_bin_dir }}/cryptomator-cli"
+        mode: "0755"
+
+    - name: Update global symlink to point to the versioned binary
+      file:
+        src: "{{ cryptomator_cli_bin_dir }}/cryptomator-cli"
+        dest: "{{ cryptomator_cli_binary_path }}"
+        state: link
+        force: yes
+
+  when: not cryptomator_cli_version_dir.stat.exists
+
+
+# -------------------------------------------------------
+# Ensure Vault Key exists (only if not already present)
+# -------------------------------------------------------
+- name: Check if vault key already exists
+  stat:
+    path: "{{ vault_key_path }}"
+  register: vault_key_stat
+
+- name: Create Cryptomator vault key if missing
+  copy:
+    dest: "{{ vault_key_path }}"
+    content: "{{ vault_key_content }}"
+    owner: root
+    group: root
+    mode: '0600'
+  when: not vault_key_stat.stat.exists
+
+# -------------------------------------------------------
+# Deploy Cryptomator mount wrapper script
+# -------------------------------------------------------
+- name: Deploy Cryptomator mount wrapper script
+  template:
+    src: cryptomator_mount.sh.j2
+    dest: /usr/local/bin/cryptomator_mount
+    owner: root
+    group: root
+    mode: '0755'

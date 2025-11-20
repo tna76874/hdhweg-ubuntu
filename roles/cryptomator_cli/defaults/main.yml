@@ -1,0 +1,11 @@
+cryptomator_cli_version: 
+cryptomator_cli_arch: "linux-x64"
+
+cryptomator_cli_base_dir: "/opt/cryptomator-cli"
+cryptomator_cli_binary_path: "/usr/local/bin/cryptomator-cli"
+
+cryptomator_cli_api_url: "https://api.github.com/repos/cryptomator/cli/releases/latest"
+
+vault_key_content: "{{ lookup('password', '/dev/null length=64 chars=ascii_letters,digits') }}"
+
+vault_key_path: "/root/cryptomator_vault_key"
