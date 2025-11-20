@@ -10,15 +10,14 @@ volume_name=""
 vault_dir=""
 
 usage() {
-  echo "Usage: $0 -m <mount_point> -v <volume_name> -d <vault_directory>"
+  echo "Usage: $0 -m <mount_point> -d <vault_directory>"
   exit 1
 }
 
 # Parse options
-while getopts "m:v:d:h" opt; do
+while getopts "m:d:h" opt; do
   case "$opt" in
     m) mount_point="$OPTARG" ;;
-    v) volume_name="$OPTARG" ;;
     d) vault_dir="$OPTARG" ;;
     h) usage ;;
     *) usage ;;
@@ -26,7 +25,7 @@ while getopts "m:v:d:h" opt; do
 done
 
 # Check required options
-if [[ -z "$mount_point" || -z "$volume_name" || -z "$vault_dir" ]]; then
+if [[ -z "$mount_point" || -z "$vault_dir" ]]; then
   usage
 fi
 
@@ -46,5 +45,4 @@ fi
   --password:file="$PASSFILE" \
   --mounter=org.cryptomator.frontend.fuse.mount.LinuxFuseMountProvider \
   --mountPoint="$mount_point" \
-  --volumeName="$volume_name" \
   "$vault_dir"
