@@ -263,7 +263,6 @@ config_flatpak_list_1:
   - { package: "io.gitlab.theevilskeleton.Upscaler", repo: "flathub", state: present }
   - { package: "org.turbowarp.TurboWarp", repo: "flathub", state: present }
   # Voice chat / communication
-  - { package: "com.teamspeak.TeamSpeak", repo: "flathub", state: present }
   - { package: "im.riot.Riot", repo: "flathub", state: present }
   - { package: "org.jitsi.jitsi-meet", repo: "flathub", state: present }
   # Documents
@@ -272,7 +271,6 @@ config_flatpak_list_1:
   - { package: "com.github.jeromerobert.pdfarranger", repo: "flathub", state: present }
   - { package: "org.libreoffice.LibreOffice", repo: "flathub", state: present }
   - { package: "com.vscodium.codium", repo: "flathub", state: present }
-  - { package: "com.jetbrains.IntelliJ-IDEA-Community", repo: "flathub", state: present }
   - { package: "re.sonny.Junction", repo: "flathub", state: present }
   # Browser
   - { package: "org.chromium.Chromium", repo: "flathub", state: present }
@@ -290,9 +288,8 @@ config_flatpak_list_1:
   - { package: "io.kopia.KopiaUI", repo: "flathub", state: present }
   - { package: "org.cryptomator.Cryptomator", repo: "flathub", state: present, version: "bc6f8aa1923adf461b14e17a79382f4796a4c4f8cf99bdff8aea270c724bf341" }
   - { package: "io.github.peazip.PeaZip", repo: "flathub", state: present }
+  - { package: "org.localsend.localsend_app", repo: "flathub", state: present }
   - { package: "com.nextcloud.desktopclient.nextcloud", repo: "flathub", state: present, version: "1bad0a8f54092f3b70beb10407d79dc20b18cc6d6fc44f28ec305dd9bcf5b595" }
-  # Game
-  - { package: "com.teeworlds.Teeworlds", repo: "flathub", state: present }
 
 config_flatpak_list_2:
   # Media
@@ -304,6 +301,7 @@ config_flatpak_list_2:
   - { package: "org.kde.kdenlive", repo: "flathub", state: present }
   - { package: "com.calibre_ebook.calibre", repo: "flathub", state: present }
   # Voice chat / communication
+  - { package: "com.teamspeak.TeamSpeak", repo: "flathub", state: present }
   - { package: "io.github.Soundux", repo: "flathub", state: present }
   - { package: "info.mumble.Mumble", repo: "flathub", state: present }
   - { package: "org.signal.Signal", repo: "flathub", state: present }
@@ -317,7 +315,10 @@ config_flatpak_list_2:
   - { package: "fr.romainvigier.MetadataCleaner", repo: "flathub", state: present }
   - { package: "de.willuhn.Jameica", repo: "flathub", state: present }
   - { package: "com.gitlab.bitseater.meteo", repo: "flathub", state: present }
+  - { package: "com.jetbrains.IntelliJ-IDEA-Community", repo: "flathub", state: present }
   # - { package: "org.geogebra.GeoGebra", repo: "flathub", state: present }
+  # Game
+  - { package: "com.teeworlds.Teeworlds", repo: "flathub", state: present }
 
 ### PUSH GATEWAY
 gotify_notify_dest:
