@@ -101,7 +101,7 @@
 
     - name: Remove old LM Studio versions (keep last 2)
       file:
-        path: "/opt/lmstudio/LM-Studio-{{ item }}-x64.AppImage"
+        path: "/opt/lmstudio/{{ item }}"
         state: absent
       loop: "{{ lmstudio_versions_sorted[2:] }}"
       when: lmstudio_versions_sorted | length > 2
