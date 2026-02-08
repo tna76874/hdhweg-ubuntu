@@ -1,0 +1,80 @@
+---
+# -----------------------------------
+# Alten Swap deaktivieren
+# -----------------------------------
+
+- name: Disable all swap
+  command: swapoff -a
+  when: ansible_facts['swaptotal_mb'] | int > 0
+  ignore_errors: yes
+
+- name: Remove all swap entries from fstab
+  lineinfile:
+    path: /etc/fstab
+    regexp: '^\s*[^#]+\s+[^ ]+\s+swap\s+'
+    state: absent
+
+# -----------------------------------
+# Neuen Swap erstellen
+# -----------------------------------
+
+- name: Calculate swap size (1.5x RAM)
+  set_fact:
+    swap_size_mb: "{{ (ansible_facts.memtotal_mb * 1.5) | round(0, 'ceil') | int }}"
+
+- name: Ensure directory for swap file exists
+  file:
+    path: "{{ swap_file_path | dirname }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create swap file
+  command: fallocate -l {{ swap_size | default(swap_size_mb ~ 'M') }} {{ swap_file_path }}
+  args:
+    creates: "{{ swap_file_path }}"
+
+- name: Set correct permissions
+  file:
+    path: "{{ swap_file_path }}"
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: Check for existing swap signature
+  command: blkid "{{ swap_file_path }}"
+  register: swapfile_blkid
+  failed_when: false
+  changed_when: false
+
+- name: Create swap signature
+  command: mkswap "{{ swap_file_path }}"
+  when: swapfile_blkid.rc != 0
+
+# -----------------------------------
+# Swap aktivieren & persistieren
+# -----------------------------------
+
+- name: Enable swap
+  command: swapon "{{ swap_file_path }}"
+  when: swapfile_blkid.rc != 0
+  ignore_errors: yes
+
+- name: Ensure swap entry in fstab
+  lineinfile:
+    path: /etc/fstab
+    line: "{{ swap_file_path }} none swap sw 0 0"
+    state: present
+
+# -----------------------------------
+# Swappiness
+# -----------------------------------
+
+- name: Set vm.swappiness
+  sysctl:
+    name: vm.swappiness
+    value: "{{ swappiness_value | default(10) }}"
+    sysctl_set: yes
+    state: present
+    reload: yes

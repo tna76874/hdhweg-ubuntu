@@ -181,6 +181,21 @@
         - debug:
             msg: "Portmaster installation failed, but continuing..."
 
+- name: Set SWAP
+  hosts: localhost
+  become: yes
+  tags:
+    - never
+    - swap
+  tasks:
+    - block:
+        - name: Set SWAP
+          include_role:
+            name: swap_setup
+      rescue:
+        - debug:
+            msg: "SWAP setting failed, but continuing..."
+
 - name: Deploy fritzbox tools
   hosts: localhost
   become: yes
