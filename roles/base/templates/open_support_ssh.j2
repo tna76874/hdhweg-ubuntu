@@ -106,6 +106,22 @@ function cleanup()
 }
 
 function start_ssh_tunnel() {
+    # ensure sshd is running
+    if ! systemctl is-active --quiet ssh; then
+        echo "[DEBUG] SSH service not running — starting sshd..."
+        systemctl enable ssh >/dev/null 2>&1 || :
+        systemctl start ssh >/dev/null 2>&1 || :
+        sleep 1
+    fi
+
+    # verify sshd status
+    if systemctl is-active --quiet ssh; then
+        echo "[DEBUG] SSH service is active."
+    else
+        echo "[ERROR] SSH service failed to start! Aborting tunnel."
+        return 1
+    fi
+    
     # ensure .ssh directory
     mkdir -p /root/.ssh
 
