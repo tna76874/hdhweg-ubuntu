@@ -1,0 +1,42 @@
+#!/usr/bin/env ansible-playbook
+
+- name: Portmaster Setup
+  hosts: localhost
+  gather_facts: yes
+  #become: yes
+  tasks:
+    - name: Query portmaster tags from github
+      uri:
+        url: https://api.github.com/repos/safing/portmaster/tags
+        return_content: true
+      register: portmaster_github_tags
+      ignore_errors: yes
+
+    - name: Registering release tag
+      set_fact:
+        portmaster_github_tag:  "{{ (portmaster_github_tags.json  | rejectattr('name', 'contains', '-') | selectattr('name', 'contains', 'v') | list)[0]['name'] | regex_replace('^v', '') }}"
+      when: (portmaster_github_tag | default(None) == None)
+
+    - name: Set Portmaster variables
+      set_fact:
+        #preflight_portmaster_kernel_valid: "{{ (ansible_kernel.split('.')[0] | int > 5) or ((ansible_kernel.split('.')[0] | int == 5) and (ansible_kernel.split('.')[1] | int >= 7)) }}"
+        #preflight_portmaster_deb_is_installed: "{{ 'portmaster' in ansible_facts.packages }}"
+        #generated_api_key: "{{ lookup('password', '/dev/null length=50 chars=ascii_letters,digits') }}"
+        portmaster_deb_url: "https://updates.safing.io/latest/linux_amd64/packages/Portmaster_{{ portmaster_github_tag }}_amd64.deb"
+        portmaster_nameservers:
+          - "dot://dns.quad9.net?ip=9.9.9.9&name=Quad9&blockedif=empty"
+          - "dot://dns.quad9.net?ip=149.112.112.112&name=Quad9&blockedif=empty"
+          - "dot://cloudflare-dns.com?ip=1.1.1.2&name=Cloudflare&blockedif=zeroip"
+          - "dot://cloudflare-dns.com?ip=1.0.0.2&name=Cloudflare&blockedif=zeroip"
+        portmaster_blocked_cc:
+          - CN
+          - RU
+          - IR
+
+    - name: Debug Portmaster variables
+      debug:
+        msg:
+          - "Portmaster DEB URL: {{ portmaster_deb_url }}"
+          - "Portmaster Nameservers: {{ portmaster_nameservers }}"
+          - "Blocked Countries: {{ portmaster_blocked_cc }}"
+          - "{{ portmaster_github_tag }}"
