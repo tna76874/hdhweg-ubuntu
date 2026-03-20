@@ -57,8 +57,8 @@
   ignore_errors: yes
   become: yes
 
-
 - include_tasks: disable_tracker.yml
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('22.04', '==')
 
 - include_tasks: user_operations.yml
   loop: "{{ ubuntu_users.stdout_lines }}"

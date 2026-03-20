@@ -8,6 +8,7 @@
   loop:
     - { name: "pyOpenSSL", executable: "pip3", state: "latest"}
   ignore_errors: yes
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('22.04', '<=')
 
 - name: Gather Package facts
   package_facts:

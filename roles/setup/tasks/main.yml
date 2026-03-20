@@ -112,7 +112,7 @@
   when: enable_rembg|bool
 
 - import_tasks: wifi.yml  
-  when: ensure_rtw89_module|bool
+  when: ensure_rtw89_module|bool and (ansible_distribution_version is ansible.builtin.version('22.04', '<='))
 
 - name: Triggering handlers
   assert: { that: true, quiet: true }
