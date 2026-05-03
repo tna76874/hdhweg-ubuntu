@@ -79,32 +79,32 @@
       register: lmstudio_files
       become: yes
 
-    - name: Extract versions from filenames
+    - name: Get resolved latest file
+      stat:
+        path: /opt/lmstudio/LM-Studio-latest.AppImage
+      register: latest_link
+      become: yes
+
+    - name: Get sorted files by mtime
       set_fact:
-        lmstudio_versions: >-
+        lmstudio_sorted: "{{ lmstudio_files.files | sort(attribute='mtime', reverse=True) }}"
+
+    - name: Build keep list (latest + 1 backup)
+      set_fact:
+        lmstudio_keep: >-
           {{
-            lmstudio_files.files
-            | map(attribute='path')
-            | map('basename')
-            | map('regex_search', 'LM-Studio-(.+?)-x64\.AppImage')
-            | select('defined')
-            | list
+            [latest_link.stat.path | realpath]
+            + [lmstudio_sorted[0].path | realpath]
+            + ([lmstudio_sorted[1].path | realpath] if lmstudio_sorted | length > 1 else [])
+            | unique
           }}
 
-    - name: DEBUG show installed LM Studio versions
-      debug:
-        var: lmstudio_versions
-
-    - name: Sort versions descending
-      set_fact:
-        lmstudio_versions_sorted: "{{ lmstudio_versions | sort(reverse=True) }}"
-
-    - name: Remove old LM Studio versions (keep last 2)
+    - name: Remove old versions safely
       file:
-        path: "/opt/lmstudio/{{ item }}"
+        path: "{{ item.path }}"
         state: absent
-      loop: "{{ lmstudio_versions_sorted[2:] }}"
-      when: lmstudio_versions_sorted | length > 2
+      loop: "{{ lmstudio_files.files }}"
+      when: (item.path | realpath) not in lmstudio_keep
       become: yes
 
 ###########
