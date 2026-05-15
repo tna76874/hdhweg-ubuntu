@@ -29,42 +29,6 @@
       become: yes
   ignore_errors: yes
 
-- name: Gather Flatpak configuration
-  block:
-    - name: Ensure custom list is not None
-      set_fact:
-        config_custom_flatpak: "{{ config_custom_flatpak | default([], true) }}"
-      when: config_custom_flatpak is none
-
-    - name: Get list of masked flatpaks
-      shell: "flatpak mask | tail -n +1"
-      register: flatpak_masked_raw
-      changed_when: false
-
-    - name: Get list of installed flatpaks
-      shell: "flatpak --columns=app list"
-      register: flatpak_installed_raw
-      changed_when: false
-
-    - name: Map results to list facts
-      set_fact:
-        flatpak_masked: "{{ flatpak_masked_raw.stdout_lines }}"
-        flatpak_installed_list: "{{ flatpak_installed_raw.stdout_lines }}"
-
-  rescue:
-    - name: Set default empty lists on failure
-      set_fact:
-        flatpak_masked: {"stdout_lines": []}
-        flatpak_installed_list: {"stdout_lines": []}
-        config_custom_flatpak: "{{ config_custom_flatpak | default([]) }}"
-
-- name: Set facts
-  set_fact:
-    config_flatpak_list: "{% if config_extended_software|bool %}{{ config_custom_flatpak + config_flatpak_list_1 + config_flatpak_list_2 }}{% else %}{{ config_custom_flatpak + config_flatpak_list_1 }}{% endif %}"
-    flatpak_masked_list: "{{ flatpak_masked.stdout_lines | map('trim') | list }}"
-    flatpak_installed_list: "{{ flatpak_installed_list.stdout_lines | map('trim') | list }}"
-  ignore_errors: yes
-
 - name: Ensure flatpak packages
   flatpak:
     remote: "{{ item.repo }}"
