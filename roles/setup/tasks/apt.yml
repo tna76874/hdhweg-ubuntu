@@ -106,6 +106,7 @@
       - gnome-software-plugin-snap
     state: absent
     purge: yes
+  ignore_errors: yes
 
 - name: Ensure packages for ubuntu 20
   apt:
@@ -114,6 +115,7 @@
       - heif-gdk-pixbuf
     state: latest
     install_recommends: yes
+  ignore_errors: yes
   when: ansible_facts['lsb']['id'] == "Ubuntu" and ansible_facts['lsb']['major_release']| int == 20
 
 - name: duplicati
