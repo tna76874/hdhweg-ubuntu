@@ -54,8 +54,8 @@
   rescue:
     - name: Set default empty lists on failure
       set_fact:
-        flatpak_masked: []
-        flatpak_installed_list: []
+        flatpak_masked: {"stdout_lines": []}
+        flatpak_installed_list: {"stdout_lines": []}
         config_custom_flatpak: "{{ config_custom_flatpak | default([]) }}"
 
 - name: Set facts
