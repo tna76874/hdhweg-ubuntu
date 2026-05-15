@@ -26,20 +26,35 @@
 - name: Flush handlers
   meta: flush_handlers
 
-- name: Ensure custom list not None
-  set_fact:
-    config_custom_flatpak: []
-  when: config_custom_flatpak == None
+- name: Gather Flatpak configuration
+  block:
+    - name: Ensure custom list is not None
+      set_fact:
+        config_custom_flatpak: "{{ config_custom_flatpak | default([], true) }}"
+      when: config_custom_flatpak is none
 
-- name: Get list of masked flatpaks
-  shell: "flatpak mask | tail -n +1"
-  register: flatpak_masked
-  changed_when: False
+    - name: Get list of masked flatpaks
+      shell: "flatpak mask | tail -n +1"
+      register: flatpak_masked_raw
+      changed_when: false
 
-- name: Get list of installed flatpaks
-  shell: flatpak --columns=app list
-  register: flatpak_installed_list
-  changed_when: False
+    - name: Get list of installed flatpaks
+      shell: "flatpak --columns=app list"
+      register: flatpak_installed_raw
+      changed_when: false
+
+    - name: Map results to list facts
+      set_fact:
+        flatpak_masked: "{{ flatpak_masked_raw.stdout_lines }}"
+        flatpak_installed_list: "{{ flatpak_installed_raw.stdout_lines }}"
+
+  rescue:
+    - name: Set default empty lists on failure
+      set_fact:
+        flatpak_masked: []
+        flatpak_installed_list: []
+        config_custom_flatpak: "{{ config_custom_flatpak | default([]) }}"
+        
 
 - name: Gather Package facts
   package_facts:
