@@ -129,8 +129,6 @@
   tags:
     - never
     - podman
-    - setup
-    - bigsetup
     - removebg
   roles:
     - podman
