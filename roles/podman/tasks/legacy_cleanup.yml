@@ -1,0 +1,172 @@
+---
+# Erkennt den alten Stand, den diese Rolle früher hinterlassen hat
+# (Kubic/libcontainers-Repo, Pakete mit Epoche 100:) und bereinigt ihn
+# wie podman-neuinstallation.sh. Auf einem sauberen System passiert hier nichts.
+
+### Erkennen
+
+- name: Legacy | Find kubic/libcontainers apt sources
+  find:
+    paths: /etc/apt/sources.list.d
+    patterns: "*"
+    contains: '.*(kubic|libcontainers).*'
+  register: __podman_legacy_sources
+
+- name: Legacy | Find kubic/libcontainers apt keys and pins
+  find:
+    paths:
+      - /etc/apt/sources.list.d
+      - /etc/apt/preferences.d
+      - /etc/apt/keyrings
+      - /usr/share/keyrings
+      - /etc/apt/trusted.gpg.d
+    patterns:
+      - "*kubic*"
+      - "*libcontainers*"
+  register: __podman_legacy_named
+
+- name: Legacy | Find installed packages with kubic epoch (100:)
+  shell: |
+    dpkg-query -W -f='${db:Status-Status} ${Package} ${Version}\n' 2>/dev/null \
+      | awk '$1 == "installed" && $3 ~ /^100:/ {print $2}'
+  register: __podman_epoch100
+  changed_when: false
+
+- name: Legacy | Find installed podman related packages
+  shell: |
+    dpkg-query -W -f='${db:Status-Status} ${Package}\n' {{ podman_legacy_packages | join(' ') }} 2>/dev/null \
+      | awk '$1 == "installed" {print $2}'
+  register: __podman_installed_pkgs
+  changed_when: false
+  failed_when: false
+
+- name: Legacy | Evaluate legacy state
+  set_fact:
+    __podman_legacy_files: "{{ (__podman_legacy_sources.files + __podman_legacy_named.files) | map(attribute='path') | unique | list }}"
+    __podman_legacy_epoch_pkgs: "{{ __podman_epoch100.stdout_lines | intersect(podman_legacy_packages) }}"
+
+- name: Legacy | Set legacy flag
+  set_fact:
+    __podman_legacy: "{{ (__podman_legacy_files | length > 0) or (__podman_legacy_epoch_pkgs | length > 0) }}"
+
+- name: Legacy | Report legacy state
+  debug:
+    msg:
+      - "Alter Podman-Stand erkannt – wird repariert."
+      - "Repo-Dateien: {{ __podman_legacy_files }}"
+      - "Pakete mit Epoche 100: {{ __podman_legacy_epoch_pkgs }}"
+  when: __podman_legacy | bool
+
+### Bereinigen (nur bei altem Stand)
+
+- name: Legacy | Repair
+  when: __podman_legacy | bool
+  become: true
+  become_user: root
+  block:
+    - name: Legacy | Reset rootful podman storage
+      command: podman system reset -f
+      when: podman_legacy_reset_storage
+      failed_when: false
+
+    - name: Legacy | Reset rootless podman storage of users
+      command:
+        argv:
+          - runuser
+          - -u
+          - "{{ item.name }}"
+          - --
+          - env
+          - "HOME={{ item.home }}"
+          - "XDG_RUNTIME_DIR=/run/user/{{ item.uid }}"
+          - podman
+          - system
+          - reset
+          - -f
+      loop: "{{ __podman_users }}"
+      loop_control:
+        label: "{{ item.name }}"
+      when: podman_legacy_reset_storage
+      failed_when: false
+
+    - name: Legacy | Unmount leftover container mounts
+      shell: |
+        findmnt -rn -o TARGET | grep -E '^/(var/lib|run)/containers' | sort -r | xargs -r umount -l
+      when: podman_legacy_reset_storage
+      changed_when: false
+      failed_when: false
+
+    - name: Legacy | Purge podman packages
+      apt:
+        name: "{{ __podman_installed_pkgs.stdout_lines }}"
+        state: absent
+        purge: yes
+      when: __podman_installed_pkgs.stdout_lines | length > 0
+
+    - name: Legacy | Autoremove
+      apt:
+        autoremove: yes
+
+    - name: Legacy | Remove kubic apt key from legacy trusted.gpg
+      apt_key:
+        id: 2472D6D0D2F66AF87ABA8DA34D64390375060AA4
+        state: absent
+      failed_when: false
+
+    - name: Legacy | Remove kubic/libcontainers repo files
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop: "{{ __podman_legacy_files }}"
+
+    - name: Legacy | Remove podman configuration
+      file:
+        path: /etc/containers
+        state: absent
+
+    - name: Legacy | Remove podman storage
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /var/lib/containers
+        - /run/containers
+      when: podman_legacy_reset_storage
+
+    - name: Legacy | Remove rootless podman config/storage of users
+      file:
+        path: "{{ item.0.home }}/{{ item.1 }}"
+        state: absent
+      loop: "{{ __podman_users | product(['.config/containers', '.local/share/containers', '.cache/containers']) | list }}"
+      loop_control:
+        label: "{{ item.0.home }}/{{ item.1 }}"
+      when: podman_legacy_reset_storage
+
+    - name: Legacy | Remove old podman-static binaries
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop: "{{ podman_legacy_local_files }}"
+
+    - name: Legacy | Find remaining packages with epoch 100
+      shell: |
+        dpkg-query -W -f='${db:Status-Status} ${Package} ${Version}\n' 2>/dev/null \
+          | awk '$1 == "installed" && $3 ~ /^100:/ {print $2 " " $3}'
+      register: __podman_epoch100_left
+      changed_when: false
+
+    - name: Legacy | Report remaining packages with epoch 100
+      debug:
+        msg:
+          - "Hinweis: noch Pakete mit Epoche 100 installiert:"
+          - "{{ __podman_epoch100_left.stdout_lines }}"
+      when: __podman_epoch100_left.stdout_lines | length > 0
+
+### Immer: fusermount3 aus podman-static darf /usr/bin/fusermount3 nicht verdecken
+
+- name: Legacy | Remove /usr/local/bin/fusermount3 (no setuid, breaks FUSE apps)
+  become: true
+  become_user: root
+  file:
+    path: /usr/local/bin/fusermount3
+    state: absent

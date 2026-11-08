@@ -12,6 +12,7 @@ galaxy_info:
         - 31
     - name: ubuntu
       versions:
-        - xenial
+        - jammy
+        - noble
   galaxy_tags:
     - podman

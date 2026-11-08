@@ -1,0 +1,17 @@
+---
+# Pro Benutzer: subuid/subgid-Bereich anlegen, falls noch keiner existiert.
+# Startwert wie useradd: 100000 + (UID - 1000) * 65536
+- name: "Ubuntu | Ensure {{ item }} entry for {{ __podman_user.name }}"
+  become: true
+  become_user: root
+  shell: |
+    grep -q '^{{ __podman_user.name }}:' {{ item }} && exit 0
+    echo '{{ __podman_user.name }}:{{ 100000 + (__podman_user.uid - 1000) * 65536 }}:65536' >> {{ item }}
+    echo added
+  args:
+    executable: /bin/bash
+  register: __podman_subid
+  changed_when: "'added' in __podman_subid.stdout"
+  loop:
+    - /etc/subuid
+    - /etc/subgid

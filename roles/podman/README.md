@@ -7,10 +7,25 @@ Manage services and containers with podman
 Usage
 -----
 
-By default this role will simply install podman as described in the [podman docs](https://podman.io/getting-started/installation.html) and perform any other required
-setup to make the installation functional on the supported platforms. 
+On Ubuntu (22.04 / 24.04) the role installs:
 
-**Important Note:** This means that for Ubuntu / Debian systems it will perform an `apt upgrade` as per the docs after the repository is added. This upgrade will only be run if the repository is added or changed and will not execute on subsequent runs.
+* the Ubuntu podman packages (`podman_tools`) plus `uidmap nftables curl fuse3` as a base
+  (helpers, AppArmor profile, default config),
+* the current [podman-static](https://github.com/mgoltzsche/podman-static) release to
+  `/usr/local` (`podman_static_version: latest` or a fixed tag). The bundled
+  `fusermount3` is **not** installed, so `/usr/bin/fusermount3` (setuid) keeps working
+  for FUSE apps like Cryptomator.
+
+**Repairing the old state:** Earlier versions of this role used the Kubic/libcontainers
+repository (packages with epoch `100:`). If such a state is detected (repo files or
+epoch-100 packages), the role purges the packages, removes repo/key/pin files,
+`/etc/containers`, old `/usr/local` podman binaries and, with
+`podman_legacy_reset_storage: true` (default), **all podman containers, images and
+volumes** of root and of the users in `podman_users` (empty = all regular users).
+Afterwards it installs as above. On a clean system none of this runs.
+
+Rootless setup: subuid/subgid ranges are added for those users if missing, and the
+AppArmor `podman` profile is extended to `/usr/local/bin/podman`.
 
 Additionally, it can deploy and configure podman containers as SystemD services.
 

@@ -1,10 +1,87 @@
 ---
-- include_tasks: add_apt_repo.yml
-  when: ansible_distribution_version is version('20.10', '<')
+# Ubuntu: Ubuntu-Podman als Basis (Hilfsprogramme, AppArmor-Profil, Konfiguration)
+# + aktuelles podman-static in /usr/local. Ein alter Stand (Kubic-Repo,
+# Pakete mit Epoche 100:, kaputtes podman-static) wird vorher bereinigt.
 
-- name: Ubuntu | Install podman suite of tools
+- name: Ubuntu | Determine podman users
+  include_tasks: users.yml
+
+- name: Ubuntu | Detect and repair legacy podman installation
+  include_tasks: legacy_cleanup.yml
+
+- name: Ubuntu | Install podman suite of tools (Ubuntu archive as base)
   become: true
   become_user: root
   apt:
-    name: "{{ podman_tools }}"
+    name: "{{ podman_tools + podman_ubuntu_base_packages }}"
+    state: present
     update_cache: yes
+
+- name: Ubuntu | Install current podman-static
+  include_tasks: podman_static.yml
+
+- name: Ubuntu | Apply AppArmor podman profile to /usr/local/bin/podman too
+  become: true
+  become_user: root
+  replace:
+    path: /etc/apparmor.d/podman
+    regexp: '^profile podman /usr/bin/podman '
+    replace: 'profile podman /usr/{bin,local/bin}/podman '
+  register: __podman_apparmor
+  failed_when: false
+
+- name: Ubuntu | Reload AppArmor podman profile
+  become: true
+  become_user: root
+  command: apparmor_parser -r /etc/apparmor.d/podman
+  when: __podman_apparmor is changed
+
+- name: Ubuntu | Ensure subuid/subgid ranges for rootless podman
+  include_tasks: subids.yml
+  loop: "{{ __podman_users }}"
+  loop_control:
+    loop_var: __podman_user
+    label: "{{ __podman_user.name }}"
+
+- name: Ubuntu | Migrate rootless podman of users to the new version
+  become: true
+  become_user: root
+  command:
+    argv:
+      - runuser
+      - -u
+      - "{{ item.name }}"
+      - --
+      - env
+      - "HOME={{ item.home }}"
+      - "XDG_RUNTIME_DIR=/run/user/{{ item.uid }}"
+      - "{{ podman_binary }}"
+      - system
+      - migrate
+  loop: "{{ __podman_users }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: (__podman_static_installed | default(false) | bool) or (__podman_legacy | default(false) | bool)
+  changed_when: false
+  failed_when: false
+
+### Prüfen
+
+- name: Ubuntu | Check fusermount3
+  stat:
+    path: /usr/bin/fusermount3
+  register: __podman_fusermount
+
+- name: Ubuntu | Warn if fusermount3 is not setuid
+  debug:
+    msg: "WARNUNG: /usr/bin/fusermount3 fehlt oder hat kein setuid-Bit – FUSE-Apps (Cryptomator) könnten scheitern!"
+  when: not (__podman_fusermount.stat.exists and __podman_fusermount.stat.isuid)
+
+- name: Ubuntu | Check podman version
+  command: "{{ podman_binary }} --version"
+  register: __podman_version_check
+  changed_when: false
+
+- name: Ubuntu | Show podman version
+  debug:
+    msg: "{{ __podman_version_check.stdout }} ({{ podman_binary }})"

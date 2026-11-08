@@ -1,12 +1,77 @@
 ---
-podman_apt_repo: "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_{{ ansible_distribution_version }} /"
-podman_apt_pub_key: "https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_{{ ansible_distribution_version }}/Release.key"
-
 # Users may not want to install all the podman tools everywhere so this variable
 # allows you to scope down what tools to install. For instance I do not install
 # buildah or skopeo on my servers because I do not build images on them.
+# (Ubuntu: diese Pakete kommen aus dem Ubuntu-Archiv und bilden die Basis,
+#  das eigentliche podman-Binary kommt aus podman-static nach /usr/local.)
 podman_tools:
     - podman
     - buildah
     - skopeo
 podman_services: []
+
+# --- Ubuntu: aktuelles Podman via podman-static ------------------------------
+# "latest" = neuestes Release, sonst ein konkretes Tag, z. B. "v5.6.2"
+podman_static_version: latest
+podman_static_repo: mgoltzsche/podman-static
+podman_binary: /usr/local/bin/podman
+
+# Zusätzliche Ubuntu-Pakete für rootless Podman.
+# fuse3 liefert /usr/bin/fusermount3 MIT setuid-Bit (Cryptomator & Co.).
+podman_ubuntu_base_packages:
+    - uidmap
+    - nftables
+    - curl
+    - fuse3
+
+# --- Reparatur des alten Stands (Kubic-Repo, Epoche 100:) --------------------
+# Wird ein alter Stand erkannt, werden Pakete, Repo, Konfiguration und
+# ALLE Podman-Daten (Container, Images, Volumes von root und den Benutzern)
+# entfernt. Auf false setzen, um die Daten zu behalten.
+podman_legacy_reset_storage: true
+
+# Benutzer, für die rootless Podman eingerichtet / zurückgesetzt wird.
+# Leer = alle normalen Benutzer (UID 1000-59999 mit Login-Shell).
+podman_users: []
+
+# Pakete, die beim alten Stand komplett entfernt werden (wie podman-neuinstallation.sh)
+podman_legacy_packages:
+    - podman
+    - podman-plugins
+    - podman-machine-cni
+    - podman-docker
+    - podman-rootless
+    - buildah
+    - skopeo
+    - conmon
+    - crun
+    - cri-o-runc
+    - containernetworking-plugins
+    - containers-common
+    - containers-golang
+    - containers-storage
+    - golang-github-containers-common
+    - golang-github-containers-image
+    - fuse-overlayfs
+    - slirp4netns
+    - catatonit
+    - aardvark-dns
+    - netavark
+    - passt
+
+# Alte/fehlerhafte Dateien aus früheren podman-static-Installationen
+podman_legacy_local_files:
+    - /usr/local/bin/podman
+    - /usr/local/bin/podman-remote
+    - /usr/local/bin/runc
+    - /usr/local/bin/crun
+    - /usr/local/bin/conmon
+    - /usr/local/bin/fuse-overlayfs
+    - /usr/local/bin/fusermount3
+    - /usr/local/bin/pasta
+    - /usr/local/bin/pasta.avx2
+    - /usr/local/bin/passt
+    - /usr/local/bin/slirp4netns
+    - /usr/local/bin/catatonit
+    - /usr/local/lib/podman
+    - /usr/local/libexec/podman

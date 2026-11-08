@@ -1,0 +1,98 @@
+---
+# Aktuelles podman-static nach /usr/local – OHNE dessen fusermount3
+# (kein setuid-Bit, würde /usr/bin/fusermount3 verdecken).
+
+- name: podman-static | Set architecture
+  set_fact:
+    __podman_arch: "{{ {'x86_64': 'amd64', 'aarch64': 'arm64'}[ansible_architecture] }}"
+    __podman_static_installed: false
+
+- name: podman-static | Resolve latest release
+  uri:
+    url: "https://github.com/{{ podman_static_repo }}/releases/latest"
+    method: HEAD
+    follow_redirects: all
+  register: __podman_latest
+  when: podman_static_version == 'latest'
+
+- name: podman-static | Set target version
+  set_fact:
+    __podman_target_tag: >-
+      {{ (__podman_latest.url | regex_search('/tag/([^/]+)$', '\1') | first)
+         if podman_static_version == 'latest' else podman_static_version }}
+
+- name: podman-static | Check installed version
+  command: "{{ podman_binary }} --version"
+  register: __podman_current
+  changed_when: false
+  failed_when: false
+
+- name: podman-static | Decide whether to install
+  set_fact:
+    __podman_static_fresh: "{{ __podman_current.rc != 0 }}"
+    __podman_static_needed: >-
+      {{ __podman_current.rc != 0 or
+         (__podman_current.stdout.split() | last) != (__podman_target_tag | regex_replace('^v', '')) }}
+
+- name: podman-static | Install {{ __podman_target_tag }}
+  when: __podman_static_needed | bool
+  become: true
+  become_user: root
+  block:
+    - name: podman-static | Create temp dir
+      tempfile:
+        state: directory
+        suffix: podman-static
+      register: __podman_tmp
+
+    - name: podman-static | Download
+      get_url:
+        url: "https://github.com/{{ podman_static_repo }}/releases/download/{{ __podman_target_tag }}/podman-linux-{{ __podman_arch }}.tar.gz"
+        dest: "{{ __podman_tmp.path }}/podman.tar.gz"
+        mode: "0644"
+
+    - name: podman-static | Extract
+      unarchive:
+        src: "{{ __podman_tmp.path }}/podman.tar.gz"
+        dest: "{{ __podman_tmp.path }}"
+        remote_src: yes
+
+    - name: podman-static | Drop bundled fusermount3
+      shell: find "{{ __podman_tmp.path }}/podman-linux-{{ __podman_arch }}" -name fusermount3 -type f -print -delete
+
+    - name: podman-static | Install binaries to /usr/local
+      command: cp -a "{{ __podman_tmp.path }}/podman-linux-{{ __podman_arch }}/usr/." /usr/
+
+    # Neuinstallation: Konfiguration aus podman-static übernehmen (wie das Skript).
+    # Update: vorhandene Dateien in /etc/containers nicht überschreiben.
+    - name: podman-static | Install configuration (fresh install)
+      command: cp -a "{{ __podman_tmp.path }}/podman-linux-{{ __podman_arch }}/etc/." /etc/
+      when: __podman_static_fresh | bool
+
+    - name: podman-static | Add missing configuration files (update)
+      shell: |
+        cd "{{ __podman_tmp.path }}/podman-linux-{{ __podman_arch }}/etc"
+        find . -type f | while read -r f; do
+          [ -e "/etc/$f" ] || { install -D -m 0644 "$f" "/etc/$f"; echo "added $f"; }
+        done
+      args:
+        executable: /bin/bash
+      register: __podman_conf_added
+      changed_when: __podman_conf_added.stdout | length > 0
+      when: not (__podman_static_fresh | bool)
+
+    - name: podman-static | Make sure no fusermount3 landed in /usr/local/bin
+      file:
+        path: /usr/local/bin/fusermount3
+        state: absent
+
+    - name: podman-static | Mark as installed
+      set_fact:
+        __podman_static_installed: true
+
+  always:
+    - name: podman-static | Remove temp dir
+      file:
+        path: "{{ __podman_tmp.path }}"
+        state: absent
+      when: __podman_tmp.path is defined
