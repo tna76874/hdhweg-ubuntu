@@ -48,8 +48,20 @@
       {{ __podman_current.rc != 0 or
          (__podman_current.stdout.split() | last) != (__podman_target_tag | regex_replace('^v', '')) }}
 
+- name: podman-static | Report planned installation (check mode)
+  debug:
+    msg: >-
+      Check-Modus: podman-static {{ __podman_target_tag }} würde installiert
+      (aktuell: {{ __podman_current.stdout | default('', true) or 'nicht installiert' }}).
+  when:
+    - __podman_static_needed | bool
+    - ansible_check_mode
+
+# Download/Entpacken/Kopieren lässt sich im Check-Modus nicht simulieren
 - name: podman-static | Install {{ __podman_target_tag }}
-  when: __podman_static_needed | bool
+  when:
+    - __podman_static_needed | bool
+    - not ansible_check_mode
   become: true
   become_user: root
   block:

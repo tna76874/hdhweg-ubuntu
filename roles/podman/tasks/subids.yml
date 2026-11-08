@@ -11,7 +11,7 @@
   args:
     executable: /bin/bash
   register: __podman_subid
-  changed_when: "'added' in __podman_subid.stdout"
+  changed_when: "'added' in (__podman_subid.stdout | default(''))"
   loop:
     - /etc/subuid
     - /etc/subgid
