@@ -75,3 +75,21 @@ podman_legacy_local_files:
     - /usr/local/bin/catatonit
     - /usr/local/lib/podman
     - /usr/local/libexec/podman
+
+# --- Laufzeit (crun/conmon) aus podman-static erzwingen ----------------------
+# Das Ubuntu-Paket "podman" zieht crun/conmon nach /usr/bin. Podman findet diese
+# VOR /usr/local und das neue podman-static scheitert dann z. B. mit
+# "crun: unknown version specified". Ein Drop-in in containers.conf.d legt
+# deshalb die Binaries aus podman-static fest.
+podman_static_prefix: /usr/local
+podman_force_static_runtime: true
+podman_runtime_conf: /etc/containers/containers.conf.d/50-podman-static-runtime.conf
+
+# --- podman-compose ----------------------------------------------------------
+# package = aus dem Distributions-Archiv (apt/dnf), stabil, ggf. älter
+# venv    = neueste Version von PyPI in eigener venv (kein PEP-668-Konflikt),
+#           verlinkt nach /usr/local/bin/podman-compose
+# none    = nicht installieren
+podman_compose_method: package
+podman_compose_venv: /opt/podman-compose
+podman_compose_link: /usr/local/bin/podman-compose

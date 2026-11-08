@@ -1,0 +1,23 @@
+# {{ ansible_managed }}
+# podman-static ({{ podman_static_prefix }}) bevorzugen – die Ubuntu-Pakete
+# (/usr/bin/crun, /usr/bin/conmon) sind zu alt für das aktuelle podman.
+[engine]
+runtime = "crun"
+conmon_path = [
+  "{{ podman_static_prefix }}/libexec/podman/conmon",
+  "{{ podman_static_prefix }}/lib/podman/conmon",
+  "{{ podman_static_prefix }}/bin/conmon",
+  "/usr/bin/conmon",
+]
+helper_binaries_dir = [
+  "{{ podman_static_prefix }}/libexec/podman",
+  "{{ podman_static_prefix }}/lib/podman",
+  "/usr/libexec/podman",
+  "/usr/lib/podman",
+]
+
+[engine.runtimes]
+crun = [
+  "{{ podman_static_prefix }}/bin/crun",
+  "/usr/bin/crun",
+]

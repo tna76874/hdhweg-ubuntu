@@ -20,6 +20,39 @@
 - name: Ubuntu | Install current podman-static
   include_tasks: podman_static.yml
 
+# Ubuntu-crun/conmon (/usr/bin) würden sonst vor /usr/local gefunden werden
+- name: Ubuntu | Ensure /etc/containers/containers.conf.d exists
+  become: true
+  become_user: root
+  file:
+    path: "{{ podman_runtime_conf | dirname }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  when: podman_force_static_runtime | bool
+
+- name: Ubuntu | Prefer crun/conmon from podman-static
+  become: true
+  become_user: root
+  template:
+    src: containers-runtime.conf.j2
+    dest: "{{ podman_runtime_conf }}"
+    owner: root
+    group: root
+    mode: "0644"
+  register: __podman_runtime_conf
+  when: podman_force_static_runtime | bool
+
+- name: Ubuntu | Remove runtime drop-in (disabled)
+  become: true
+  become_user: root
+  file:
+    path: "{{ podman_runtime_conf }}"
+    state: absent
+  register: __podman_runtime_conf_removed
+  when: not (podman_force_static_runtime | bool)
+
 - name: Ubuntu | Apply AppArmor podman profile to /usr/local/bin/podman too
   become: true
   become_user: root
@@ -61,7 +94,11 @@
   loop: "{{ __podman_users }}"
   loop_control:
     label: "{{ item.name }}"
-  when: (__podman_static_installed | default(false) | bool) or (__podman_legacy | default(false) | bool)
+  when: >-
+    (__podman_static_installed | default(false) | bool) or
+    (__podman_legacy | default(false) | bool) or
+    (__podman_runtime_conf is changed) or
+    (__podman_runtime_conf_removed is changed)
   changed_when: false
   failed_when: false
 
@@ -87,3 +124,27 @@
 - name: Ubuntu | Show podman version
   debug:
     msg: "{{ __podman_version_check.stdout | default('', true) or '(nicht installiert – Check-Modus)' }} ({{ podman_binary }})"
+
+- name: Ubuntu | Check OCI runtime and conmon used by podman
+  become: true
+  become_user: root
+  command: "{{ podman_binary }} info --format {% raw %}'{{.Host.OCIRuntime.Path}} {{.Host.Conmon.Path}}'{% endraw %}"
+  register: __podman_runtime_check
+  changed_when: false
+  check_mode: false
+  failed_when: false
+
+- name: Ubuntu | Show OCI runtime and conmon
+  debug:
+    msg: "OCI-Runtime / conmon: {{ __podman_runtime_check.stdout | default('?', true) }}"
+
+- name: Ubuntu | Warn if podman still uses the Ubuntu crun
+  debug:
+    msg: >-
+      WARNUNG: podman nutzt weiterhin {{ __podman_runtime_check.stdout.split() | first }}
+      statt {{ podman_static_prefix }}/bin/crun. Benutzer-Overrides in
+      ~/.config/containers/containers.conf prüfen!
+  when:
+    - podman_force_static_runtime | bool
+    - __podman_runtime_check.rc == 0
+    - not (__podman_runtime_check.stdout | regex_search('^' ~ podman_static_prefix ~ '/'))

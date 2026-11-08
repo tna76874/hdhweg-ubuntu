@@ -1,9 +1,85 @@
-- name: Ensure pip packages
-  pip:
-    name: "{{ item.name }}"
-    executable: "{{ item.executable }}"
-    state: "{{ item.state }}"
+---
+# podman-compose OHNE systemweites pip (PEP 668 / externally-managed-environment)
+
+- name: podman-compose | Validate method
+  assert:
+    that: podman_compose_method in ['package', 'venv', 'none']
+    fail_msg: "podman_compose_method muss 'package', 'venv' oder 'none' sein (ist: {{ podman_compose_method }})"
+    quiet: true
+
+### Variante: Paket aus dem Distributions-Archiv
+
+- name: podman-compose | Install OS package
   become: true
-  loop:
-    - { name: "podman-compose", executable: "pip3", state: "latest"}
-  ignore_errors: yes
+  become_user: root
+  package:
+    name: podman-compose
+    state: present
+  when: podman_compose_method == 'package'
+
+### Variante: eigene venv mit aktueller PyPI-Version
+
+- name: podman-compose | Install venv support
+  become: true
+  become_user: root
+  package:
+    name: "{{ 'python3-venv' if ansible_os_family == 'Debian' else 'python3' }}"
+    state: present
+  when: podman_compose_method == 'venv'
+
+- name: podman-compose | Install/upgrade in venv
+  become: true
+  become_user: root
+  pip:
+    name: podman-compose
+    state: latest
+    virtualenv: "{{ podman_compose_venv }}"
+    virtualenv_command: python3 -m venv
+  when: podman_compose_method == 'venv'
+
+- name: podman-compose | Link venv binary
+  become: true
+  become_user: root
+  file:
+    src: "{{ podman_compose_venv }}/bin/podman-compose"
+    dest: "{{ podman_compose_link }}"
+    state: link
+    force: true
+  when: podman_compose_method == 'venv'
+
+### Aufräumen beim Wechsel weg von venv
+
+- name: podman-compose | Remove venv link (not using venv)
+  become: true
+  become_user: root
+  file:
+    path: "{{ podman_compose_link }}"
+    state: absent
+  when: podman_compose_method != 'venv'
+
+- name: podman-compose | Remove venv (not using venv)
+  become: true
+  become_user: root
+  file:
+    path: "{{ podman_compose_venv }}"
+    state: absent
+  when: podman_compose_method != 'venv'
+
+### Prüfen
+
+- name: podman-compose | Check version
+  command: podman-compose --version
+  environment:
+    PATH: "/usr/local/bin:/usr/bin:/bin"
+  register: __podman_compose_version
+  changed_when: false
+  check_mode: false
+  failed_when: false
+  when: podman_compose_method != 'none'
+
+- name: podman-compose | Show version
+  debug:
+    msg: "{{ __podman_compose_version.stdout_lines | default(['?']) | last }}"
+  when:
+    - podman_compose_method != 'none'
+    - __podman_compose_version.rc | default(1) == 0

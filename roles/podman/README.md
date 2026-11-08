@@ -24,6 +24,11 @@ epoch-100 packages), the role purges the packages, removes repo/key/pin files,
 volumes** of root and of the users in `podman_users` (empty = all regular users).
 Afterwards it installs as above. On a clean system none of this runs.
 
+Because the Ubuntu `podman` package pulls an older `crun`/`conmon` into `/usr/bin`
+(which podman would prefer over `/usr/local`), the role deploys
+`/etc/containers/containers.conf.d/50-podman-static-runtime.conf` pinning the
+podman-static binaries (`podman_force_static_runtime: true`).
+
 Rootless setup: subuid/subgid ranges are added for those users if missing, and the
 AppArmor `podman` profile is extended to `/usr/local/bin/podman`.
 
