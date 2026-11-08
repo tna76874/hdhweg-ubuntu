@@ -31,6 +31,7 @@
       | awk '$1 == "installed" && $3 ~ /^100:/ {print $2}'
   register: __podman_epoch100
   changed_when: false
+  check_mode: false
 
 - name: Legacy | Find installed podman related packages
   shell: |
@@ -38,6 +39,7 @@
       | awk '$1 == "installed" {print $2}'
   register: __podman_installed_pkgs
   changed_when: false
+  check_mode: false
   failed_when: false
 
 - name: Legacy | Evaluate legacy state
@@ -154,6 +156,7 @@
           | awk '$1 == "installed" && $3 ~ /^100:/ {print $2 " " $3}'
       register: __podman_epoch100_left
       changed_when: false
+      check_mode: false
 
     - name: Legacy | Report remaining packages with epoch 100
       debug:

@@ -81,7 +81,9 @@
   command: "{{ podman_binary }} --version"
   register: __podman_version_check
   changed_when: false
+  check_mode: false
+  failed_when: __podman_version_check.rc != 0 and not ansible_check_mode
 
 - name: Ubuntu | Show podman version
   debug:
-    msg: "{{ __podman_version_check.stdout }} ({{ podman_binary }})"
+    msg: "{{ __podman_version_check.stdout | default('', true) or '(nicht installiert – Check-Modus)' }} ({{ podman_binary }})"
