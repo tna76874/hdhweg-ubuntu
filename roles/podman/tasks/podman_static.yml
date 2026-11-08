@@ -11,15 +11,27 @@
   uri:
     url: "https://github.com/{{ podman_static_repo }}/releases/latest"
     method: HEAD
-    follow_redirects: all
+    follow_redirects: none
+    status_code: [301, 302, 303, 307, 308]
   register: __podman_latest
   when: podman_static_version == 'latest'
 
+# GitHub leitet /releases/latest auf /releases/tag/<tag> weiter -> Tag aus dem Location-Header
 - name: podman-static | Set target version
   set_fact:
     __podman_target_tag: >-
-      {{ (__podman_latest.url | regex_search('/tag/([^/]+)$', '\1') | first)
+      {{ ((__podman_latest.location | default(__podman_latest.url | default('')))
+          | regex_search('/tag/([^/?#]+)', '\1') | default([''], true) | first)
          if podman_static_version == 'latest' else podman_static_version }}
+
+- name: podman-static | Verify target version
+  assert:
+    that: __podman_target_tag | length > 0
+    fail_msg: >-
+      Aktuelle podman-static-Version konnte nicht ermittelt werden
+      (Antwort: {{ __podman_latest.location | default(__podman_latest.status | default('?')) }}).
+      Ggf. podman_static_version auf ein festes Tag setzen, z. B. "v5.6.2".
+    quiet: true
 
 - name: podman-static | Check installed version
   command: "{{ podman_binary }} --version"
